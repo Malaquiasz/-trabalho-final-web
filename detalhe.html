@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Objeto | Achados e Perdidos Local</title>
+    <link rel="stylesheet" href="/css/estilo.css">
+</head>
+<body>
+
+    <div class="page-container">
+        <header class="site-header">
+            <div class="header-top">
+                <div class="logo-area">
+                    <div class="logo-box"></div>
+                    <h1 class="main-title">Achados e Perdidos</h1>
+                </div>
+                <div class="login-link"><a href="#">Clique aqui para fazer o login</a></div>
+            </div>
+            <div class="header-bottom">
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="buscar.html">Buscar</a></li>
+                        <li><a href="registrar.html">Registrar</a></li>
+                        <li><a href="sobre.html">Sobre</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main class="object-detail-page">
+            <a href="buscar.html" class="back-link">← Voltar para a Busca</a>
+
+            <section class="object-presentation">
+                <div class="object-media">
+                    <img src="placeholder-default.jpg" alt="Objeto">
+                </div>
+
+                <div class="object-details">
+                    <h2>... Título do Objeto (JS) ...</h2>
+                    
+                    <div class="key-info">
+                        <p><strong>Palavras-Chave:</strong> (JS)</p>
+                        <p><strong>Local Encontrado:</strong> (JS)</p>
+                        <p><strong>Data do Registro:</strong> (JS)</p>
+                        <p><strong>Categoria:</strong> Acessório</p>
+                    </div>
+
+                    <div class="description-section">
+                        <h3>Descrição Adicional</h3>
+                        <p>... Descrição Detalhada (JS) ...</p>
+                    </div>
+                    
+                    <div class="contact-action-box">
+                        <h3>Acho que é meu! Como recuperar?</h3>
+                        <p>Clique no botão para solicitar o contato mediado. A comunicação será via WhatsApp para sua segurança.</p>
+                        
+                        <a href="#" class="btn btn-primary btn-large contact-button" target="_blank" rel="noopener noreferrer">
+                           Solicitar Contato (WhatsApp Mediado)
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="exclusion-section">
+                <h4>Item Devolvido?</h4>
+                <p>Se você registrou este item e ele já foi devolvido, use sua Palavra-Passe para removê-lo do sistema.</p>
+                <form>
+                    <input type="password" placeholder="Palavra-Passe para Exclusão">
+                    <button type="submit" class="btn btn-danger">Excluir Objeto</button>
+                </form>
+            </section>
+        </main>
+
+        <footer class="site-footer">&copy; 2025 Achados e Perdidos Local. Privacidade e Simplicidade.</footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

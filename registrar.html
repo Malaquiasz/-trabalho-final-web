@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Objeto | Achados e Perdidos Local</title>
+    <link rel="stylesheet" href="/css/estilo.css">
+</head>
+<body>
+    <div class="page-container">
+        <header class="site-header">
+            <div class="header-top">
+                <div class="logo-area">
+                    <div class="logo-box"></div>
+                    <h1 class="main-title">Achados e Perdidos</h1>
+                </div>
+                <div class="login-link"><a href="#">Clique aqui para fazer o login</a></div>
+            </div>
+            <div class="header-bottom">
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="buscar.html">Buscar</a></li>
+                        <li><a href="registrar.html" class="active">Registrar</a></li>
+                        <li><a href="sobre.html">Sobre</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main class="form-page">
+            <h2>Registrar um Novo Objeto</h2>
+            <p class="form-intro">Seu cadastro é rápido e seguro. A Palavra-Passe serve para remover o item depois de devolvido.</p>
+
+            <form action="#" method="POST" enctype="multipart/form-data" class="registration-form">
+
+                <div class="form-group">
+                    <label for="foto">Foto do Objeto em Destaque:</label>
+                    <input type="file" id="foto" name="foto" accept="image/*" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="titulo">Título do Item:</label>
+                    <input type="text" id="titulo" name="titulo" placeholder="Ex: Chaveiro com abridor azul" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="descricao">Descrição Detalhada (Opcional):</label>
+                    <textarea id="descricao" name="descricao" rows="3" placeholder="Detalhes que ajudem na identificação (arranhões, cor do forro)."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="local">Local Exato de Encontro:</label>
+                    <select id="local" name="local" required>
+                        <option value="">Selecione o Bloco/Área</option>
+                        <option value="bloco-a-sala-07">Bloco A > Sala 07</option>
+                        <option value="biblioteca-mesa-2">Biblioteca > Mesa 2</option>
+                        <option value="refeitorio-saida">Refeitório > Próximo à Saída</option>
+                        <option value="outro">Outro Local</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="contato">Seu Contato para Mediação:</label>
+                    <input type="text" id="contato" name="contato" placeholder="(XX) XXXXX-XXXX" required>
+                    <small>Seu contato **não** será exibido.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="palavra_passe">Palavra-Passe para Excluir o Objeto:</label>
+                    <input type="password" id="palavra_passe" name="palavra_passe" required>
+                    <small>Guarde esta senha para remover o objeto depois de devolvido.</small>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-large">Registrar Objeto</button>
+            </form>
+        </main>
+
+        <footer class="site-footer">&copy; 2025 Achados e Perdidos Local. Privacidade e Simplicidade.</footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
