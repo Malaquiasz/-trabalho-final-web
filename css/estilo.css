@@ -1,23 +1,20 @@
-/* estilo.css - Versão Moderna */
 :root {
-    --cor-primaria: #27ae60;    /* Verde mais vibrante */
+    --cor-primaria: #27ae60;
     --cor-primaria-escura: #219653;
-    --cor-secundaria: #e74c3c;  /* Vermelho mais vibrante */
+    --cor-secundaria: #e74c3c;
     --cor-secundaria-escura: #c0392b;
-    --cor-fundo: #fefefe;       /* Branco levemente acinzentado */
-    --cor-fundo-header: #2c3e50; /* Cinza azulado escuro para header/footer */
-    --cor-texto-padrao: #2d3436; /* Cinza muito escuro para texto */
-    --cor-texto-claro: #636e72;  /* Cinza médio */
-    --cor-borda: #dfe6e9;       /* Cinza claro para bordas */
-    --cor-sombra: rgba(0, 0, 0, 0.08); /* Sombra mais suave */
-    --cor-destaque: #f1c40f;    /* Amarelo para destaques */
+    --cor-fundo: #fefefe; 
+    --cor-fundo-header: #2c3e50;
+    --cor-texto-padrao: #2d3436;
+    --cor-texto-claro: #636e72; 
+    --cor-borda: #dfe6e9;  
+    --cor-sombra: rgba(0, 0, 0, 0.08);
+    --cor-destaque: #f1c40f;
     
-    /* Gradientes */
     --gradiente-verde: linear-gradient(135deg, var(--cor-primaria) 0%, #2ecc71 100%);
     --gradiente-vermelho: linear-gradient(135deg, var(--cor-secundaria) 0%, #e67e22 100%);
     --gradiente-cinza: linear-gradient(135deg, #34495e 0%, var(--cor-fundo-header) 100%);
     
-    /* Efeitos */
     --sombra-card: 0 10px 30px rgba(0, 0, 0, 0.1);
     --sombra-botao: 0 4px 15px rgba(0, 0, 0, 0.2);
     --transicao-padrao: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -39,7 +36,6 @@ body {
         radial-gradient(circle at 90% 80%, rgba(39, 174, 96, 0.05) 0%, transparent 20%);
 }
 
-/* ========== ANIMAÇÕES GLOBAIS ========== */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -57,7 +53,6 @@ body {
     100% { transform: scale(1); }
 }
 
-/* ========== HEADER PRINCIPAL ========== */
 header {
     background: var(--gradiente-cinza);
     padding: 1.5rem 2rem;
@@ -147,7 +142,6 @@ nav a.active {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* ========== HEADER ALTERNATIVO (outras páginas) ========== */
 .site-header {
     background: var(--gradiente-cinza);
     border-bottom: none;
@@ -258,7 +252,6 @@ nav a.active {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* ========== LAYOUT PRINCIPAL ========== */
 .page-container {
     min-height: 100vh;
     display: flex;
@@ -274,7 +267,6 @@ main {
     animation: fadeIn 0.8s ease-out;
 }
 
-/* ========== SEÇÃO HERO (Página Inicial) ========== */
 .hero-section {
     text-align: center;
     padding: 4rem 2rem;
@@ -359,7 +351,6 @@ main {
     transform: translateY(-1px);
 }
 
-/* ========== CATEGORIAS RÁPIDAS ========== */
 .quick-categories {
     margin-bottom: 4rem;
 }
@@ -448,7 +439,6 @@ main {
     color: var(--cor-secundaria-escura);
 }
 
-/* ========== COMO FUNCIONA ========== */
 .how-it-works {
     background: white;
     padding: 3rem 2rem;
@@ -524,7 +514,6 @@ main {
     line-height: 1.6;
 }
 
-/* ========== PÁGINA DE BUSCA ========== */
 .search-page-layout h2 {
     text-align: center;
     margin-bottom: 2.5rem;
@@ -673,7 +662,6 @@ main {
     font-size: 1.2rem;
 }
 
-/* ========== PÁGINA DE DETALHES ========== */
 .object-detail-page {
     max-width: 1100px;
     animation: fadeIn 0.8s ease-out;
@@ -866,7 +854,6 @@ main {
     box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
 }
 
-/* ========== PÁGINA DE REGISTRO ========== */
 .form-page h2 {
     text-align: center;
     margin-bottom: 1.5rem;
@@ -947,7 +934,6 @@ main {
     margin-top: 0.5rem;
 }
 
-/* ========== PÁGINA SOBRE ========== */
 .about-page h2 {
     text-align: center;
     margin-bottom: 2.5rem;
@@ -1032,7 +1018,6 @@ main {
     line-height: 1.6;
 }
 
-/* ========== FOOTER ========== */
 footer {
     background: var(--gradiente-cinza);
     text-align: center;
@@ -1070,7 +1055,6 @@ footer::before {
     text-decoration: underline;
 }
 
-/* ========== RESPONSIVIDADE ========== */
 @media (max-width: 992px) {
     .object-presentation {
         grid-template-columns: 1fr;
