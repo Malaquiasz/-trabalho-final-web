@@ -1,82 +1,93 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Achados e Perdidos | Encontre o que Perdeu, Devolva o que Achou</title>
-    <link rel="stylesheet" href="css/estilo.css"> 
+    <title>Achados e Perdidos Local | Encontre ou Registre seu Objeto</title>
+    <link rel="stylesheet" href="/css/estilo.css">
 </head>
+
 <body>
 
-    <div class="page-container">
-        
-        <header class="site-header">
-            <div class="header-top">
-                <div class="logo-area">
-                    <div class="logo-box"></div>
-                    <h1 class="main-title">Achados e Perdidos</h1>
-                </div>
+    <header>
+        <div class="logo">
+            <h1>Achados & Perdidos Local</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="buscar.html">Buscar</a></li>
+                <li><a href="registrar.html">Registrar</a></li>
+                <li><a href="sobre.html">Sobre</a></li>
+            </ul>
+        </nav>
+    </header>
 
+    <main>
+        <section class="hero-section">
+            <h2>Perdeu algo? Encontre aqui.</h2>
+            <form action="buscar.html" method="GET" class="search-form">
+                <input type="text" name="query" placeholder="Local ou palavra-chave (ex: Bloco A, chaves, mochila)">
+                <button type="submit">Buscar Objeto</button>
+            </form>
+            <a href="registrar.html" class="btn-primary">Registrar um objeto</a>
+        </section>
+
+        <section class="quick-categories">
+            <h3>Buscar por Local Comum</h3>
+            <div class="category-cards-container">
+                <div class="card">
+                    <h4>Biblioteca</h4>
+                    <p>Itens encontrados na Biblioteca</p>
+                    <a href="buscar.html?local=biblioteca">Ver Achados</a>
+                </div>
+                <div class="card">
+                    <h4>Sala de Aula</h4>
+                    <p>Itens encontrados nas salas</p>
+                    <a href="buscar.html?local=sala">Ver Achados</a>
+                </div>
+                <div class="card">
+                    <h4>Refeitório</h4>
+                    <p>Itens encontrados no Refeitório</p>
+                    <a href="buscar.html?local=refeitorio">Ver Achados</a>
+                </div>
             </div>
-            
-            <div class="header-bottom">
-                <nav>
-                    <ul>
-                        <li><a href="index.html" class="active">Home</a></li>
-                        <li><a href="buscar.html">Buscar Objeto</a></li>
-                        <li><a href="registrar.html">Registrar Objeto</a></li>
-                        <li><a href="sobre.html">Sobre</a></li>
-                    </ul>
-                </nav>
+        </section>
+
+        <section class="how-it-works">
+            <h3>Como Funciona</h3>
+            <div class="steps-container">
+                <div class="step">
+                    <span>1</span>
+                    <h4>Registrar</h4>
+                    <p>Achou ou perdeu? Cadastre o item rapidamente.</p>
+                </div>
+                <div class="step">
+                    <span>2</span>
+                    <h4>Buscar</h4>
+                    <p>Use filtros para localizar o objeto na plataforma.</p>
+                </div>
+                <div class="step">
+                    <span>3</span>
+                    <h4>Recuperar</h4>
+                    <p>Entre em contato e combine a devolução de forma segura.</p>
+                </div>
             </div>
-        </header>
+        </section>
+    </main>
 
-        <main class="home-main">
-            <section class="hero-section">
-                <div class="hero-content">
-                    <h1>Perdeu algo? Encontre aqui. <br>
-                        Achou algo? Registre e ajude.</h1>
-                    <p class="subtitle">Conectando itens perdidos aos seus donos de forma simples e rápida.</p>
-                    <div class="hero-actions">
-                        <a href="buscar.html" class="btn btn-primary btn-hero">Buscar Objeto Agora <span class="arrow">→</span></a>
-                        <a href="registrar.html" class="btn btn-secondary btn-hero">Registrar um Objeto <span class="arrow">→</span></a>
-                    </div>
-                </div>
-                <div class="hero-image">
-                    </div>
-            </section>
+    <footer>
+        <div class="footer-links">
+            <a href="sobre.html">Sobre a Plataforma</a> |
+            <a href="#">Termos de Uso</a> |
+            <a href="#">Contato</a>
+        </div>
+        <p>&copy; 2025 Achados e Perdidos Local. Privacidade e Simplicidade.</p>
+    </footer>
 
-            <section class="features-grid-home">
-                <div class="feature-card">
-                    
-                    <h3>🔍Busca Inteligente</h3>
-                    <p>Encontre itens por local, categoria ou palavras-chave.</p>
-                </div>
-                <div class="feature-card">
-                    
-                    <h3>📝Registro Simplificado</h3>
-                    <p>Cadastre um objeto achado em poucos passos, sem complicação.</p>
-                </div>
-                <div class="feature-card">
-                    
-                    <h3>🤝Contato Mediado</h3>
-                    <p>Comunicação segura e privada entre quem achou e quem perdeu.</p>
-                </div>
-            </section>
-
-            <section class="call-to-action">
-                <h2>Faça a diferença na sua comunidade.</h2>
-                <p>Junte-se a nós para criar um ambiente onde nada se perde de verdade.</p>
-                <a href="registrar.html" class="btn btn-primary btn-cta">Começar Agora</a>
-                <a href="sobre.html" class="btn btn-outline-cta">Saiba Mais</a>
-            </section>
-        </main>
-
-        <footer class="site-footer">
-            &copy; 2025 Achados e Perdidos Local. Privacidade e Simplicidade.
-        </footer>
-    </div>
-    
     <script src="script.js"></script>
+
 </body>
+
 </html>
