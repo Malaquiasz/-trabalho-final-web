@@ -217,12 +217,6 @@ nav a.active {
     transform: translateY(-2px);
 }
 
-.header-bottom {
-    background: rgba(231, 76, 60, 0.9);
-    padding: 0.8rem 2rem;
-    backdrop-filter: blur(10px);
-}
-
 .header-bottom nav ul {
     list-style: none;
     display: flex;
