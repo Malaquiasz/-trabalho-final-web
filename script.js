@@ -32,19 +32,18 @@ const configurarRegistro = () => {
 
         // Captura os dados do formulário
         const titulo = document.getElementById('titulo').value;
-        const categoria = document.getElementById('categoria').value; // CORREÇÃO: Captura Categoria
-        const palavrasChave = document.getElementById('palavras_chave').value;
+        const categoria = document.getElementById('categoria').value;
         const descricao = document.getElementById('descricao').value;
         const local = document.getElementById('local').value;
-        let contato = document.getElementById('contato').value; // Usamos 'let' para limpar o valor
+        let contato = document.getElementById('contato').value;
         const palavraPasse = document.getElementById('palavra_passe').value;
         const fotoInput = document.getElementById('foto');
         
-        // CORREÇÃO: Remove caracteres não-dígitos do contato para salvar de forma padronizada
+        // Remove caracteres não-dígitos do contato para salvar de forma padronizada
         contato = contato.replace(/\D/g, ''); 
         
         // Validação básica
-        if (!titulo || !palavrasChave || !local || !contato || !palavraPasse) {
+        if (!titulo || !local || !contato || !palavraPasse) {
             alert('Por favor, preencha todos os campos obrigatórios.');
             return;
         }
@@ -60,8 +59,7 @@ const configurarRegistro = () => {
         const novoObjeto = {
             id: Date.now(), // ID único baseado no timestamp
             titulo,
-            categoria, // CORREÇÃO: Categoria adicionada ao objeto
-            palavrasChave,
+            categoria,
             descricao,
             local,
             contato,
@@ -139,8 +137,8 @@ const configurarBusca = () => {
         const query = queryInput.value.toLowerCase();
         
         const resultados = objetos.filter(objeto => {
-            // CORREÇÃO: Filtra por Título, Local, Palavras-Chave E AGORA TAMBÉM POR CATEGORIA
-            const termoBusca = `${objeto.titulo} ${objeto.local} ${objeto.palavrasChave} ${objeto.categoria || ''}`.toLowerCase();
+            // Filtra por Título, Local e Categoria
+            const termoBusca = `${objeto.titulo} ${objeto.local} ${objeto.categoria || ''}`.toLowerCase();
             return termoBusca.includes(query);
         });
 
@@ -197,18 +195,15 @@ const configurarDetalheEExclusao = () => {
 
     const keyInfoElements = document.querySelectorAll('.key-info p');
     
-    // CORREÇÃO: Adicionando a Categoria na primeira linha, se houver 4 elementos <p>
-    if (keyInfoElements.length >= 4) {
+    // Ajusta a exibição das informações (sem palavras-chave)
+    if (keyInfoElements.length >= 3) {
         keyInfoElements[0].innerHTML = `<strong>Categoria:</strong> ${objeto.categoria || 'Não Especificada'}`;
-        keyInfoElements[1].innerHTML = `<strong>Palavras-Chave:</strong> ${objeto.palavrasChave}`;
-        keyInfoElements[2].innerHTML = `<strong>Local Encontrado:</strong> ${objeto.local}`;
-        keyInfoElements[3].innerHTML = `<strong>Data do Registro:</strong> ${objeto.dataRegistro}`;
-    } else if (keyInfoElements.length >= 3) { // Mantém a estrutura original se houver apenas 3 <p>
-        keyInfoElements[0].innerHTML = `<strong>Palavras-Chave:</strong> ${objeto.palavrasChave}`;
         keyInfoElements[1].innerHTML = `<strong>Local Encontrado:</strong> ${objeto.local}`;
         keyInfoElements[2].innerHTML = `<strong>Data do Registro:</strong> ${objeto.dataRegistro}`;
+    } else if (keyInfoElements.length >= 2) {
+        keyInfoElements[0].innerHTML = `<strong>Local Encontrado:</strong> ${objeto.local}`;
+        keyInfoElements[1].innerHTML = `<strong>Data do Registro:</strong> ${objeto.dataRegistro}`;
     }
-
 
     const descricaoElement = document.querySelector('.description-section p');
     if (descricaoElement) {
