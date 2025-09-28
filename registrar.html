@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Objeto | Achados e Perdidos Local</title>
     <link rel="stylesheet" href="/css/estilo.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="page-container">
@@ -16,7 +19,7 @@
                 </div>
             </div>
             <div class="header-bottom">
-                <nav>
+                <nav role="navigation">
                     <ul>
                         <li><a href="index.html">Home</a></li>
                         <li><a href="buscar.html">Buscar</a></li>
@@ -31,53 +34,86 @@
             <h2>Registrar um Novo Objeto</h2>
             <p class="form-intro">Seu cadastro é rápido e seguro. A Palavra-Passe serve para remover o item depois de devolvido.</p>
 
-            <form action="#" method="POST" enctype="multipart/form-data" class="registration-form">
-
+            <form action="#" method="POST" enctype="multipart/form-data" class="registration-form" novalidate>
                 <div class="form-group">
                     <label for="foto">Foto do Objeto em Destaque:</label>
-                    <input type="file" id="foto" name="foto" accept="image/*" required>
+                    <input type="file" id="foto" name="foto" accept="image/*" required aria-describedby="foto-help">
+                    <small id="foto-help">Escolha uma imagem clara do objeto (máx. 1MB).</small>
                 </div>
-                
+              
+                <div class="form-group">
+                    <label for="categoria">Categoria (Opcional):</label>
+                    <select id="categoria" name="categoria">
+                        <option value="">Selecione uma categoria</option>
+                        <option value="Acessório">Acessório</option>
+                        <option value="Eletrônico">Eletrônico</option>
+                        <option value="Documento">Documento</option>
+                        <option value="Outro">Outro</option>
+                    </select>
+                </div>
+
                 <div class="form-group">
                     <label for="titulo">Título do Item:</label>
-                    <input type="text" id="titulo" name="titulo" placeholder="Ex: Chaveiro com abridor azul" required>
+                    <input type="text" id="titulo" name="titulo" placeholder="Ex: Chaveiro com abridor azul" required aria-required="true">
                 </div>
-                
+
+                <div class="form-group">
+                    <label for="palavras_chave">Palavras-Chave:</label>
+                    <input type="text" id="palavras_chave" name="palavras_chave" placeholder="Ex: chaveiro, azul, abridor" required aria-describedby="chave-help">
+                    <small id="chave-help">Separe por vírgula as palavras que ajudem na busca.</small>
+                </div>
+              
                 <div class="form-group">
                     <label for="descricao">Descrição Detalhada (Opcional):</label>
-                    <textarea id="descricao" name="descricao" rows="3" placeholder="Detalhes que ajudem na identificação (arranhões, cor do forro)."></textarea>
+                    <textarea id="descricao" name="descricao" rows="3" placeholder="Detalhes que ajudem na identificação (arranhões, cor do forro)." aria-describedby="desc-help" maxlength="500"></textarea>
+                    <small id="desc-help">Máximo 500 caracteres.</small>
                 </div>
 
                 <div class="form-group">
                     <label for="local">Local Exato de Encontro:</label>
-                    <select id="local" name="local" required>
-                        <option value="">Selecione o Bloco/Área</option>
-                        <option value="bloco-a-sala-07">Bloco A > Sala 07</option>
-                        <option value="biblioteca-mesa-2">Biblioteca > Mesa 2</option>
-                        <option value="refeitorio-saida">Refeitório > Próximo à Saída</option>
-                        <option value="outro">Outro Local</option>
+                    <select id="local" name="local" required aria-required="true">
+                        <option value="">Selecione o local</option>
+                        <option value="Prédio Administrativo">Prédio Administrativo</option>
+                        <option value="Biblioteca">Biblioteca</option>
+                        <option value="Refeitório">Refeitório</option>
+                        <option value="Outro">Outro Local</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="contato">Seu Contato para Mediação:</label>
-                    <input type="text" id="contato" name="contato" placeholder="(XX) XXXXX-XXXX" required>
-                    <small>Seu contato **não** será exibido.</small>
+                    <input type="tel" id="contato" name="contato" placeholder="(XX) XXXXX-XXXX" required aria-describedby="contato-help" pattern="^\$?\d{2}\$? ?[\d\s-]{9,11}$" title="Formato: (XX) XXXXX-XXXX ou 11999999999">
+                    <small id="contato-help">Seu contato **não** será exibido publicamente. Use formato brasileiro (celular ou fixo).</small>
                 </div>
 
                 <div class="form-group">
                     <label for="palavra_passe">Palavra-Passe para Excluir o Objeto:</label>
-                    <input type="password" id="palavra_passe" name="palavra_passe" required>
-                    <small>Guarde esta senha para remover o objeto depois de devolvido.</small>
+                    <input type="password" id="palavra_passe" name="palavra_passe" required aria-describedby="passe-help" minlength="4">
+                    <small id="passe-help">Guarde esta senha para remover o objeto depois de devolvido (mín. 4 caracteres).</small>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-large">Registrar Objeto</button>
             </form>
         </main>
 
-        <footer class="site-footer">&copy; 2025 Achados e Perdidos Local. Privacidade e Simplicidade.</footer>
+        <footer class="site-footer">
+            <div class="footer-links">
+                <a href="sobre.html">Sobre a Plataforma</a>
+            </div>
+            <p>&copy; 2025 Achados e Perdidos Local. Privacidade e Simplicidade.</p>
+        </footer>
     </div>
-    
+
+    <!-- Modal para mostrar senha após registro -->
+    <div id="senha-modal" class="modal" style="display: none;">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <h3>Senha Registrada!</h3>
+            <p id="senha-display">Sua Palavra-Passe: <span id="senha-texto"></span></p>
+            <button id="fechar-senha" class="btn btn-primary">OK, Entendi</button>
+        </div>
+    </div>
+   
     <script src="script.js"></script>
 </body>
 </html>

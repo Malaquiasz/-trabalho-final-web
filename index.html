@@ -1,35 +1,41 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Achados e Perdidos Local | Encontre ou Registre seu Objeto</title>
     <link rel="stylesheet" href="/css/estilo.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-
-    <header>
-        <div class="logo">
-            <h1>Achados & Perdidos Local</h1>
+    <header class="site-header">
+        <div class="header-top">
+            <div class="logo-area">
+                <div class="logo-box"></div>
+                <h1 class="main-title">Achados e Perdidos</h1>
+            </div>
         </div>
-        <nav>
-            <ul>
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="buscar.html">Buscar</a></li>
-                <li><a href="registrar.html">Registrar</a></li>
-                <li><a href="sobre.html">Sobre</a></li>
-            </ul>
-        </nav>
+        <div class="header-bottom">
+            <nav role="navigation">
+                <ul>
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="buscar.html">Buscar</a></li>
+                    <li><a href="registrar.html">Registrar</a></li>
+                    <li><a href="sobre.html">Sobre</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
     <main>
         <section class="hero-section">
             <h2>Perdeu algo? Encontre aqui.</h2>
             <form action="buscar.html" method="GET" class="search-form">
-                <input type="text" name="query" placeholder="Local ou palavra-chave (ex: Bloco A, chaves, mochila)">
-                <button type="submit">Buscar Objeto</button>
+                <input type="text" name="query" placeholder="Local ou palavra-chave (ex: Bloco A, chaves, mochila)" aria-label="Buscar por objeto">
+                <button type="submit" class="btn-primary" aria-label="Buscar Objeto">Buscar Objeto</button>
             </form>
             <a href="registrar.html" class="btn-primary">Registrar um objeto</a>
         </section>
@@ -77,17 +83,13 @@
         </section>
     </main>
 
-    <footer>
+    <footer class="site-footer">
         <div class="footer-links">
-            <a href="sobre.html">Sobre a Plataforma</a> |
-            <a href="#">Termos de Uso</a> |
-            <a href="#">Contato</a>
+            <a href="sobre.html">Sobre a Plataforma</a>
         </div>
         <p>&copy; 2025 Achados e Perdidos Local. Privacidade e Simplicidade.</p>
     </footer>
 
     <script src="script.js"></script>
-
 </body>
-
 </html>

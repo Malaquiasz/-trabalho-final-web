@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buscar Objetos | Achados e Perdidos Local</title>
     <link rel="stylesheet" href="/css/estilo.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
     <div class="page-container">
         <header class="site-header">
             <div class="header-top">
@@ -33,22 +35,20 @@
 
             <section class="search-controls-container">
                 <form action="#" class="main-search-bar">
-                    <input type="text" name="query" placeholder="Busque por nome ou local perdido..." required>
-                    <button type="submit" class="btn btn-primary">Buscar</button>
+                    <input type="text" name="query" placeholder="Busque por nome ou local perdido..." required aria-label="Buscar por objeto">
+                    <button type="submit" class="btn btn-primary" aria-label="Buscar">Buscar</button>
                 </form>
-
             </section>
 
             <section class="results-list">
                 <h3>Resultados Encontrados (Carregando...)</h3>
-                <div class="cards-grid">
-                    </div>
+                <div class="cards-grid"></div>
             </section>
         </main>
 
         <footer class="site-footer">&copy; 2025 Achados e Perdidos Local. Privacidade e Simplicidade.</footer>
     </div>
-    
+   
     <script src="script.js"></script>
 </body>
 </html>
