@@ -1,4 +1,20 @@
-/* estilo.css - Versão Corrigida */
+.mission-section.margin-30,
+.key-features.margin-30 {
+    margin-bottom: 30px;
+}
+
+.content-layout.three-cols {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.placeholder-box.sobre {
+    height: auto;
+    padding: 15px;
+    background-color: var(--cor-fundo-header);
+    color: var(--cor-texto-padrao);
+    box-shadow: none;
+}
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -14,12 +30,10 @@
     --cor-sombra: rgba(0, 0, 0, 0.08);
     --cor-destaque: #f1c40f;
     
-    /* Gradientes */
     --gradiente-verde: linear-gradient(135deg, var(--cor-primaria) 0%, #2ecc71 100%);
     --gradiente-vermelho: linear-gradient(135deg, var(--cor-secundaria) 0%, #e67e22 100%);
     --gradiente-cinza: linear-gradient(135deg, #bdc3c7 0%, var(--cor-fundo-header) 100%);
     
-    /* Efeitos */
     --sombra-card: 0 10px 30px rgba(0, 0, 0, 0.1);
     --sombra-botao: 0 4px 15px rgba(0, 0, 0, 0.2);
     --transicao-padrao: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -41,7 +55,6 @@ body {
         radial-gradient(circle at 90% 80%, rgba(39, 174, 96, 0.05) 0%, transparent 20%);
 }
 
-/* ========== ANIMAÇÕES GLOBAIS ========== */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -59,7 +72,6 @@ body {
     100% { transform: scale(1); }
 }
 
-/* ========== HEADER UNIFICADO ========== */
 .site-header {
     background: var(--gradiente-cinza);
     border-bottom: none;
@@ -189,7 +201,6 @@ body {
     border-radius: 50%;
 }
 
-/* ========== LAYOUT PRINCIPAL ========== */
 .page-container {
     min-height: 100vh;
     display: flex;
@@ -205,7 +216,6 @@ main {
     animation: fadeIn 0.8s ease-out;
 }
 
-/* ========== SEÇÃO HERO (Página Inicial) ========== */
 .hero-section {
     text-align: center;
     padding: 4rem 2rem;
@@ -276,7 +286,6 @@ main {
     transform: translateY(-2px);
 }
 
-/* CORREÇÃO: Botões do hero-section mantêm estilo transparente */
 .hero-section .btn-primary {
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
@@ -302,8 +311,6 @@ main {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* ========== BOTÕES PARA OUTRAS PÁGINAS ========== */
-/* Estilo padrão para btn-primary (outras páginas) */
 .btn-primary {
     background: var(--gradiente-verde);
     color: white !important;
@@ -355,7 +362,6 @@ main {
     font-size: 1.1rem;
 }
 
-/* ========== CATEGORIAS RÁPIDAS ========== */
 .quick-categories {
     margin-bottom: 4rem;
 }
@@ -449,7 +455,6 @@ main {
     color: var(--cor-primaria-escura);
 }
 
-/* ========== COMO FUNCIONA ========== */
 .how-it-works {
     background: white;
     padding: 3rem 2rem;
@@ -524,7 +529,6 @@ main {
     line-height: 1.6;
 }
 
-/* ========== PÁGINA DE BUSCA ========== */
 .search-page-layout h2 {
     text-align: center;
     margin-bottom: 2.5rem;
@@ -680,7 +684,6 @@ main {
     font-size: 1.2rem;
 }
 
-/* ========== PÁGINA DE DETALHES ========== */
 .object-detail-page {
     max-width: 1100px;
     animation: fadeIn 0.8s ease-out;
@@ -848,7 +851,6 @@ main {
     box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
 }
 
-/* ========== PÁGINA DE REGISTRO ========== */
 .form-page h2 {
     text-align: center;
     margin-bottom: 1.5rem;
@@ -935,7 +937,6 @@ main {
     margin-top: 0.5rem;
 }
 
-/* ========== PÁGINA SOBRE ========== */
 .about-page h2 {
     text-align: center;
     margin-bottom: 2.5rem;
@@ -1021,7 +1022,6 @@ main {
     line-height: 1.6;
 }
 
-/* ========== FOOTER ========== */
 .site-footer {
     background: var(--gradiente-cinza);
     text-align: center;
@@ -1059,7 +1059,6 @@ main {
     text-decoration: underline;
 }
 
-/* ========== RESPONSIVIDADE ========== */
 @media (max-width: 992px) {
     .object-presentation {
         grid-template-columns: 1fr;
