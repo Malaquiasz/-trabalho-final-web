@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre a Plataforma | Achados e Perdidos Local</title>
     <link rel="stylesheet" href="/css/estilo.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    <div class="page-container">
-        <header class="site-header">
+    <header class="site-header">
         <div class="header-top">
             <div class="logo-area">
                 <div class="logo-box"></div>
@@ -19,44 +20,48 @@
         <div class="header-bottom">
             <nav role="navigation">
                 <ul>
-                    <li><a href="index.html" >Home</a></li>
+                    <li><a href="index.html">Home</a></li>
                     <li><a href="buscar.html">Buscar</a></li>
                     <li><a href="registrar.html">Registrar</a></li>
-                    <li><a href="sobre.html"class="active">Sobre</a></li>
+                    <li><a href="sobre.html" class="active">Sobre</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-        <main class="about-page">
-            <h2>Sobre a Plataforma</h2>
-            <section class="mission-section margin-30">
-                <h3>Nossa Missão: Conectar Pessoas e Pertences</h3>
-                <p>O Achados e Perdidos Local nasceu da frustração de perder itens importantes na instituição e da dificuldade em rastreá-los. Nossa missão é oferecer uma ferramenta <b>ágil, privada e simples</b> para que a comunidade possa registrar e recuperar objetos perdidos com a máxima eficiência.</p>
-            </section>
+    <main class="about-page">
+        <h2>Sobre a Plataforma</h2>
+        <section class="mission-section">
+            <h3>Nossa Missão</h3>
+            <p>O Achados e Perdidos Local nasceu da frustração de perder itens importantes na instituição e da dificuldade em rastreá-los. Nossa missão é oferecer uma ferramenta <b>ágil, privada e simples</b> para que a comunidade possa registrar e recuperar objetos perdidos com a máxima eficiência.</p>
+        </section>
 
-            <section class="key-features margin-30">
-                <h3>Por que Usar Nossa Plataforma?</h3>
-                <div class="content-layout three-cols">
-                    <div class="placeholder-box sobre">
-                        <h4>Agilidade</h4>
-                        <p>Cadastros rápidos, buscas instantâneas. Reduzimos o tempo entre a perda e a recuperação.</p>
-                    </div>
-                    <div class="placeholder-box sobre">
-                        <h4>Privacidade</h4>
-                        <p>O contato é sempre mediado. Seus dados pessoais <strong>nunca</strong> são expostos publicamente.</p>
-                    </div> 
-                    <div class="placeholder-box sobre">
-                        <h4>Simplicidade</h4>
-                        <p>Sem necessidade de login complexo. Apenas um formulário intuitivo e a Palavra-Passe para exclusão.</p>
-                    </div>
+        <section class="key-features">
+            <h3>Por que Usar Nossa Plataforma?</h3>
+            <div class="content-layout" style="grid-template-columns: repeat(3, 1fr); gap: 2.5rem;">
+                <div class="placeholder-box">
+                    <h4>Agilidade</h4>
+                    <p>Cadastros rápidos, buscas instantâneas. Reduzimos o tempo entre a perda e a recuperação.</p>
                 </div>
-            </section>
-        </main>
+                <div class="placeholder-box">
+                    <h4>Privacidade</h4>
+                    <p>O contato é sempre mediado. Seus dados pessoais <strong>nunca</strong> são expostos publicamente.</p>
+                </div>
+                <div class="placeholder-box">
+                    <h4>Simplicidade</h4>
+                    <p>Sem necessidade de login complexo. Apenas um formulário intuitivo e a Palavra-Passe para exclusão.</p>
+                </div>
+            </div>
+        </section>
+    </main>
 
-        <footer class="site-footer">&copy; 2025 Achados e Perdidos Local. Privacidade e Simplicidade.</footer>
-    </div>
-    
+    <footer class="site-footer">
+        <div class="footer-links">
+            <a href="sobre.html">Sobre a Plataforma</a>
+        </div>
+        <p>&copy; 2025 Achados e Perdidos Local. Privacidade e Simplicidade.</p>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
