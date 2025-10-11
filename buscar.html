@@ -3,52 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscar Objetos | Achados e Perdidos Local</title>
+    <title>Buscar Objeto Perdido | Achados e Perdidos Local</title>
     <link rel="stylesheet" href="/css/estilo.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <div class="page-container">
-        <header class="site-header">
+        <!-- Indicadores de Scroll -->
+    <div class="scroll-indicator scroll-down" onclick="scrollToContent()">
+        <span>↓</span>
+        <div class="tooltip">Clique aqui para rolar para baixo e ver os resultados</div>
+    </div>
+    <div class="scroll-indicator scroll-up" onclick="scrollToTop()">
+        <span>↑</span>
+        <div class="tooltip">Clique aqui para voltar ao topo da página</div>
+    </div>
+
+    <header class="site-header">
         <div class="header-top">
             <div class="logo-area">
-                <div class="logo-box"></div>
-                <h1 class="main-title">Achados e Perdidos</h1>
+                <div class="logo-box">
+                    <div class="search-icon">🔍</div>
+                    <div class="pulse-ring"></div>
+                </div>
+                <div class="title-container">
+                    <h1 class="main-title">Achados e Perdidos</h1>
+                    <p class="tagline">Encontre o que você perdeu</p>
+                </div>
             </div>
+            <img src="imgs/IF-logo.png" alt="Logo IF" class="if-logo">
         </div>
         <div class="header-bottom">
             <nav role="navigation">
                 <ul>
-                    <li><a href="index.html" >Home</a></li>
-                    <li><a href="buscar.html"class="active">Buscar</a></li>
-                    <li><a href="registrar.html">Registrar</a></li>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="buscar.html" class="active">Perdi!</a></li>
+                    <li><a href="registrar.html">Encontrei!</a></li>
                     <li><a href="sobre.html">Sobre</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-        <main class="search-page-layout">
-            <h2>Encontre seu Objeto Perdido</h2>
+    <main class="search-page-layout" role="main">
+        <h2>🔍 Buscar Objeto Perdido</h2>
+        <p class="page-intro">Encontre objetos que foram perdidos e registrados em nosso sistema. Use os filtros para refinar sua busca.</p>
 
-            <section class="search-controls-container">
-                <form action="#" class="main-search-bar">
-                    <input type="text" name="query" placeholder="Busque por nome ou local perdido..." required aria-label="Buscar por objeto">
-                    <button type="submit" class="btn btn-primary" aria-label="Buscar">Buscar</button>
-                </form>
-            </section>
+        <section class="search-controls-container">
+            <form class="main-search-bar">
+                <input type="text" name="query" placeholder="Digite o nome do objeto que você perdeu... (ex: celular, chaveiro, mochila)" aria-label="Buscar objeto">
+            </form>
 
-            <section class="results-list">
-                <h3>Resultados Encontrados (Carregando...)</h3>
-                <div class="cards-grid"></div>
-            </section>
-        </main>
+            <div class="search-filters">
+                <div class="filter-group">
+                    <label for="categoria">Filtrar por Categoria:</label>
+                    <select id="categoria" size="1">
+                        <option value="">Todas as categorias</option>
+                        <option value="Acessório">Acessório</option>
+                        <option value="Eletrônico">Eletrônico</option>
+                        <option value="Documento">Documento</option>
+                        <option value="Vestuário">Vestuário</option>
+                        <option value="Material">Material</option>
+                        <option value="Outro">Outro</option>
+                    </select>
+                </div>
 
-        <footer class="site-footer">&copy; 2025 Achados e Perdidos Local. Privacidade e Simplicidade.</footer>
-    </div>
-   
+                <div class="filter-group">
+                    <label for="local">Filtrar por Local:</label>
+                    <select id="local" size="1">
+                        <option value="">Todos os locais</option>
+                        <option value="Área de Convivência(Galpão)">Área de Convivência</option>
+                        <option value="Biblioteca">Biblioteca</option>
+                        <option value="Brinquedoteca">Brinquedoteca</option>
+                        <option value="Cantina">Cantina</option>
+                        <option value="CELIN">CELIN</option>
+                        <option value="CGAE">CGAE</option>
+                        <option value="Gabinete dos Professores">Gabinete dos Professores</option>
+                        <option value="Ginásio">Ginásio</option>
+                        <option value="Lab 1 de Informática">Lab 1 de Informática</option>
+                        <option value="Lab 2 de Informática">Lab 2 de Informática</option>
+                        <option value="Lab 3 de Informática">Lab 3 de Informática</option>
+                        <option value="Lab 4 de Informática">Lab 4 de Informática</option>
+                        <option value="Laboratório de Anatomia Humana">Laboratório de Anatomia</option>
+                        <option value="Laboratório de Física">Laboratório de Física</option>
+                        <option value="Laboratório de Microbiologia">Laboratório de Microbiologia</option>
+                        <option value="Laboratório de Práticas Pedagógicas">Laboratório de Práticas</option>
+                        <option value="Laboratório de Química">Laboratório de Química</option>
+                        <option value="Mini-Auditório 1">Mini-Auditório 1</option>
+                        <option value="Mini-Auditório 2">Mini-Auditório 2</option>
+                        <option value="Prédio 1">Prédio 1</option>
+                        <option value="Prédio 2">Prédio 2</option>
+                        <option value="Prédio 3">Prédio 3</option>
+                        <option value="Prédio Administrativo">Prédio Administrativo</option>
+                        <option value="Portaria/Guarita">Portaria/Guarita</option>
+                        <option value="Refeitório">Refeitório</option>
+                        <option value="Reprografia">Reprografia</option>
+                        <option value="Quadra 1">Quadra 1</option>
+                        <option value="Quadra 2">Quadra 2</option>
+                        <option value="Quiosques">Quiosques</option>
+                        <option value="Zootecnia">Zootecnia</option>
+                        <option value="Outro">Outro Local</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="filter-help">
+                <small>💡 Os filtros são aplicados automaticamente enquanto você digita</small>
+            </div>
+        </section>
+
+        <section class="results-list">
+            <h3>Resultados da Busca</h3>
+            <p class="results-help">Clique em "Ver Detalhes" para ver mais informações e entrar em contato com quem encontrou seu objeto.</p>
+
+            <div class="cards-grid">
+                <!-- Os cards serão carregados dinamicamente via JavaScript -->
+            </div>
+        </section>
+
+        <section class="search-help">
+            <h4>Não encontrou o que procurava?</h4>
+            <div class="help-actions">
+                <p>Verifique se digitou o nome corretamente ou tente termos mais genéricos.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-links">
+            <a href="index.html">Voltar à Início</a>
+            <a href="registrar.html">Encontrei!</a>
+            <a href="admin.html">Administração</a>
+        </div>
+        <p>&copy; 2025 Achados e Perdidos Local. Privacidade e Simplicidade.</p>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>

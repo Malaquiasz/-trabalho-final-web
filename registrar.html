@@ -3,138 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Objeto | Achados e Perdidos Local</title>
+    <title>Registrar Objeto Encontrado | Achados e Perdidos Local</title>
     <link rel="stylesheet" href="/css/estilo.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Indicadores de Scroll -->
+    <div class="scroll-indicator scroll-down" onclick="scrollToContent()">
+        <span>↓</span>
+        <div class="tooltip">Clique aqui para rolar para baixo e preencher o formulário</div>
+    </div>
+    <div class="scroll-indicator scroll-up" onclick="scrollToTop()">
+        <span>↑</span>
+        <div class="tooltip">Clique aqui para voltar ao topo da página</div>
+    </div>
+
     <div class="page-container">
         <header class="site-header">
-        <div class="header-top">
-            <div class="logo-area">
-                <div class="logo-box"></div>
-                <h1 class="main-title">Achados e Perdidos</h1>
+            <div class="header-top">
+                <div class="logo-area">
+                    <div class="logo-box">
+                        <div class="search-icon">🔍</div>
+                        <div class="pulse-ring"></div>
+                    </div>
+                    <div class="title-container">
+                        <h1 class="main-title">Achados e Perdidos</h1>
+                        <p class="tagline">Ajude alguém a encontrar o que perdeu</p>
+                    </div>
+                </div>
+                <img src="imgs/IF-logo.png" alt="Logo IF" class="if-logo">
             </div>
-        </div>
-        <div class="header-bottom">
-            <nav role="navigation">
-                <ul>
-                    <li><a href="index.html" >Home</a></li>
-                    <li><a href="buscar.html">Buscar</a></li>
-                    <li><a href="registrar.html"class="active">Registrar</a></li>
-                    <li><a href="sobre.html">Sobre</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+            <div class="header-bottom">
+                <nav role="navigation">
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="buscar.html">Perdi!</a></li>
+                        <li><a href="registrar.html" class="active">Encontrei!</a></li>
+                        <li><a href="sobre.html">Sobre</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
 
-        <main class="form-page">
-            <h2>Registrar um Novo Objeto</h2>
-            <p class="form-intro">Seu cadastro é rápido e seguro. A Palavra-Passe serve para remover o item depois de devolvido.</p>
+        <main class="form-page" role="main">
+            <h2>Registrar Objeto Encontrado</h2>
+            <p class="form-intro">Preencha o formulário abaixo para registrar um objeto que você encontrou. A Palavra-Passe serve para remover o item depois de devolvido.</p>
 
-            <form action="#" method="POST" enctype="multipart/form-data" class="registration-form" novalidate>
+            <form action="#" method="POST" class="registration-form" novalidate>
                 <div class="form-group">
-                    <label for="foto">Foto do Objeto em Destaque:</label>
-                    <input type="file" id="foto" name="foto" accept="image/*" required aria-describedby="foto-help">
-                    <small id="foto-help">Escolha uma imagem clara do objeto (máx. 1MB).</small>
+                    <label for="foto">Foto do Objeto:</label>
+                    <div class="file-upload">
+                        <input type="file" id="foto" name="foto" accept="image/*" required aria-describedby="foto-help">
+                        <label for="foto">
+                            <div class="file-upload-icon">📷</div>
+                            <span>Clique aqui para escolher uma foto</span>
+                        </label>
+                    </div>
+                    <small id="foto-help">Escolha uma imagem clara do objeto.</small>
                 </div>
               
                 <div class="form-group">
-                    <label for="categoria">Categoria (Opcional):</label>
+                    <label for="categoria">Categoria do Objeto:</label>
                     <select id="categoria" name="categoria">
                         <option value="">Selecione uma categoria</option>
-                        <option value="Acessório">Acessório</option>
-                        <option value="Eletrônico">Eletrônico</option>
-                        <option value="Documento">Documento</option>
+                        <option value="Acessório">Acessório (chave, óculos, etc.)</option>
+                        <option value="Eletrônico">Eletrônico (celular, fone, etc.)</option>
+                        <option value="Documento">Documento (RG, carteira, etc.)</option>
+                        <option value="Vestuário">Vestuário (roupa, sapato, etc.)</option>
+                        <option value="Material">Material (mochila, estojo, etc.)</option>
                         <option value="Outro">Outro</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="titulo">Título do Item:</label>
-                    <input type="text" id="titulo" name="titulo" placeholder="Ex: Chaveiro com abridor azul" required aria-required="true">
+                    <input type="text" id="titulo" name="titulo" placeholder="Ex: Chaveiro com abridor azul, Celular Samsung preto..." required aria-required="true">
+                    <small>Descreva brevemente o objeto para facilitar a identificação</small>
                 </div>
               
                 <div class="form-group">
-                    <label for="descricao">Descrição Detalhada (Opcional):</label>
-                    <textarea id="descricao" name="descricao" rows="3" placeholder="Detalhes que ajudem na identificação (arranhões, cor do forro)." aria-describedby="desc-help" maxlength="500"></textarea>
-                    <small id="desc-help">Máximo 500 caracteres.</small>
+                    <label for="descricao">Descrição Detalhada:</label>
+                    <textarea id="descricao" name="descricao" rows="3" placeholder="Descreva detalhes como cor, marca, tamanho, características especiais, arranhões, etc." aria-describedby="desc-help" maxlength="500"></textarea>
+                    <small id="desc-help">Máximo 500 caracteres. Quanto mais detalhes, mais fácil de identificar.</small>
                 </div>
 
                 <div class="form-group">
-                    <label for="local">Local Exato de Encontro:</label>
+                    <label for="local">Local Onde Encontrou:</label>
                     <select id="local" name="local" required aria-required="true">
                         <option value="">Selecione o local</option>
-                        <option value="Área de Convivência(Galpão)">Área de Convivência(Galpão)</option>
-                        <option value="Biblioteca">Biblioteca</option>
-                        <option value="Brinquedoteca">Brinquedoteca</option>
-                        <option value="Cantina">Cantina</option>
-                        <option value="CELIN(Especifique a sala na descrição do obj)">CELIN(Especifique a sala na descrição do obj)</option>
-                        <option value="CGAE">CGAE</option>
-                        <option value="Gabinete dos Professores">Gabinete dos Professores</option>
-                        <option value="Ginásio">Ginásio</option>
-                        <option value="Lab 1 de Informática">Lab 1 de Informática</option>
-                        <option value="Lab 2 de Informática">Lab 2 de Informática</option>
-                        <option value="Lab 3 de Informática">Lab 3 de Informática</option>
-                        <option value="Lab 4 de Informática">Lab 4 de Informática</option>
-                        <option value="Laboratório de Anatomia Humana">Laboratório de Anatomia Humana</option>
-                        <option value="Laboratório de Física">Laboratório de Física</option>
-                        <option value="Laboratório de Microbiologia">Laboratório de Microbiologia</option>
-                        <option value="Laboratório de Práticas Pedagógicas">Laboratório de Práticas Pedagógicas</option>
-                        <option value="Laboratório de Química">Laboratório de Química</option>
-                        <option value="Mini-Auditório 1">Mini-Auditório 1</option>
-                        <option value="Mini-Auditório 2">Mini-Auditório 2</option>
-                        <option value="Prédio 1(Especifique a sala na descrição do obj)">Prédio 1(Especifique a sala na descrição do obj)</option>
-                        <option value="Prédio 2(Especifique a sala na descrição do obj)">Prédio 2(Especifique a sala na descrição do obj)</option>
-                        <option value="Prédio 3(Especifique a sala na descrição do obj)">Prédio 3(Especifique a sala na descrição do obj)</option>
-                        <option value="Prédio Administrativo">Prédio Administrativo</option>
-                        <option value="Portaria/Guarita">Portaria/Guarita</option>
-                        <option value="Refeitório">Refeitório</option>
-                        <option value="Reprografia">Reprografia</option>
-                        <option value="Quadra 1">Quadra 1</option>
-                        <option value="Quadra 2">Quadra 2</option>
-                        <option value="Quiosques(Especifique-o na descrição do obj)">Quiosques</option>
-                        <option value="Zootecnia(especifique o setor na descrição do obj)">Zootecnia(especifique o setor na descrição do obj)</option>
+                        <option value="Área de Convivência(Galpão)" title="Área de Convivência (Galpão)">Área de Convivência(Galpão)</option>
+                        <option value="Biblioteca" title="Biblioteca">Biblioteca</option>
+                        <option value="Brinquedoteca" title="Brinquedoteca">Brinquedoteca</option>
+                        <option value="Cantina" title="Cantina">Cantina</option>
+                        <option value="CELIN" title="CELIN (Especifique a sala na descrição do objeto)">CELIN</option>
+                        <option value="CGAE" title="CGAE">CGAE</option>
+                        <option value="Gabinete dos Professores" title="Gabinete dos Professores">Gabinete dos Professores</option>
+                        <option value="Ginásio" title="Ginásio">Ginásio</option>
+                        <option value="Lab 1 de Informática" title="Laboratório 1 de Informática">Lab 1 de Informática</option>
+                        <option value="Lab 2 de Informática" title="Laboratório 2 de Informática">Lab 2 de Informática</option>
+                        <option value="Lab 3 de Informática" title="Laboratório 3 de Informática">Lab 3 de Informática</option>
+                        <option value="Lab 4 de Informática" title="Laboratório 4 de Informática">Lab 4 de Informática</option>
+                        <option value="Laboratório de Anatomia Humana" title="Laboratório de Anatomia Humana">Laboratório de Anatomia Humana</option>
+                        <option value="Laboratório de Física" title="Laboratório de Física">Laboratório de Física</option>
+                        <option value="Laboratório de Microbiologia" title="Laboratório de Microbiologia">Laboratório de Microbiologia</option>
+                        <option value="Laboratório de Práticas Pedagógicas" title="Laboratório de Práticas Pedagógicas">Laboratório de Práticas Pedagógicas</option>
+                        <option value="Laboratório de Química" title="Laboratório de Química">Laboratório de Química</option>
+                        <option value="Mini-Auditório 1" title="Mini-Auditório 1">Mini-Auditório 1</option>
+                        <option value="Mini-Auditório 2" title="Mini-Auditório 2">Mini-Auditório 2</option>
+                        <option value="Prédio 1" title="Prédio 1 (Especifique a sala na descrição do objeto)">Prédio 1</option>
+                        <option value="Prédio 2" title="Prédio 2 (Especifique a sala na descrição do objeto)">Prédio 2</option>
+                        <option value="Prédio 3" title="Prédio 3 (Especifique a sala na descrição do objeto)">Prédio 3</option>
+                        <option value="Prédio Administrativo" title="Prédio Administrativo">Prédio Administrativo</option>
+                        <option value="Portaria/Guarita" title="Portaria/Guarita">Portaria/Guarita</option>
+                        <option value="Refeitório" title="Refeitório">Refeitório</option>
+                        <option value="Reprografia" title="Reprografia">Reprografia</option>
+                        <option value="Quadra 1" title="Quadra 1">Quadra 1</option>
+                        <option value="Quadra 2" title="Quadra 2">Quadra 2</option>
+                        <option value="Quiosques" title="Quiosques (Especifique na descrição do objeto)">Quiosques</option>
+                        <option value="Zootecnia" title="Zootecnia (Especifique o setor na descrição do objeto)">Zootecnia</option>
                         <option value="Outro">Outro Local</option>
                     </select>
+                    <div id="outro-local-container" class="outro-local-container" style="display: none;">
+                        <input type="text" id="outro-local" name="outro_local" placeholder="Digite o local exato onde encontrou o objeto">
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="contato">Seu Contato para Mediação:</label>
-                    <input type="tel" id="contato" name="contato" placeholder="(XX) XXXXX-XXXX" required aria-describedby="contato-help" pattern="^\$?\d{2}\$? ?[\d\s-]{9,11}$" title="Formato: (XX) XXXXX-XXXX ou 11999999999">
-                    <small id="contato-help">Seu contato **não** será exibido publicamente. Use formato brasileiro (celular ou fixo).</small>
+                <div class="contact-methods">
+                    <h3>Métodos de Contato</h3>
+                    <p class="contact-intro">Escolha pelo menos uma forma de contato para que o dono do objeto possa encontrá-lo:</p>
+                    
+                    <div class="form-group">
+                        <label for="contato">WhatsApp:</label>
+                        <input type="tel" id="contato" name="contato" placeholder="(XX) XXXXX-XXXX" aria-describedby="contato-help" pattern="^\$?\d{2}\$? ?[\d\s-]{9,11}$" title="Formato: (XX) XXXXX-XXXX ou 11999999999">
+                        <small id="contato-help">Use formato brasileiro (celular ou fixo).</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="instagram">Instagram:</label>
+                        <input type="text" id="instagram" name="instagram" placeholder="seuusuario" aria-describedby="instagram-help" pattern="^[a-zA-Z0-9._]{1,30}$" title="Usuário do Instagram sem o @ (ex: meuusuario)">
+                        <small id="instagram-help">Seu usuário do Instagram (sem o @).</small>
+                    </div>
+
+                    <div class="contact-validation">
+                        <small>⚠️ <strong>Importante:</strong> Pelo menos um método de contato deve ser preenchido (WhatsApp ou Instagram).</small>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="palavra_passe">Palavra-Passe para Excluir o Objeto:</label>
-                    <input type="password" id="palavra_passe" name="palavra_passe" required aria-describedby="passe-help" minlength="4">
+                    <input type="password" id="palavra_passe" name="palavra_passe" required aria-describedby="passe-help" minlength="4" placeholder="Escolha uma senha fácil de lembrar">
                     <small id="passe-help">Guarde esta senha para remover o objeto depois de devolvido (mín. 4 caracteres).</small>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-large">Registrar Objeto</button>
+                <div class="form-submit-help">
+                    <p>✅ <strong>Pronto para registrar?</strong> Verifique se todas as informações estão corretas e clique no botão abaixo.</p>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-large">📝 Registrar Objeto Encontrado</button>
             </form>
         </main>
 
         <footer class="site-footer">
             <div class="footer-links">
-                <a href="sobre.html">Sobre a Plataforma</a>
+                <a href="index.html">Voltar à Início</a>
+                <a href="buscar.html">Perdi!</a>
+                <a href="admin.html">Administração</a>
             </div>
             <p>&copy; 2025 Achados e Perdidos Local. Privacidade e Simplicidade.</p>
         </footer>
     </div>
 
-    <!-- Modal para mostrar senha após registro -->
-    <div id="senha-modal" class="modal" style="display: none;">
-        <div class="modal-overlay"></div>
-        <div class="modal-content">
-            <h3>Senha Registrada!</h3>
-            <p id="senha-display">Sua Palavra-Passe: <span id="senha-texto"></span></p>
-            <button id="fechar-senha" class="btn btn-primary">OK, Entendi</button>
-        </div>
-    </div>
-   
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administração | Achados e Perdidos Local</title>
+    <link rel="stylesheet" href="/css/estilo.css">
+</head>
+<body>
+    <!-- Indicadores de Scroll -->
+    <div class="scroll-indicator scroll-down" onclick="scrollToContent()">
+        <span>↓</span>
+        <div class="tooltip">Clique aqui para rolar para baixo</div>
+    </div>
+    <div class="scroll-indicator scroll-up" onclick="scrollToTop()">
+        <span>↑</span>
+        <div class="tooltip">Clique aqui para voltar ao topo</div>
+    </div>
+
+    <div class="page-container">
+        <header class="site-header">
+            <div class="header-top">
+                <div class="logo-area">
+                    <div class="logo-box">
+                        <div class="search-icon">🔍</div>
+                        <div class="pulse-ring"></div>
+                    </div>
+                    <div class="title-container">
+                        <h1 class="main-title">Achados e Perdidos</h1>
+                        <p class="tagline">Painel de Administração</p>
+                    </div>
+                </div>
+                <img src="imgs/IF-logo.png" alt="Logo IF" class="if-logo">
+            </div>
+            <div class="header-bottom">
+                <nav role="navigation">
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="buscar.html">Perdi!</a></li>
+                        <li><a href="registrar.html">Encontrei!</a></li>
+                        <li><a href="sobre.html">Sobre</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main class="admin-page" role="main">
+            <div class="admin-login" id="login-section">
+                <h2>🔐 Acesso Administrativo</h2>
+                <form id="login-form" class="login-form">
+                    <div class="form-group">
+                        <label for="username">Usuário:</label>
+                        <input type="text" id="username" name="username" required autofocus>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Senha:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Entrar no Painel</button>
+                </form>
+            </div>
+
+            <div class="admin-panel" id="admin-panel" style="display: none;">
+                <div class="admin-header">
+                    <h2>📊 Painel de Controle</h2>
+                    <button id="logout-btn" class="btn btn-danger">🚪 Sair</button>
+                </div>
+
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <h3>📈 Estatísticas Gerais</h3>
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <span class="stat-value" id="total-objects-count">0</span>
+                                <span class="stat-label">Total de Objetos</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-value" id="active-objects-count">0</span>
+                                <span class="stat-label">Objetos Ativos</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-value" id="expired-soon-count">0</span>
+                                <span class="stat-label">Expirando em 7 dias</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-value" id="expired-count">0</span>
+                                <span class="stat-label">Expirados</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-actions">
+                    <h3>⚙️ Ações Rápidas</h3>
+                    <div class="action-buttons">
+                        <button id="clean-expired-btn" class="btn btn-danger">🗑️ Limpar Objetos Expirados</button>
+                        <button id="export-data-btn" class="btn btn-primary">📤 Exportar Dados</button>
+                        <button id="refresh-data-btn" class="btn btn-primary">🔄 Atualizar Dados</button>
+                    </div>
+                </div>
+
+                <div class="objects-management">
+                    <h3>📋 Gerenciamento de Objetos</h3>
+                    <div class="search-controls">
+                        <input type="text" id="admin-search" placeholder="🔍 Buscar objetos..." class="search-input">
+                        <select id="admin-filter-status">
+                            <option value="">Todos os status</option>
+                            <option value="active">Ativos</option>
+                            <option value="expired">Expirados</option>
+                            <option value="expiring">Expirando em breve</option>
+                        </select>
+                    </div>
+                    
+                    <div class="objects-list" id="objects-list">
+                        <!-- Lista de objetos será carregada aqui -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <div class="footer-links">
+                <a href="index.html">Voltar à Início</a>
+                <a href="admin.html">Administração</a>
+            </div>
+            <p>&copy; 2025 Achados e Perdidos Local. Área Administrativa.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
