@@ -1,4 +1,4 @@
-/* estilo.css - Versão Completa, Corrigida e Aprimorada */
+/* estilo.css - Versão Corrigida */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -14,12 +14,10 @@
     --cor-sombra: rgba(0, 0, 0, 0.08);
     --cor-destaque: #f1c40f;
     
-    /* Gradientes */
     --gradiente-verde: linear-gradient(135deg, var(--cor-primaria) 0%, #2ecc71 100%);
     --gradiente-vermelho: linear-gradient(135deg, var(--cor-secundaria) 0%, #e67e22 100%);
     --gradiente-cinza: linear-gradient(135deg, #bdc3c7 0%, var(--cor-fundo-header) 100%);
     
-    /* Efeitos */
     --sombra-card: 0 10px 30px rgba(0, 0, 0, 0.1);
     --sombra-botao: 0 4px 15px rgba(0, 0, 0, 0.2);
     --transicao-padrao: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -55,7 +53,7 @@ body {
         radial-gradient(circle at 90% 80%, rgba(39, 174, 96, 0.05) 0%, transparent 20%);
 }
 
-/* ========== ANIMAÇÕES GLOBAIS (Aprimoradas para Vitalidade) ========== */
+/* ========== ANIMAÇÕES GLOBAIS ========== */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -73,130 +71,7 @@ body {
     100% { transform: scale(1); }
 }
 
-@keyframes pulse-ring {
-    0% { transform: scale(0.8); opacity: 1; }
-    80%, 100% { transform: scale(2); opacity: 0; }
-}
-
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-    40% { transform: translateY(-10px); }
-        60% { transform: translateY(-5px); }
-}
-
-@keyframes slideInHeader {
-    from { 
-        opacity: 0; 
-        transform: translateY(-50px); 
-    }
-    to { 
-        opacity: 1; 
-        transform: translateY(0); 
-    }
-}
-
-@keyframes glow {
-    0%, 100% { box-shadow: 0 0 5px var(--cor-primaria); }
-    50% { box-shadow: 0 0 20px var(--cor-primaria), 0 0 30px var(--cor-primaria-escura); }
-}
-
-/* ========== INDICADORES DE SCROLL (Aprimorados com Mais Vitalidade) ========== */
-.scroll-indicator {
-    position: fixed;
-    z-index: 1000;
-    width: 70px;
-    height: 70px;
-    background: var(--gradiente-verde);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 2.5rem;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: var(--sombra-botao);
-    transition: var(--transicao-padrao);
-    animation: bounce 2s infinite;
-    opacity: 0.9;
-    border: 3px solid white;
-}
-
-.scroll-indicator:hover {
-    transform: scale(1.15);
-    opacity: 1;
-    animation: glow 1s infinite;
-}
-
-.scroll-indicator:hover .tooltip {
-    opacity: 1;
-    visibility: visible;
-}
-
-.scroll-down {
-    bottom: 30px;
-    left: 30px;
-}
-
-.scroll-up {
-    bottom: 30px;
-    right: 30px;
-    background: var(--gradiente-vermelho);
-    opacity: 0.7;
-}
-
-.tooltip {
-    position: absolute;
-    background: rgba(0, 0, 0, 0.9);
-    color: white;
-    padding: 1rem 1.2rem;
-    border-radius: 12px;
-    font-size: 0.9rem;
-    font-weight: normal;
-    width: 220px;
-    text-align: center;
-    opacity: 0;
-    visibility: hidden;
-    transition: var(--transicao-padrao);
-    pointer-events: none;
-    z-index: 1001;
-    backdrop-filter: blur(15px); /* Aprimorado para mais suavidade */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.scroll-down .tooltip {
-    left: 80px;
-    bottom: 50%;
-    transform: translateY(50%);
-}
-
-.scroll-up .tooltip {
-    right: 80px;
-    bottom: 50%;
-    transform: translateY(50%);
-}
-
-.tooltip::after {
-    content: '';
-    position: absolute;
-    border: 8px solid transparent;
-}
-
-.scroll-down .tooltip::after {
-    right: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    border-right-color: rgba(0, 0, 0, 0.9);
-}
-
-.scroll-up .tooltip::after {
-    left: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    border-left-color: rgba(0, 0, 0, 0.9);
-}
-
-/* ========== HEADER UNIFICADO MELHORADO (Mais Atrativo, Dinâmico e Vivo) ========== */
+/* ========== HEADER UNIFICADO ========== */
 .site-header {
     background: var(--gradiente-cinza);
     border-bottom: none;
@@ -493,7 +368,6 @@ body {
     font-size: 0.8rem;
 }
 
-/* ========== LAYOUT PRINCIPAL ========== */
 .page-container {
     min-height: 100vh;
     display: flex;
@@ -509,22 +383,14 @@ main {
     animation: fadeIn 0.8s ease-out;
 }
 
-/* ========== BOTÕES (Otimizados) ========== */
-.btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 50px;
-    font-size: 1rem;
-    font-weight: 600;
-    text-decoration: none;
-    cursor: pointer;
-    transition: var(--transicao-padrao);
-    font-family: 'Poppins', sans-serif;
-    box-shadow: var(--sombra-botao);
+/* ========== SEÇÃO HERO (Página Inicial) ========== */
+.hero-section {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--gradiente-verde);
+    color: white;
+    border-radius: 20px;
+    margin-bottom: 4rem;
     position: relative;
     overflow: hidden;
 }
@@ -746,24 +612,22 @@ main {
 
 .search-input:focus {
     outline: none;
-    border-color: var(--cor-primaria);
-    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
 }
 
-.objects-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.object-admin-card {
-    display: grid;
-    grid-template-columns: 100px 1fr auto;
-    gap: 1.5rem;
-    padding: 1.5rem;
-    background: var(--cor-fundo);
-    border-radius: 12px;
-    border: 1px solid var(--cor-borda);
+/* CORREÇÃO: Botões do hero-section mantêm estilo transparente */
+.hero-section .btn-primary {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 1rem 2.5rem;
+    text-decoration: none;
+    border-radius: 50px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
     transition: var(--transicao-padrao);
     align-items: center;
 }
@@ -783,22 +647,18 @@ main {
     background: linear-gradient(135deg, #fffbf0 0%, #fff5e6 100%);
 }
 
-.object-admin-card.ativo {
-    border-left: 4px solid var(--cor-primaria);
-    background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%);
-}
-
-.object-admin-image {
-    width: 100px;
-    height: 100px;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.object-admin-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Preserva proporção */
+/* ========== BOTÕES PARA OUTRAS PÁGINAS ========== */
+/* Estilo padrão para btn-primary (outras páginas) */
+.btn-primary {
+    background: var(--gradiente-verde);
+    color: white !important;
+    padding: 1rem 2.5rem;
+    text-decoration: none;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
     transition: var(--transicao-padrao);
 }
 
@@ -1053,7 +913,6 @@ main {
     font-size: 1rem;
 }
 
-/* ========== CATEGORIAS RÁPIDAS ========== */
 .quick-categories {
     margin-bottom: 4rem;
 }
@@ -1159,9 +1018,9 @@ main {
     color: var(--cor-primaria-escura);
 }
 
-/* ========== SEÇÃO DE AJUDA ========== */
-.help-section {
-    background: var(--gradiente-cinza);
+/* ========== COMO FUNCIONA ========== */
+.how-it-works {
+    background: white;
     padding: 3rem 2rem;
     border-radius: 20px;
     margin-bottom: 3rem;
@@ -1212,7 +1071,6 @@ main {
     line-height: 1.6;
 }
 
-/* ========== PÁGINA DE BUSCA ========== */
 .search-page-layout h2 {
     text-align: center;
     margin-bottom: 1.5rem;
@@ -1473,7 +1331,7 @@ main {
     margin-bottom: 1rem;
 }
 
-/* ========== PÁGINA DE DETALHES (Box de Imagem Corrigida para Proporção sem Desfiguração) ========== */
+/* ========== PÁGINA DE DETALHES ========== */
 .object-detail-page {
     max-width: 1100px;
     animation: fadeIn 0.8s ease-out;
@@ -1691,7 +1549,6 @@ main {
     font-size: 1.1rem;
 }
 
-/* ========== PÁGINA DE REGISTRO ========== */
 .form-page h2 {
     text-align: center;
     margin-bottom: 1.5rem;
@@ -1847,7 +1704,6 @@ main {
     font-weight: 600;
 }
 
-/* ========== PÁGINA SOBRE ========== */
 .about-page h2 {
     text-align: center;
     margin-bottom: 2.5rem;
@@ -2017,7 +1873,6 @@ main {
     flex-wrap: wrap;
 }
 
-/* ========== FOOTER ========== */
 .site-footer {
     background: var(--gradiente-cinza);
     text-align: center;
@@ -2064,7 +1919,7 @@ main {
     box-shadow: 0 2px 10px rgba(39, 174, 96, 0.2); /* Brilho verde sutil */
 }
 
-/* ========== RESPONSIVIDADE (Otimizada com Ajustes para Box de Imagem e Geral) ========== */
+/* ========== RESPONSIVIDADE ========== */
 @media (max-width: 992px) {
     .object-presentation {
         grid-template-columns: 1fr;
