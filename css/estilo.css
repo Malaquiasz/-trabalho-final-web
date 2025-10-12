@@ -30,22 +30,6 @@
     --transicao-padrao: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* Dark mode opcional */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --cor-fundo: #1e1e1e;
-        --cor-fundo-header: #2d3436;
-        --cor-texto-padrao: #f8f9fa;
-        --cor-texto-claro: #a4b0be;
-        --cor-borda: #495057;
-        --cor-sombra: rgba(0, 0, 0, 0.3);
-        --cor-azul-detalhe: #ecf0f1;
-        --cor-azul-sutil: rgba(52, 152, 219, 0.2);
-    }
-    body { background-color: var(--cor-fundo); }
-    .site-header { background: var(--gradiente-cinza); }
-}
-
 * {
     margin: 0;
     padding: 0;
