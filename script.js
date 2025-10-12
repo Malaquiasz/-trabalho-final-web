@@ -91,6 +91,19 @@ function debounce(func, wait) {
 }
 
 // =========================================================
+// ADIÇÃO PARA INTERATIVIDADE DINÂMICA (NOVO: Suporte a hovers em elementos "interactive")
+// =========================================================
+
+// Listener global para elementos interativos (aplica classe 'hovered' para animações CSS extras)
+document.addEventListener('DOMContentLoaded', () => {
+    const interactiveElements = document.querySelectorAll('.interactive');
+    interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', () => el.classList.add('hovered'));
+        el.addEventListener('mouseleave', () => el.classList.remove('hovered'));
+    });
+});
+
+// =========================================================
 // 1. REGISTRO DE OBJETOS (Página registrar.html)
 // =========================================================
 
@@ -215,7 +228,7 @@ const criarCardObjeto = (objeto) => {
         : 'placeholder-default.jpg';
 
     return `
-        <article class="object-card">
+        <article class="object-card interactive">
             <figure>
                 <img src="${imagemSrc}" alt="Foto de ${objeto.titulo}" onerror="this.src='placeholder-default.jpg'; this.alt='Imagem placeholder para ${objeto.titulo}'">
             </figure>
@@ -243,7 +256,7 @@ const renderizarListaObjetos = (listaFiltrada) => {
             <div class="no-results">
                 <p>😔 Nenhum objeto encontrado com estes critérios.</p>
             </div>
-        `;
+                    `;
         if (contador) {
             contador.textContent = 'Nenhum resultado encontrado';
         }
@@ -451,6 +464,7 @@ const configurarDetalheEExclusao = () => {
         });
     }
 };
+
 // =========================================================
 // 4. ADMINISTRAÇÃO (Página admin.html)
 // =========================================================
@@ -566,8 +580,10 @@ const configurarAdministracao = () => {
                 } else if (status === 'expired') {
                     listaFiltrada = listaFiltrada.filter(obj => obj.dataExpiracao < hoje);
                 } else if (status === 'expiring') {
-                    const diasParaExpirar = Math.ceil((new Date(obj.dataExpiracao) - agora) / (1000 * 60 * 60 * 24));
-                    listaFiltrada = listaFiltrada.filter(obj => diasParaExpirar <= 7 && diasParaExpirar > 0);
+                    listaFiltrada = listaFiltrada.filter(obj => {
+                        const diasParaExpirar = Math.ceil((new Date(obj.dataExpiracao) - agora) / (1000 * 60 * 60 * 24));
+                        return diasParaExpirar <= 7 && diasParaExpirar > 0;
+                    });
                 }
             }
 
@@ -587,7 +603,7 @@ const configurarAdministracao = () => {
                 if (objeto.instagram) contatos.push('Instagram');
                 
                 return `
-                    <div class="object-admin-card ${statusClass}">
+                    <div class="object-admin-card ${statusClass} interactive">
                         <div class="object-admin-image">
                             <img src="${objeto.fotoBase64 || 'placeholder-default.jpg'}" alt="Foto de ${objeto.titulo}" onerror="this.src='placeholder-default.jpg'; this.alt='Imagem placeholder para ${objeto.titulo}'">
                         </div>
@@ -603,8 +619,8 @@ const configurarAdministracao = () => {
                             </p>
                         </div>
                         <div class="object-admin-actions">
-                            <button onclick="excluirObjetoAdmin(${objeto.id})" class="btn btn-danger btn-small">🗑️ Excluir</button>
-                            <button onclick="verDetalhesObjeto(${objeto.id})" class="btn btn-primary btn-small">👀 Ver Detalhes</button>
+                            <button onclick="excluirObjetoAdmin(${objeto.id})" class="btn btn-danger btn-small interactive">🗑️ Excluir</button>
+                            <button onclick="verDetalhesObjeto(${objeto.id})" class="btn btn-primary btn-small interactive">👀 Ver Detalhes</button>
                         </div>
                     </div>
                 `;
