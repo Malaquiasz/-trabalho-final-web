@@ -4,139 +4,128 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre | Achados e Perdidos Local</title>
-    <link rel="stylesheet" href="/css/estilo.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
-    <!-- Indicadores de Scroll -->
-    <div class="scroll-indicator scroll-down" onclick="scrollToContent()">
-        <span>↓</span>
-        <div class="tooltip">Clique aqui para rolar para baixo e ver mais informações</div>
-    </div>
-    <div class="scroll-indicator scroll-up" onclick="scrollToTop()">
-        <span>↑</span>
-        <div class="tooltip">Clique aqui para voltar ao topo da página</div>
-    </div>
 
     <div class="page-container">
         <header class="site-header">
-        <div class="header-top">
-            <div class="logo-area">
-                <div class="logo-box">
-                    <div class="search-icon">🔍</div>
-                    <div class="pulse-ring"></div>
+            <div class="header-top">
+                <div class="logo-area">
+                    <div class="logo-box">
+                        <div class="search-icon" aria-hidden="true">🔍</div>
+                        <div class="pulse-ring" aria-hidden="true"></div>
+                    </div>
+                    <div class="title-container">
+                        <h1 class="main-title">Achados e Perdidos</h1>
+                        <p class="tagline">Conectando pessoas aos seus objetos perdidos</p>
+                    </div>
                 </div>
-                <div class="title-container">
-                    <h1 class="main-title">Achados e Perdidos</h1>
-                    <p class="tagline">Conectando pessoas aos seus objetos perdidos</p>
+                <div class="logo-3d-container">
+                    <img src="imgs/IF-logo.png" alt="Logo institucional do IFNMG Campus Salinas" class="if-logo-3d" loading="lazy">
                 </div>
             </div>
-            <div class="logo-3d-container">
-                <img src="imgs/IF-logo.png" alt="Logo IF" class="if-logo-3d">
-                <div class="logo-reflection"></div>
+            <div class="header-bottom">
+                <nav role="navigation" aria-label="Menu principal">
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="buscar.html">Perdi!</a></li>
+                        <li><a href="registrar.html">Encontrei!</a></li>
+                        <li><a href="sobre.html" class="active" aria-current="page">Sobre</a></li>
+                    </ul>
+                </nav>
             </div>
-        </div>
-        <div class="header-bottom">
-            <nav role="navigation">
-                <ul>
-                    <li><a href="index.html" >Início</a></li>
-                    <li><a href="buscar.html">Perdi!</a></li>
-                    <li><a href="registrar.html">Encontrei!</a></li>
-                    <li><a href="sobre.html"class="active">Sobre</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
+        </header>
+<section class="instruction-note global-tip" role="alert" aria-live="polite">
+            <p>💡 <strong>Dica:</strong> Role a tela para baixo para ver mais opções ou use os botões de navegação acima.</p>
+        </section>
         <main class="about-page" role="main">
-            <h2>Sobre</h2>
-            
-            <section class="mission-section interactive">
-                <h3>O Que É Esta Plataforma?</h3>
+            <h2>📖 Sobre a Plataforma</h2>
+
+            <section class="mission-section interactive" role="region" aria-labelledby="missao-titulo">
+                <h3 id="missao-titulo">O Que É Esta Plataforma?</h3>
                 <p>Esta é uma plataforma simples e segura para ajudar pessoas a recuperarem objetos perdidos em ambientes específicos do IFNMG-Campus Salinas.</p>
                 <p>Se você <strong>perdeu algo</strong>, pode buscar pelo objeto. Se <strong>encontrou algo</strong>, pode registrar para que o dono possa encontrá-lo.</p>
             </section>
 
-            <section class="how-to-use interactive">
-                <h3>Como Usar Passo a Passo</h3>
+            <section class="how-to-use interactive" role="region" aria-labelledby="uso-titulo">
+                <h3 id="uso-titulo">Como Usar Passo a Passo</h3>
                 <div class="usage-steps">
-                    <div class="usage-step interactive">
-                        <div class="step-number">1</div>
+                    <article class="usage-step interactive" role="article">
+                        <div class="step-number" aria-hidden="true">1</div>
                         <div class="step-content">
                             <h4>Na Início</h4>
                             <p>Escolha entre "Buscar Objeto Perdido" ou "Registrar Objeto Encontrado"</p>
                         </div>
-                    </div>
-                    <div class="usage-step interactive">
-                        <div class="step-number">2</div>
+                    </article>
+                    <article class="usage-step interactive" role="article">
+                        <div class="step-number" aria-hidden="true">2</div>
                         <div class="step-content">
                             <h4>Para Buscar</h4>
                             <p>Digite o nome do objeto e use filtros para encontrar mais rápido</p>
                         </div>
-                    </div>
-                    <div class="usage-step interactive">
-                        <div class="step-number">3</div>
+                    </article>
+                    <article class="usage-step interactive" role="article">
+                        <div class="step-number" aria-hidden="true">3</div>
                         <div class="step-content">
                             <h4>Para Registrar</h4>
                             <p>Preencha o formulário com foto, descrição e seus dados de contato</p>
                         </div>
-                    </div>
-                    <div class="usage-step interactive">
-                        <div class="step-number">4</div>
+                    </article>
+                    <article class="usage-step interactive" role="article">
+                        <div class="step-number" aria-hidden="true">4</div>
                         <div class="step-content">
                             <h4>Para Contato</h4>
                             <p>Use o WhatsApp ou Instagram para combinar a devolução diretamente</p>
                         </div>
-                    </div>
+                    </article>
                 </div>
             </section>
 
-            <section class="key-features interactive">
-                <h3>Por Que Usar Esta Plataforma?</h3>
+            <section class="key-features interactive" role="region" aria-labelledby="recursos-titulo">
+                <h3 id="recursos-titulo">Por Que Usar Esta Plataforma?</h3>
                 <div class="features-grid">
-                    <div class="feature-card interactive">
-                        <div class="feature-icon">🚀</div>
+                    <article class="feature-card interactive" role="article">
+                        <div class="feature-icon" aria-hidden="true">🚀</div>
                         <h4>Rápido e Simples</h4>
                         <p>Registre ou busque objetos em poucos cliques, sem cadastro complexo</p>
-                    </div>
-                    <div class="feature-card interactive">
-                        <div class="feature-icon">🔒</div>
+                    </article>
+                    <article class="feature-card interactive" role="article">
+                        <div class="feature-icon" aria-hidden="true">🔒</div>
                         <h4>Contato Seguro</h4>
                         <p>O contato é feito apenas quando necessário, via WhatsApp ou Instagram</p>
-                    </div>
-                    <div class="feature-card interactive">
-                        <div class="feature-icon">📱</div>
+                    </article>
+                    <article class="feature-card interactive" role="article">
+                        <div class="feature-icon" aria-hidden="true">📱</div>
                         <h4>Funciona em Qualquer Dispositivo</h4>
                         <p>Use no celular, tablet ou computador</p>
-                    </div>
-                    <div class="feature-card interactive">
-                        <div class="feature-icon">🆓</div>
+                    </article>
+                    <article class="feature-card interactive" role="article">
+                        <div class="feature-icon" aria-hidden="true">🆓</div>
                         <h4>Completamente Gratuito</h4>
                         <p>Sem custos para usar a plataforma</p>
-                    </div>
+                    </article>
                 </div>
             </section>
 
-            <section class="quick-actions interactive">
-                <h3>Comece Agora Mesmo</h3>
+            <section class="quick-actions interactive" role="region" aria-labelledby="acoes-rapidas">
+                <h3 id="acoes-rapidas">Comece Agora Mesmo</h3>
                 <div class="action-buttons">
-                    <a href="buscar.html" class="btn btn-primary">🔍 Buscar Objeto Perdido</a>
-                    <a href="registrar.html" class="btn btn-danger">📝 Registrar Objeto Encontrado</a>
+                    <a href="buscar.html" class="btn btn-primary" aria-label="Ir para página de busca">🔍 Buscar Objeto Perdido</a>
+                    <a href="registrar.html" class="btn btn-danger" aria-label="Ir para página de registro">📝 Registrar Objeto Encontrado</a>
                 </div>
             </section>
         </main>
 
-        <footer class="site-footer">
+        <footer class="site-footer" role="contentinfo">
             <div class="footer-links">
-                <a href="index.html">Voltar à Início</a>
-                <a href="admin.html">Administração</a>
+                <a href="index.html" aria-label="Voltar à página inicial">Voltar à Início</a>
+                <a href="admin.html" aria-label="Ir para página de Administração">Administração</a>
             </div>
             <p>&copy; 2025 Achados e Perdidos Local. Privacidade e Simplicidade.</p>
         </footer>
     </div>
-    
-    <script src="script.js"></script>
+
+    <script defer src="script.js"></script>
 </body>
 </html>

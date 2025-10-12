@@ -1,730 +1,808 @@
 // =========================================================
-// VARIÁVEIS GLOBAIS E INICIALIZAÇÃO
+// VARIÁVEIS GLOBAIS E INICIALIZAÇÃO (Otimizadas)
 // =========================================================
 
+const OBJETOS_KEY = 'objetosPerdidos';
+const ADMIN_CREDENTIALS = { username: 'admin', password: 'admin123' };
+
+// Cache de elementos DOM frequentemente acessados
+const domCache = new Map();
+
+const getElement = (selector) => {
+    if (!domCache.has(selector)) {
+        domCache.set(selector, document.querySelector(selector));
+    }
+    return domCache.get(selector);
+};
+
 const getListaObjetos = () => {
-    const listaJSON = localStorage.getItem('objetosPerdidos');
-    return listaJSON ? JSON.parse(listaJSON) : [];
+    try {
+        const listaJSON = localStorage.getItem(OBJETOS_KEY);
+        return listaJSON ? JSON.parse(listaJSON) : [];
+    } catch (error) {
+        console.error('Erro ao carregar objetos:', error);
+        return [];
+    }
 };
 
 const salvarListaObjetos = (lista) => {
-    localStorage.setItem('objetosPerdidos', JSON.stringify(lista));
-};
-
-let objetos = getListaObjetos();
-
-// Função para converter arquivo em Base64
-function fileToBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-    });
-}
-
-// =========================================================
-// SISTEMA DE EXPIRAÇÃO DE OBJETOS (3 MESES)
-// =========================================================
-
-const calcularDataExpiracao = () => {
-    const data = new Date();
-    data.setMonth(data.getMonth() + 3);
-    return data.toISOString().split('T')[0];
-};
-
-const limparObjetosExpirados = () => {
-    const objetosLocais = getListaObjetos();
-    const hoje = new Date().toISOString().split('T')[0];
-    const objetosAtualizados = objetosLocais.filter(objeto => objeto.dataExpiracao >= hoje);
-    
-    if (objetosLocais.length !== objetosAtualizados.length) {
-        salvarListaObjetos(objetosAtualizados);
-        objetos = objetosAtualizados; // Atualiza a lista global
+    try {
+        localStorage.setItem(OBJETOS_KEY, JSON.stringify(lista));
+        return true;
+    } catch (error) {
+        console.error('Erro ao salvar objetos:', error);
+        return false;
     }
 };
 
 // =========================================================
-// FUNÇÕES GLOBAIS DE UI
+// UTILITÁRIOS DE PERFORMANCE (Otimizados)
 // =========================================================
 
-// Funções para os indicadores de scroll
-function scrollToContent() {
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-}
-
-function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// Mostrar/ocultar indicadores de scroll baseado na posição
-window.addEventListener('scroll', function() {
-    const scrollDown = document.querySelector('.scroll-down');
-    const scrollUp = document.querySelector('.scroll-up');
-    
-    if (window.scrollY > 100) {
-        if (scrollDown) scrollDown.style.opacity = '0.3';
-        if (scrollUp) scrollUp.style.opacity = '1';
-    } else {
-        if (scrollDown) scrollDown.style.opacity = '1';
-        if (scrollUp) scrollUp.style.opacity = '0.3';
-    }
-});
-
-// Função para busca por local
-function searchByLocation(local) {
-    localStorage.setItem('filtroLocal', local);
-    window.location.href = 'buscar.html';
-}
-
-// Função debounce para otimizar buscas em tempo real
-function debounce(func, wait) {
+const debounce = (func, wait = 300, immediate = false) => {
     let timeout;
     return function executedFunction(...args) {
         const later = () => {
-            clearTimeout(timeout);
-            func(...args);
+            timeout = null;
+            if (!immediate) func.apply(this, args);
         };
+        const callNow = immediate && !timeout;
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
+        if (callNow) func.apply(this, args);
     };
-}
+};
+
+const throttle = (func, limit = 100) => {
+    let inThrottle;
+    return function(...args) {
+        if (!inThrottle) {
+            func.apply(this, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
+};
+
+const isMobile = () => window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 // =========================================================
-// ADIÇÃO PARA INTERATIVIDADE DINÂMICA (NOVO: Suporte a hovers em elementos "interactive")
+// SISTEMA DE EXPIRAÇÃO (Otimizado)
 // =========================================================
 
-// Listener global para elementos interativos (aplica classe 'hovered' para animações CSS extras)
-document.addEventListener('DOMContentLoaded', () => {
-    const interactiveElements = document.querySelectorAll('.interactive');
-    interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => el.classList.add('hovered'));
-        el.addEventListener('mouseleave', () => el.classList.remove('hovered'));
-    });
-});
+const calcularDataExpiracao = (meses = 3) => {
+    const data = new Date();
+    data.setMonth(data.getMonth() + meses);
+    return data.toISOString().split('T')[0];
+};
 
-// =========================================================
-// 1. REGISTRO DE OBJETOS (Página registrar.html)
-// =========================================================
-
-const configurarRegistro = () => {
-    const form = document.querySelector('.registration-form');
+const getStatusObjeto = (dataExpiracao) => {
+    const hoje = new Date().toISOString().split('T')[0];
+    if (dataExpiracao < hoje) return 'expirado';
     
-    if (!form) return;
+    const diasRestantes = Math.ceil((new Date(dataExpiracao) - new Date()) / (86400000));
+    return diasRestantes <= 7 ? 'expirando' : 'ativo';
+};
 
-    // Configurar alteração de texto do input de arquivo
-    const fileInput = document.getElementById('foto');
-    if (fileInput) {
-        fileInput.addEventListener('change', function(e) {
-            const fileName = e.target.files[0] ? e.target.files[0].name : 'Clique aqui para escolher uma foto';
-            const labelSpan = document.querySelector('.file-upload label span');
-            if (labelSpan) {
-                labelSpan.textContent = fileName;
-            }
-        });
+const limparObjetosExpirados = () => {
+    const objetos = getListaObjetos();
+    const hoje = new Date().toISOString().split('T')[0];
+    const objetosAtivos = objetos.filter(objeto => objeto.dataExpiracao >= hoje);
+    
+    if (objetos.length !== objetosAtivos.length) {
+        salvarListaObjetos(objetosAtivos);
+        return objetosAtivos;
     }
+    return objetos;
+};
 
-    // Configurar campo "Outro Local"
-    const localSelect = document.getElementById('local');
-    if (localSelect) {
-        localSelect.addEventListener('change', function() {
-            const outroContainer = document.getElementById('outro-local-container');
-            if (this.value === 'Outro') {
-                outroContainer.style.display = 'block';
-            } else {
-                outroContainer.style.display = 'none';
-            }
-        });
-    }
+// =========================================================
+// FUNÇÕES DE SCROLL (Redesenhadas)
+// =========================================================
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
+const scrollGradual = (direcao = 'down', pixels = 500) => {
+    const currentPosition = window.pageYOffset;
+    const targetPosition = direcao === 'down' ? currentPosition + pixels : Math.max(0, currentPosition - pixels);
+    
+    window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+    });
+};
 
-        // Captura os dados do formulário
-        const titulo = document.getElementById('titulo').value;
-        const categoria = document.getElementById('categoria').value;
-        const descricao = document.getElementById('descricao').value;
-        let local = document.getElementById('local').value;
-        let contato = document.getElementById('contato').value;
-        const instagram = document.getElementById('instagram').value;
-        const palavraPasse = document.getElementById('palavra_passe').value;
-        const fotoInput = document.getElementById('foto');
-        
-        // Se selecionou "Outro", pega o valor do campo de texto
-        if (local === 'Outro') {
-            local = document.getElementById('outro-local').value || 'Outro Local';
-        }
-        
-        // Remove caracteres não-dígitos do contato
-        contato = contato.replace(/\D/g, '');
-        
-        // Validação: pelo menos um método de contato deve ser preenchido (WhatsApp ou Instagram)
-        if (!contato && !instagram) {
-            alert('Por favor, preencha pelo menos um método de contato (WhatsApp ou Instagram).');
+const scrollGradualUp = () => scrollGradual('up', 500);
+const scrollGradualDown = () => scrollGradual('down', 500);
+
+// =========================================================
+// SISTEMA DE ARQUIVOS (Otimizado)
+// =========================================================
+
+const fileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+        if (!file || !file.type.startsWith('image/')) {
+            reject(new Error('Arquivo de imagem inválido'));
             return;
         }
 
-        // Validação básica
-        if (!titulo || !local || !palavraPasse) {
-            alert('Por favor, preencha todos os campos obrigatórios.');
+        // Limitar tamanho do arquivo (2MB)
+        if (file.size > 2 * 1024 * 1024) {
+            reject(new Error('Imagem muito grande. Máximo: 2MB'));
             return;
         }
 
-        // Processar a foto
-        let fotoBase64 = 'placeholder-default.jpg';
-        if (fotoInput.files.length > 0) {
-            const file = fotoInput.files[0];
-            
-            // Validar tipo do arquivo
-            if (!file.type.startsWith('image/')) {
-                alert('Por favor, selecione um arquivo de imagem válido.');
-                return;
-            }
-
-            try {
-                fotoBase64 = await fileToBase64(file);
-            } catch (error) {
-                console.error('Erro ao converter a imagem:', error);
-                alert('Erro ao processar a imagem. Tente novamente.');
-                return;
-            }
-        }
-
-        // Cria o novo objeto com data de expiração (sem email)
-        const novoObjeto = {
-            id: Date.now(),
-            titulo,
-            categoria,
-            descricao,
-            local,
-            contato,
-            instagram,
-            palavraPasse,
-            fotoBase64,
-            dataRegistro: new Date().toLocaleDateString('pt-BR'),
-            dataExpiracao: calcularDataExpiracao()
-        };
-
-        // Adiciona o novo objeto à lista e salva
-        objetos.push(novoObjeto);
-        salvarListaObjetos(objetos);
-
-        // Feedback visual para o usuário
-        alert(`✅ Objeto "${titulo}" registrado com sucesso!\n\nSua Palavra-Passe para exclusão é: ${palavraPasse}\n\nGuarde esta senha com segurança!`);
-        form.reset();
-        
-        // Redireciona para a busca para ver o novo item
-        window.location.href = 'buscar.html';
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error('Erro ao ler arquivo'));
     });
 };
 
 // =========================================================
-// 2. BUSCA E LISTAGEM (Página buscar.html)
+// 1. REGISTRO DE OBJETOS (Otimizado)
+// =========================================================
+
+const configurarRegistro = () => {
+    const form = getElement('.registration-form');
+    if (!form) return;
+
+    // Configuração de eventos otimizada
+    const configurarEventos = () => {
+        const fileInput = getElement('#foto');
+        const localSelect = getElement('#local');
+        const outroLocalContainer = getElement('#outro-local-container');
+
+        if (fileInput) {
+            fileInput.addEventListener('change', (e) => {
+                const fileName = e.target.files[0]?.name || 'Clique aqui para escolher uma foto';
+                const labelSpan = getElement('.file-upload label span');
+                if (labelSpan) labelSpan.textContent = fileName;
+            });
+        }
+
+        if (localSelect && outroLocalContainer) {
+            localSelect.addEventListener('change', debounce(() => {
+                outroLocalContainer.style.display = localSelect.value === 'Outro' ? 'block' : 'none';
+            }));
+        }
+    };
+
+    const validarFormulario = (dados) => {
+        const erros = [];
+        
+        if (!dados.titulo?.trim()) erros.push('Título é obrigatório');
+        if (!dados.local?.trim()) erros.push('Local é obrigatório');
+        if (!dados.palavraPasse?.trim()) erros.push('Palavra-passe é obrigatória');
+        if (!dados.contato && !dados.instagram) erros.push('Pelo menos um método de contato é necessário');
+        if (dados.palavraPasse && dados.palavraPasse.length < 4) erros.push('Palavra-passe deve ter pelo menos 4 caracteres');
+
+        return erros;
+    };
+
+    const processarEnvio = async (e) => {
+        e.preventDefault();
+        const botaoEnviar = getElement('button[type="submit"]');
+        
+        try {
+            // Desativar botão durante processamento
+            if (botaoEnviar) {
+                botaoEnviar.disabled = true;
+                botaoEnviar.textContent = 'Processando...';
+            }
+
+            // Coletar dados do formulário
+            const dados = {
+                titulo: getElement('#titulo')?.value?.trim(),
+                categoria: getElement('#categoria')?.value,
+                descricao: getElement('#descricao')?.value?.trim(),
+                local: getElement('#local')?.value === 'Outro' 
+                    ? (getElement('#outro-local')?.value?.trim() || 'Outro Local')
+                    : getElement('#local')?.value,
+                contato: getElement('#contato')?.value?.replace(/\D/g, ''),
+                instagram: getElement('#instagram')?.value?.trim(),
+                palavraPasse: getElement('#palavra_passe')?.value,
+                fotoInput: getElement('#foto')
+            };
+
+            // Validação
+            const erros = validarFormulario(dados);
+            if (erros.length > 0) {
+                alert(`❌ Erros no formulário:\n• ${erros.join('\n• ')}`);
+                return;
+            }
+
+            // Processar imagem
+            let fotoBase64 = 'placeholder-default.jpg';
+            if (dados.fotoInput?.files[0]) {
+                try {
+                    fotoBase64 = await fileToBase64(dados.fotoInput.files[0]);
+                } catch (error) {
+                    alert(`❌ Erro na imagem: ${error.message}`);
+                    return;
+                }
+            }
+
+            // Criar objeto
+            const novoObjeto = {
+                id: Date.now(),
+                ...dados,
+                fotoBase64,
+                dataRegistro: new Date().toLocaleDateString('pt-BR'),
+                dataExpiracao: calcularDataExpiracao()
+            };
+
+            delete novoObjeto.fotoInput;
+
+            // Salvar
+            const objetos = getListaObjetos();
+            objetos.push(novoObjeto);
+            
+            if (salvarListaObjetos(objetos)) {
+                alert(`✅ Objeto "${novoObjeto.titulo}" registrado!\n\n🔑 Palavra-Passe: ${novoObjeto.palavraPasse}\n\n⚠️ Guarde esta senha para remover o objeto depois!`);
+                form.reset();
+                window.location.href = 'buscar.html';
+            } else {
+                throw new Error('Erro ao salvar no armazenamento local');
+            }
+
+        } catch (error) {
+            console.error('Erro no registro:', error);
+            alert('❌ Erro ao registrar objeto. Tente novamente.');
+        } finally {
+            // Reativar botão
+            if (botaoEnviar) {
+                botaoEnviar.disabled = false;
+                botaoEnviar.textContent = '📝 Registrar Objeto Encontrado';
+            }
+        }
+    };
+
+    configurarEventos();
+    form.addEventListener('submit', processarEnvio);
+};
+
+// =========================================================
+// 2. BUSCA E FILTROS (Otimizado)
 // =========================================================
 
 const criarCardObjeto = (objeto) => {
+    const status = getStatusObjeto(objeto.dataExpiracao);
     const imagemSrc = objeto.fotoBase64 && objeto.fotoBase64 !== 'placeholder-default.jpg' 
         ? objeto.fotoBase64 
         : 'placeholder-default.jpg';
+    
+    const statusClass = status === 'expirado' ? 'expirado' : status === 'expirando' ? 'expirando' : '';
 
     return `
-        <article class="object-card interactive">
+        <article class="object-card interactive ${statusClass}" data-id="${objeto.id}">
             <figure>
-                <img src="${imagemSrc}" alt="Foto de ${objeto.titulo}" onerror="this.src='placeholder-default.jpg'; this.alt='Imagem placeholder para ${objeto.titulo}'">
+                <img src="${imagemSrc}" alt="Foto de ${objeto.titulo}" loading="lazy" 
+                     onerror="this.src='placeholder-default.jpg'">
             </figure>
             <div class="card-info">
                 <h4>${objeto.titulo}</h4>
                 <p><strong>Categoria:</strong> ${objeto.categoria || 'Não especificada'}</p>
                 <p><strong>Local:</strong> ${objeto.local}</p>
                 <p><strong>Data:</strong> ${objeto.dataRegistro}</p>
-                <a href="detalhe.html?id=${objeto.id}" class="btn btn-primary btn-detail">🔍 Ver Detalhes e Contato</a>
+                ${status === 'expirando' ? '<p class="status expirando">⚠️ Expirando em breve</p>' : ''}
+                <a href="detalhe.html?id=${objeto.id}" class="btn btn-primary btn-detail">
+                    🔍 Ver Detalhes e Contato
+                </a>
             </div>
         </article>
     `;
 };
 
-const renderizarListaObjetos = (listaFiltrada) => {
-    const containerResultados = document.querySelector('.cards-grid');
-    const contador = document.querySelector('.results-list h3');
+const aplicarFiltrosBusca = () => {
+    const query = getElement('input[name="query"]')?.value.toLowerCase() || '';
+    const categoriaVal = getElement('#categoria')?.value || '';
+    const localVal = getElement('#local')?.value || '';
+    const container = getElement('.cards-grid');
+    
+    if (!container) return;
 
-    if (!containerResultados) return;
+    const objetos = getListaObjetos();
+    const hoje = new Date().toISOString().split('T')[0];
 
-    containerResultados.innerHTML = '';
+    const resultados = objetos.filter(objeto => {
+        // Filtro de expiração
+        if (objeto.dataExpiracao < hoje) return false;
+        
+        // Filtro de busca
+        const matchQuery = !query || objeto.titulo.toLowerCase().includes(query) || 
+                          objeto.descricao?.toLowerCase().includes(query);
+        const matchCategoria = !categoriaVal || objeto.categoria === categoriaVal;
+        const matchLocal = !localVal || objeto.local === localVal;
 
-    if (listaFiltrada.length === 0) {
-        containerResultados.innerHTML = `
+        return matchQuery && matchCategoria && matchLocal;
+    });
+
+    // Renderização otimizada
+    if (resultados.length === 0) {
+        container.innerHTML = `
             <div class="no-results">
-                <p>😔 Nenhum objeto encontrado com estes critérios.</p>
+                <p>😔 Nenhum objeto encontrado.</p>
+                <p>Tente outros termos ou verifique a ortografia.</p>
             </div>
-                    `;
-        if (contador) {
-            contador.textContent = 'Nenhum resultado encontrado';
-        }
-        return;
+        `;
+    } else {
+        container.innerHTML = resultados.map(criarCardObjeto).join('');
     }
 
-    const cardsHTML = listaFiltrada.map(criarCardObjeto).join('');
-    containerResultados.innerHTML = cardsHTML;
+    // Atualizar contador
+    const contador = getElement('.results-list h3');
     if (contador) {
-        contador.textContent = `Encontramos ${listaFiltrada.length} objeto(s)`;
+        contador.textContent = resultados.length === 0 
+            ? 'Nenhum resultado encontrado' 
+            : `Encontramos ${resultados.length} objeto(s)`;
     }
 };
 
 const configurarBusca = () => {
-    const formBusca = document.querySelector('.main-search-bar');
-    if (!formBusca) return;
+    // Aplicar filtros iniciais
+    aplicarFiltrosBusca();
 
-    // Função que aplica o filtro (com filtro extra de expirados)
-    const aplicarFiltros = () => {
-        const queryInput = document.querySelector('input[name="query"]');
-        const filtroCategoria = document.getElementById('categoria');
-        const filtroLocal = document.getElementById('local');
-        
-        if (!queryInput || !filtroCategoria || !filtroLocal) return;
-        
-        const query = queryInput.value.toLowerCase();
-        const categoriaVal = filtroCategoria.value;
-        const localVal = filtroLocal.value;
-        const hoje = new Date().toISOString().split('T')[0];
-        
-        const resultados = objetos.filter(objeto => {
-            // Filtro por expiração (não mostrar expirados)
-            if (objeto.dataExpiracao < hoje) return false;
-            
-            // Filtro por título
-            const correspondeTitulo = objeto.titulo.toLowerCase().includes(query);
-            
-            // Filtro por categoria
-            const correspondeCategoria = !categoriaVal || objeto.categoria === categoriaVal;
-            
-            // Filtro por local
-            const correspondeLocal = !localVal || objeto.local === localVal;
-            
-            return correspondeTitulo && correspondeCategoria && correspondeLocal;
-        });
+    // Configurar eventos com debounce
+    const inputBusca = getElement('input[name="query"]');
+    const categoriaSelect = getElement('#categoria');
+    const localSelect = getElement('#local');
 
-        renderizarListaObjetos(resultados);
-    };
-
-    // Inicializa a página de busca (aplica filtros iniciais)
-    aplicarFiltros();
-    
-    // Configura o evento de submit do formulário
-    formBusca.addEventListener('submit', (e) => {
-        e.preventDefault();
-        aplicarFiltros();
-    });
-
-    // Configura busca em tempo real com debounce (300ms)
-    const inputBusca = document.querySelector('input[name="query"]');
     if (inputBusca) {
-        const debouncedSearch = debounce(aplicarFiltros, 300);
-        inputBusca.addEventListener('input', debouncedSearch);
+        inputBusca.addEventListener('input', debounce(aplicarFiltrosBusca, 300));
     }
 
-    // Configura filtros
-    const filtroCategoria = document.getElementById('categoria');
-    const filtroLocal = document.getElementById('local');
-    
-    if (filtroCategoria) {
-        filtroCategoria.addEventListener('change', aplicarFiltros);
-    }
-    if (filtroLocal) {
-        filtroLocal.addEventListener('change', aplicarFiltros);
+    if (categoriaSelect) {
+        categoriaSelect.addEventListener('change', debounce(aplicarFiltrosBusca, 200));
     }
 
-    // Aplicar filtro de local se veio da página inicial
+    if (localSelect) {
+        localSelect.addEventListener('change', debounce(aplicarFiltrosBusca, 200));
+    }
+
+    // Aplicar filtro salvo
     const filtroSalvo = localStorage.getItem('filtroLocal');
-    if (filtroSalvo && filtroLocal) {
-        filtroLocal.value = filtroSalvo;
+    if (filtroSalvo && localSelect) {
+        localSelect.value = filtroSalvo;
         localStorage.removeItem('filtroLocal');
-        aplicarFiltros();
+        aplicarFiltrosBusca();
     }
 };
 
 // =========================================================
-// 3. DETALHE DO OBJETO E EXCLUSÃO (Página detalhe.html)
+// 3. DETALHES E EXCLUSÃO (Otimizado)
 // =========================================================
 
 const configurarDetalheEExclusao = () => {
-    const paginaDetalhe = document.querySelector('.object-detail-page');
-    if (!paginaDetalhe) return;
-
-    // 1. Obter o ID do objeto da URL (?id=123)
     const params = new URLSearchParams(window.location.search);
     const idObjeto = parseInt(params.get('id'));
-
-    // 2. Buscar o objeto na lista (e verificar se não expirou)
-    const hoje = new Date().toISOString().split('T')[0];
-    const objeto = objetos.find(obj => obj.id === idObjeto && obj.dataExpiracao >= hoje);
-
-    if (!objeto) {
-        paginaDetalhe.innerHTML = `
-            <div class="error-page">
-                <h2>😔 Objeto Não Encontrado</h2>
-                <p>Este item pode ter sido devolvido, excluído ou expirado do sistema. Tente buscar novamente.</p>
-                <a href="buscar.html" class="btn btn-primary">← Voltar para a Busca</a>
-            </div>
-        `;
+    
+    if (!idObjeto) {
+        mostrarErroDetalhe('ID do objeto não especificado');
         return;
     }
 
-    // 3. Renderizar os detalhes do objeto na tela
-    const imgElement = document.getElementById('objeto-imagem'); // MUDANÇA: Targeting preciso por ID
-    if (imgElement) {
-        const imagemSrc = objeto.fotoBase64 && objeto.fotoBase64 !== 'placeholder-default.jpg' 
-            ? objeto.fotoBase64 
-            : 'placeholder-default.jpg';
-        imgElement.src = imagemSrc;
-        imgElement.alt = `Foto de ${objeto.titulo}`;
-        
-        // MUDANÇA: Fallback para erro de carregamento (evita desfiguração em Base64 falhas)
-        imgElement.onerror = function() {
-            this.src = 'placeholder-default.jpg';
-            this.alt = 'Imagem não disponível para ' + objeto.titulo;
-        };
-        
-        // Opcional: Listener para onload para garantir aplicação do CSS
-        imgElement.onload = function() {
-            this.style.opacity = '1'; // Fade in suave se quiser
-        };
+    const objetos = getListaObjetos();
+    const objeto = objetos.find(obj => obj.id === idObjeto);
+
+    if (!objeto) {
+        mostrarErroDetalhe('Objeto não encontrado ou já foi removido');
+        return;
     }
 
-    const tituloElement = document.querySelector('.object-details h2');
-    if (tituloElement) {
-        tituloElement.textContent = objeto.titulo;
+    // Verificar expiração
+    const status = getStatusObjeto(objeto.dataExpiracao);
+    if (status === 'expirado') {
+        mostrarErroDetalhe('Este objeto expirou e não está mais disponível');
+        return;
     }
 
-    const keyInfoElements = document.querySelectorAll('.key-info p');
-    
-    if (keyInfoElements.length >= 4) {
-        keyInfoElements[0].innerHTML = `<strong>Categoria:</strong> ${objeto.categoria || 'Não Especificada'}`;
-        keyInfoElements[1].innerHTML = `<strong>Local Encontrado:</strong> ${objeto.local}`;
-        keyInfoElements[2].innerHTML = `<strong>Data do Registro:</strong> ${objeto.dataRegistro}`;
-        keyInfoElements[3].innerHTML = `<strong>Data de Expiração:</strong> ${objeto.dataExpiracao}`;
-    }
+    renderizarDetalhesObjeto(objeto);
+    configurarExclusao(objeto);
+};
 
-    const descricaoElement = document.querySelector('.description-section p');
-    if (descricaoElement) {
-        descricaoElement.textContent = objeto.descricao || 'Nenhuma descrição adicional fornecida.';
-    }
-    
-    // 4. Configurar as Ações de Contato (sem e-mail)
-    const whatsappOption = document.getElementById('whatsapp-option');
-    const instagramOption = document.getElementById('instagram-option');
-    
-    // WhatsApp
-    if (objeto.contato && whatsappOption) {
-        whatsappOption.style.display = 'block';
-        const mensagemPadrao = `Olá, vi o item "${objeto.titulo}" no Achados e Perdidos Local. Acredito que seja meu. Podemos combinar a devolução?`;
-        const whatsappButton = document.querySelector('.contact-button');
-        if (whatsappButton) {
-            whatsappButton.href = `https://wa.me/55${objeto.contato}?text=${encodeURIComponent(mensagemPadrao)}`;
-        }
-    }
-    
-    // Instagram
-    if (objeto.instagram && instagramOption) {
-        instagramOption.style.display = 'block';
-        const instagramButton = document.querySelector('.contact-instagram');
-        if (instagramButton) {
-            // Remove @ se existir e cria link para o perfil (usuário envia DM manualmente)
-            const instagramUser = objeto.instagram.replace('@', '');
-            instagramButton.href = `https://instagram.com/${instagramUser}`;
-            instagramButton.target = '_blank';
-            instagramButton.rel = 'noopener noreferrer';
-        }
-        // Atualiza o small para indicar DM
-        const instagramSmall = instagramOption.querySelector('small');
-        if (instagramSmall) {
-            instagramSmall.textContent = 'Acesse o perfil e envie uma mensagem direta (DM)';
-        }
-    }
-
-    // 5. Configurar o Formulário de Exclusão
-    const formExclusao = document.querySelector('.exclusion-section form');
-    if (formExclusao) {
-        formExclusao.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const senhaInput = document.querySelector('.exclusion-section input[type="password"]');
-            if (!senhaInput) return;
-            
-            const senhaDigitada = senhaInput.value;
-
-            if (senhaDigitada === objeto.palavraPasse) {
-                if (confirm(`Tem certeza que deseja excluir o objeto "${objeto.titulo}"? Esta ação não pode ser desfeita.`)) {
-                    objetos = objetos.filter(obj => obj.id !== idObjeto);
-                    salvarListaObjetos(objetos);
-                    alert(`✅ Objeto "${objeto.titulo}" removido com sucesso.`);
-                    window.location.href = 'buscar.html';
-                }
-            } else {
-                alert('❌ Palavra-Passe incorreta. O item não foi removido.');
-            }
-        });
+const mostrarErroDetalhe = (mensagem) => {
+    const pagina = getElement('.object-detail-page');
+    if (pagina) {
+        pagina.innerHTML = `
+            <div class="error-page">
+                <h2>😔 Objeto Não Encontrado</h2>
+                <p>${mensagem}</p>
+                <a href="buscar.html" class="btn btn-primary">← Voltar para a Busca</a>
+            </div>
+        `;
     }
 };
 
-// =========================================================
-// 4. ADMINISTRAÇÃO (Página admin.html)
-// =========================================================
-
-const configurarAdministracao = () => {
-    // Credenciais de administração
-    const ADMIN_CREDENTIALS = {
-        username: "admin",
-        password: "admin123"
+const renderizarDetalhesObjeto = (objeto) => {
+    // Atualizar elementos da página
+    const mapeamentoElementos = {
+        '#objeto-imagem': { src: objeto.fotoBase64 || 'placeholder-default.jpg' },
+        '#objeto-titulo': { textContent: objeto.titulo },
+        '#categoria-info': { innerHTML: `<strong>Categoria:</strong> ${objeto.categoria || 'Não Especificada'}` },
+        '#local-info': { innerHTML: `<strong>Local Encontrado:</strong> ${objeto.local}` },
+        '#data-registro-info': { innerHTML: `<strong>Data do Registro:</strong> ${objeto.dataRegistro}` },
+        '#data-expiracao-info': { innerHTML: `<strong>Data de Expiração:</strong> ${objeto.dataExpiracao}` },
+        '#descricao-info': { textContent: objeto.descricao || 'Nenhuma descrição adicional fornecida.' }
     };
 
-    // Elementos do DOM
-    const loginSection = document.getElementById('login-section');
-    const adminPanel = document.getElementById('admin-panel');
-    const loginForm = document.getElementById('login-form');
-    const logoutBtn = document.getElementById('logout-btn');
-    const usernameInput = document.getElementById('username');
-
-    if (!loginSection || !adminPanel || !loginForm) return;
-
-    // Foco automático no username para melhor UX
-    if (usernameInput) {
-        usernameInput.focus();
-    }
-
-    // Função de login
-    loginForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-
-        if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-            loginSection.style.display = 'none';
-            adminPanel.style.display = 'block';
-            carregarDadosAdmin();
-        } else {
-            alert('❌ Credenciais inválidas. Tente novamente.');
+    Object.entries(mapeamentoElementos).forEach(([seletor, propriedades]) => {
+        const elemento = getElement(seletor);
+        if (elemento) {
+            Object.assign(elemento, propriedades);
         }
     });
 
-    // Função de logout
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', function() {
-            if (confirm('Tem certeza que deseja sair do painel administrativo?')) {
-                adminPanel.style.display = 'none';
-                loginSection.style.display = 'block';
-                loginForm.reset();
-                if (usernameInput) usernameInput.focus();
-            }
-        });
+    configurarContatos(objeto);
+};
+
+const configurarContatos = (objeto) => {
+    const whatsappOption = getElement('#whatsapp-option');
+    const instagramOption = getElement('#instagram-option');
+
+    // WhatsApp
+    if (objeto.contato && whatsappOption) {
+        whatsappOption.style.display = 'block';
+        const mensagem = encodeURIComponent(
+            `Olá! Vi o item "${objeto.titulo}" no Achados e Perdidos Local e acredito que seja meu. ` +
+            `Podemos combinar a devolução? Obrigado!`
+        );
+        const linkWhatsApp = getElement('.contact-button');
+        if (linkWhatsApp) {
+            linkWhatsApp.href = `https://wa.me/55${objeto.contato}?text=${mensagem}`;
+        }
     }
 
-    // Função para carregar dados administrativos
-    function carregarDadosAdmin() {
-        const objetosLocais = getListaObjetos();
-        const agora = new Date();
-        const hoje = agora.toISOString().split('T')[0];
-        
-        // Estatísticas
-        const totalObjects = objetosLocais.length;
-        const expiredObjects = objetosLocais.filter(obj => obj.dataExpiracao < hoje).length;
-        const expiringSoon = objetosLocais.filter(obj => {
-            const diasParaExpirar = Math.ceil((new Date(obj.dataExpiracao) - agora) / (1000 * 60 * 60 * 24));
-            return diasParaExpirar <= 7 && diasParaExpirar > 0;
-        }).length;
-        const activeObjects = totalObjects - expiredObjects;
-
-        // Atualizar estatísticas
-        const totalCount = document.getElementById('total-objects-count');
-        const activeCount = document.getElementById('active-objects-count');
-        const expiringCount = document.getElementById('expired-soon-count');
-        const expiredCount = document.getElementById('expired-count');
-        
-        if (totalCount) totalCount.textContent = totalObjects;
-        if (activeCount) activeCount.textContent = activeObjects;
-        if (expiringCount) expiringCount.textContent = expiringSoon;
-        if (expiredCount) expiredCount.textContent = expiredObjects;
-
-        // Carregar lista de objetos (com filtros de busca e status)
-        renderizarListaAdmin(objetosLocais);
+    // Instagram
+    if (objeto.instagram && instagramOption) {
+        instagramOption.style.display = 'block';
+        const instagramUser = objeto.instagram.replace('@', '');
+        const linkInstagram = getElement('.contact-instagram');
+        if (linkInstagram) {
+            linkInstagram.href = `https://instagram.com/${instagramUser}`;
+        }
     }
+};
 
-    // Função para renderizar lista de objetos no admin (com busca e filtro de status)
-    function renderizarListaAdmin(objetos) {
-        const objectsList = document.getElementById('objects-list');
-        const adminSearch = document.getElementById('admin-search');
-        const adminFilterStatus = document.getElementById('admin-filter-status');
-        const agora = new Date();
-        const hoje = agora.toISOString().split('T')[0];
+const configurarExclusao = (objeto) => {
+    const formExclusao = getElement('#exclusao-form');
+    if (!formExclusao) return;
 
-        if (!objectsList) return;
+    formExclusao.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const senhaDigitada = getElement('#senha-exclusao')?.value;
+        if (!senhaDigitada) {
+            alert('❌ Digite a palavra-passe para excluir');
+            return;
+        }
 
-        // Função para filtrar e renderizar
-        const filtrarERenderizar = () => {
-            let listaFiltrada = objetos;
-
-            // Filtro por busca
-            if (adminSearch && adminSearch.value) {
-                const termo = adminSearch.value.toLowerCase();
-                listaFiltrada = listaFiltrada.filter(obj => 
-                    obj.titulo.toLowerCase().includes(termo) ||
-                    obj.categoria.toLowerCase().includes(termo) ||
-                    obj.local.toLowerCase().includes(termo)
-                );
-            }
-
-            // Filtro por status
-            if (adminFilterStatus && adminFilterStatus.value) {
-                const status = adminFilterStatus.value;
-                if (status === 'active') {
-                    listaFiltrada = listaFiltrada.filter(obj => obj.dataExpiracao >= hoje);
-                } else if (status === 'expired') {
-                    listaFiltrada = listaFiltrada.filter(obj => obj.dataExpiracao < hoje);
-                } else if (status === 'expiring') {
-                    listaFiltrada = listaFiltrada.filter(obj => {
-                        const diasParaExpirar = Math.ceil((new Date(obj.dataExpiracao) - agora) / (1000 * 60 * 60 * 24));
-                        return diasParaExpirar <= 7 && diasParaExpirar > 0;
-                    });
+        if (senhaDigitada === objeto.palavraPasse) {
+            if (confirm(`⚠️ Tem certeza que deseja excluir "${objeto.titulo}"?\n\nEsta ação é irreversível!`)) {
+                const objetos = getListaObjetos();
+                const objetosAtualizados = objetos.filter(obj => obj.id !== objeto.id);
+                
+                if (salvarListaObjetos(objetosAtualizados)) {
+                    alert(`✅ "${objeto.titulo}" removido com sucesso!`);
+                    window.location.href = 'buscar.html';
+                } else {
+                    alert('❌ Erro ao remover objeto. Tente novamente.');
                 }
             }
-
-            if (listaFiltrada.length === 0) {
-                objectsList.innerHTML = '<div class="no-objects">Nenhum objeto encontrado com estes critérios.</div>';
-                return;
-            }
-
-            const objetosHTML = listaFiltrada.map(objeto => {
-                const dataExpiracao = new Date(objeto.dataExpiracao);
-                const diasRestantes = Math.ceil((dataExpiracao - agora) / (1000 * 60 * 60 * 24));
-                const statusClass = objeto.dataExpiracao < hoje ? 'expirado' : diasRestantes <= 7 ? 'expirando' : 'ativo';
-                
-                // Informações de contato para exibir no admin
-                const contatos = [];
-                if (objeto.contato) contatos.push('WhatsApp');
-                if (objeto.instagram) contatos.push('Instagram');
-                
-                return `
-                    <div class="object-admin-card ${statusClass} interactive">
-                        <div class="object-admin-image">
-                            <img src="${objeto.fotoBase64 || 'placeholder-default.jpg'}" alt="Foto de ${objeto.titulo}" onerror="this.src='placeholder-default.jpg'; this.alt='Imagem placeholder para ${objeto.titulo}'">
-                        </div>
-                        <div class="object-admin-info">
-                            <h4>${objeto.titulo}</h4>
-                            <p><strong>Categoria:</strong> ${objeto.categoria || 'Não especificada'}</p>
-                            <p><strong>Local:</strong> ${objeto.local}</p>
-                            <p><strong>Contatos:</strong> ${contatos.join(', ') || 'Nenhum'}</p>
-                            <p><strong>Registrado em:</strong> ${objeto.dataRegistro}</p>
-                            <p><strong>Expira em:</strong> ${objeto.dataExpiracao}</p>
-                            <p class="status ${statusClass}">
-                                ${statusClass === 'expirado' ? '❌ Expirado' : statusClass === 'expirando' ? '⚠️ Expira em ' + diasRestantes + ' dias' : '✅ Ativo'}
-                            </p>
-                        </div>
-                        <div class="object-admin-actions">
-                            <button onclick="excluirObjetoAdmin(${objeto.id})" class="btn btn-danger btn-small interactive">🗑️ Excluir</button>
-                            <button onclick="verDetalhesObjeto(${objeto.id})" class="btn btn-primary btn-small interactive">👀 Ver Detalhes</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            objectsList.innerHTML = objetosHTML;
-        };
-
-        // Render inicial
-        filtrarERenderizar();
-
-        // Eventos para busca e filtro
-        if (adminSearch) {
-            const debouncedAdminSearch = debounce(filtrarERenderizar, 300);
-            adminSearch.addEventListener('input', debouncedAdminSearch);
+        } else {
+            alert('❌ Palavra-passe incorreta. Tente novamente.');
+            getElement('#senha-exclusao').value = '';
+            getElement('#senha-exclusao').focus();
         }
-        if (adminFilterStatus) {
-            adminFilterStatus.addEventListener('change', filtrarERenderizar);
-        }
-    }
+    });
+};
 
-    // Função para excluir objeto (admin)
-    window.excluirObjetoAdmin = function(id) {
-        if (confirm('Tem certeza que deseja excluir permanentemente este objeto?')) {
-            let objetosLocais = getListaObjetos();
-            objetosLocais = objetosLocais.filter(obj => obj.id !== id);
-            salvarListaObjetos(objetosLocais);
-            objetos = objetosLocais; // Atualiza global
+// =========================================================
+// 4. ADMINISTRAÇÃO (Otimizado)
+// =========================================================
+
+const configurarAdministracao = () => {
+    configurarLoginAdmin();
+    configurarPainelAdmin();
+};
+
+const configurarLoginAdmin = () => {
+    const loginForm = getElement('#login-form');
+    if (!loginForm) return;
+
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const username = getElement('#username')?.value;
+        const password = getElement('#password')?.value;
+
+        if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+            getElement('#login-section').style.display = 'none';
+            getElement('#admin-panel').style.display = 'block';
             carregarDadosAdmin();
-            alert('✅ Objeto excluído com sucesso!');
+        } else {
+            alert('❌ Credenciais inválidas. Tente novamente.');
+            getElement('#password').value = '';
+            getElement('#password').focus();
         }
-    };
+    });
+};
 
-    // Função para ver detalhes do objeto
-    window.verDetalhesObjeto = function(id) {
-        window.open(`detalhe.html?id=${id}`, '_blank');
-    };
-
-    // Botão para limpar objetos expirados
-    const cleanExpiredBtn = document.getElementById('clean-expired-btn');
-    if (cleanExpiredBtn) {
-        cleanExpiredBtn.addEventListener('click', function() {
-            if (confirm('Esta ação removerá permanentemente todos os objetos expirados. Continuar?')) {
-                const hoje = new Date().toISOString().split('T')[0];
-                let objetosLocais = getListaObjetos();
-                const objetosAntigos = objetosLocais.length;
-                objetosLocais = objetosLocais.filter(obj => obj.dataExpiracao >= hoje);
-                const objetosRemovidos = objetosAntigos - objetosLocais.length;
-                
-                salvarListaObjetos(objetosLocais);
-                objetos = objetosLocais; // Atualiza global
-                carregarDadosAdmin();
-                alert(`✅ ${objetosRemovidos} objetos expirados foram removidos!`);
+const configurarPainelAdmin = () => {
+    const logoutBtn = getElement('#logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            if (confirm('Deseja sair do painel administrativo?')) {
+                getElement('#admin-panel').style.display = 'none';
+                getElement('#login-section').style.display = 'block';
+                getElement('#login-form').reset();
             }
         });
     }
 
-    // Botão para exportar dados
-    const exportDataBtn = document.getElementById('export-data-btn');
-    if (exportDataBtn) {
-        exportDataBtn.addEventListener('click', function() {
-            const objetosLocais = getListaObjetos();
-            const dataStr = JSON.stringify(objetosLocais, null, 2);
-            const dataBlob = new Blob([dataStr], {type: 'application/json'});
-            
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `backup-objetos-${new Date().toISOString().split('T')[0]}.json`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            
-            alert('📥 Backup exportado com sucesso!');
-        });
+    // Configurar botões de ação
+    const botoesAcao = {
+        '#clean-expired-btn': limparObjetosExpiradosAdmin,
+        '#export-data-btn': exportarDadosAdmin,
+        '#refresh-data-btn': carregarDadosAdmin
+    };
+
+    Object.entries(botoesAcao).forEach(([seletor, funcao]) => {
+        const botao = getElement(seletor);
+        if (botao) {
+            botao.addEventListener('click', funcao);
+        }
+    });
+
+    // Configurar filtros administrativos
+    const searchInput = getElement('#admin-search');
+    const statusFilter = getElement('#admin-filter-status');
+
+    if (searchInput) {
+        searchInput.addEventListener('input', debounce(() => renderizarListaAdmin(), 300));
     }
 
-    // Botão para atualizar dados
-    const refreshDataBtn = document.getElementById('refresh-data-btn');
-    if (refreshDataBtn) {
-        refreshDataBtn.addEventListener('click', carregarDadosAdmin);
+    if (statusFilter) {
+        statusFilter.addEventListener('change', () => renderizarListaAdmin());
+    }
+};
+
+const carregarDadosAdmin = () => {
+    const objetos = getListaObjetos();
+    const hoje = new Date().toISOString().split('T')[0];
+    
+    const estatisticas = objetos.reduce((acc, obj) => {
+        const status = getStatusObjeto(obj.dataExpiracao);
+        acc.total++;
+        if (status === 'ativo') acc.ativos++;
+        if (status === 'expirando') acc.expirando++;
+        if (status === 'expirado') acc.expirados++;
+        return acc;
+    }, { total: 0, ativos: 0, expirando: 0, expirados: 0 });
+
+    // Atualizar estatísticas
+    const elementosEstatisticas = {
+        '#total-objects-count': estatisticas.total,
+        '#active-objects-count': estatisticas.ativos,
+        '#expired-soon-count': estatisticas.expirando,
+        '#expired-count': estatisticas.expirados
+    };
+
+    Object.entries(elementosEstatisticas).forEach(([seletor, valor]) => {
+        const elemento = getElement(seletor);
+        if (elemento) {
+            elemento.textContent = valor;
+            // Animação de contagem
+            elemento.style.animation = 'pulse 0.5s ease';
+            setTimeout(() => elemento.style.animation = '', 500);
+        }
+    });
+
+    renderizarListaAdmin(objetos);
+};
+
+const renderizarListaAdmin = (objetos = getListaObjetos()) => {
+    const container = getElement('#objects-list');
+    if (!container) return;
+
+    // Aplicar filtros
+    const searchTerm = getElement('#admin-search')?.value.toLowerCase() || '';
+    const statusFilter = getElement('#admin-filter-status')?.value;
+
+    const objetosFiltrados = objetos.filter(objeto => {
+        const matchSearch = !searchTerm || 
+            objeto.titulo.toLowerCase().includes(searchTerm) ||
+            objeto.categoria.toLowerCase().includes(searchTerm) ||
+            objeto.local.toLowerCase().includes(searchTerm);
+        
+        const matchStatus = !statusFilter || getStatusObjeto(objeto.dataExpiracao) === statusFilter;
+        
+        return matchSearch && matchStatus;
+    });
+
+    if (objetosFiltrados.length === 0) {
+        container.innerHTML = '<div class="no-objects">Nenhum objeto encontrado com os filtros atuais.</div>';
+        return;
+    }
+
+    container.innerHTML = objetosFiltrados.map(objeto => {
+        const status = getStatusObjeto(objeto.dataExpiracao);
+        const diasRestantes = Math.ceil((new Date(objeto.dataExpiracao) - new Date()) / 86400000);
+        
+        return `
+            <div class="object-admin-card ${status} interactive">
+                <div class="object-admin-image">
+                    <img src="${objeto.fotoBase64 || 'placeholder-default.jpg'}" 
+                         alt="Foto de ${objeto.titulo}" loading="lazy"
+                         onerror="this.src='placeholder-default.jpg'">
+                </div>
+                <div class="object-admin-info">
+                    <h4>${objeto.titulo}</h4>
+                    <p><strong>Categoria:</strong> ${objeto.categoria || 'Não especificada'}</p>
+                    <p><strong>Local:</strong> ${objeto.local}</p>
+                    <p><strong>Contatos:</strong> ${objeto.contato ? 'WhatsApp' : ''}${objeto.contato && objeto.instagram ? ', ' : ''}${objeto.instagram ? 'Instagram' : ''}</p>
+                    <p><strong>Registrado em:</strong> ${objeto.dataRegistro}</p>
+                    <p><strong>Expira em:</strong> ${objeto.dataExpiracao}</p>
+                    <span class="status ${status}">
+                        ${status === 'expirado' ? '❌ Expirado' : 
+                          status === 'expirando' ? `⚠️ Expira em ${diasRestantes} dias` : '✅ Ativo'}
+                    </span>
+                </div>
+                <div class="object-admin-actions">
+                    <button onclick="excluirObjetoAdmin(${objeto.id})" class="btn btn-danger btn-small">
+                        🗑️ Excluir
+                    </button>
+                    <button onclick="verDetalhesObjeto(${objeto.id})" class="btn btn-primary btn-small">
+                        👀 Ver Detalhes
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+};
+
+// Funções globais para admin
+window.excluirObjetoAdmin = (id) => {
+    if (confirm('Tem certeza que deseja excluir permanentemente este objeto?')) {
+        const objetos = getListaObjetos();
+        const objetosAtualizados = objetos.filter(obj => obj.id !== id);
+        
+        if (salvarListaObjetos(objetosAtualizados)) {
+            alert('✅ Objeto excluído com sucesso!');
+            carregarDadosAdmin();
+        } else {
+            alert('❌ Erro ao excluir objeto.');
+        }
+    }
+};
+
+window.verDetalhesObjeto = (id) => {
+    window.open(`detalhe.html?id=${id}`, '_blank');
+};
+
+const limparObjetosExpiradosAdmin = () => {
+    if (confirm('Deseja remover todos os objetos expirados do sistema?\n\nEsta ação não pode ser desfeita.')) {
+        const objetosAtualizados = limparObjetosExpirados();
+        alert(`✅ ${objetosAtualizados.length} objetos ativos no sistema.`);
+        carregarDadosAdmin();
+    }
+};
+
+const exportarDadosAdmin = () => {
+    try {
+        const objetos = getListaObjetos();
+        const dataStr = JSON.stringify(objetos, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `backup-objetos-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        
+        alert('📥 Backup exportado com sucesso!');
+    } catch (error) {
+        alert('❌ Erro ao exportar backup.');
     }
 };
 
 // =========================================================
-// INICIALIZAÇÃO GERAL
+// INICIALIZAÇÃO E OTIMIZAÇÕES GLOBAIS
+// =========================================================
+
+const initMobileOptimizations = () => {
+    if (!isMobile()) return;
+
+    // Otimizações de performance para mobile
+    let scrollTimeout;
+    window.addEventListener('scroll', throttle(() => {
+        document.body.classList.add('stop-animations-during-scroll');
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            document.body.classList.remove('stop-animations-during-scroll');
+        }, 100);
+    }), { passive: true });
+
+    // Prevenir zoom em inputs
+    document.addEventListener('touchstart', (e) => {
+        if (e.touches.length > 1) e.preventDefault();
+    }, { passive: false });
+
+    // Lazy loading para imagens
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(img);
+                    }
+                }
+            });
+        });
+
+        document.querySelectorAll('img[data-src]').forEach(img => {
+            imageObserver.observe(img);
+        });
+    }
+};
+
+const initInteractiveElements = () => {
+    // Hover effects otimizados
+    document.addEventListener('mouseover', (e) => {
+        const interactive = e.target.closest('.interactive');
+        if (interactive) {
+            interactive.classList.add('hovered');
+        }
+    }, { passive: true });
+
+    document.addEventListener('mouseout', (e) => {
+        const interactive = e.target.closest('.interactive');
+        if (interactive) {
+            interactive.classList.remove('hovered');
+        }
+    }, { passive: true });
+};
+
+// =========================================================
+// INICIALIZAÇÃO PRINCIPAL
 // =========================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    const caminho = window.location.pathname;
+    // Limpar cache do DOM após 5 minutos
+    setTimeout(() => domCache.clear(), 300000);
 
-    // Executar limpeza de objetos expirados em todas as páginas
+    // Inicializações básicas
     limparObjetosExpirados();
+    initMobileOptimizations();
+    initInteractiveElements();
 
-    // Configurar funcionalidades específicas de cada página
-    if (caminho.includes('registrar.html')) {
-        configurarRegistro();
-    } else if (caminho.includes('buscar.html')) {
-        configurarBusca();
-    } else if (caminho.includes('detalhe.html')) {
-        configurarDetalheEExclusao();
-    } else if (caminho.includes('admin.html')) {
-        configurarAdministracao();
+    // Roteamento de páginas
+    const paginaAtual = window.location.pathname.split('/').pop();
+    
+    const configuradores = {
+        'registrar.html': configurarRegistro,
+        'buscar.html': configurarBusca,
+        'detalhe.html': configurarDetalheEExclusao,
+        'admin.html': configurarAdministracao
+    };
+
+    const configurador = configuradores[paginaAtual];
+    if (configurador) {
+        configurador();
     }
-    // Para index.html e sobre.html, apenas as funções globais de scroll são usadas
+
+    console.log('✅ Sistema Achados e Perdidos carregado e otimizado');
 });
+
+// Service Worker para cache (opcional)
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => console.log('SW registered: ', registration))
+            .catch(registrationError => console.log('SW registration failed: ', registrationError));
+    });
+}

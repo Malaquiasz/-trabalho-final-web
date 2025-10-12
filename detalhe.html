@@ -4,92 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes do Objeto | Achados e Perdidos Local</title>
-    <link rel="stylesheet" href="/css/estilo.css">
+    <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
-    <!-- Indicadores de Scroll -->
-    <div class="scroll-indicator scroll-down" onclick="scrollToContent()">
-        <span>↓</span>
-        <div class="tooltip">Clique aqui para rolar para baixo e ver informações de contato</div>
-    </div>
-    <div class="scroll-indicator scroll-up" onclick="scrollToTop()">
-        <span>↑</span>
-        <div class="tooltip">Clique aqui para voltar ao topo da página</div>
-    </div>
-
     <div class="page-container">
         <header class="site-header">
-        <div class="header-top">
-            <div class="logo-area">
-                <div class="logo-box">
-                    <div class="search-icon">🔍</div>
-                    <div class="pulse-ring"></div>
+            <div class="header-top">
+                <div class="logo-area">
+                    <div class="logo-box">
+                        <div class="search-icon" aria-hidden="true">🔍</div>
+                        <div class="pulse-ring" aria-hidden="true"></div>
+                    </div>
+                    <div class="title-container">
+                        <h1 class="main-title">Achados e Perdidos</h1>
+                        <p class="tagline">Conectando pessoas aos seus objetos perdidos</p>
+                    </div>
                 </div>
-                <div class="title-container">
-                    <h1 class="main-title">Achados e Perdidos</h1>
-                    <p class="tagline">Conectando pessoas aos seus objetos perdidos</p>
+                <div class="logo-3d-container">
+                    <img src="imgs/IF-logo.png" alt="Logo institucional do IFNMG Campus Salinas" class="if-logo-3d" loading="lazy">
                 </div>
             </div>
-            <div class="logo-3d-container">
-                <img src="imgs/IF-logo.png" alt="Logo IF" class="if-logo-3d">
-                <div class="logo-reflection"></div>
+            <div class="header-bottom">
+                <nav role="navigation" aria-label="Menu principal">
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="buscar.html">Perdi!</a></li>
+                        <li><a href="registrar.html">Encontrei!</a></li>
+                        <li><a href="sobre.html">Sobre</a></li>
+                    </ul>
+                </nav>
             </div>
-        </div>
-        <div class="header-bottom">
-            <nav role="navigation">
-                <ul>
-                    <li><a href="index.html">Início</a></li>
-                    <li><a href="buscar.html">Perdi!</a></li>
-                    <li><a href="registrar.html">Encontrei!</a></li>
-                    <li><a href="sobre.html">Sobre</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
+        </header>
+<section class="instruction-note global-tip" role="alert" aria-live="polite">
+            <p>💡 <strong>Dica:</strong> Role a tela para baixo para ver mais opções ou use os botões de navegação acima.</p>
+        </section>
         <main class="object-detail-page" role="main">
-            <a href="buscar.html" class="back-link interactive">← Voltar para a Busca</a>
+            <a href="buscar.html" class="back-link interactive" aria-label="Voltar para a página de busca">← Voltar para a Busca</a>
 
-            <section class="object-presentation interactive">
+            <section class="object-presentation interactive" aria-labelledby="detalhes-objeto">
                 <div class="object-media">
-                    <img id="objeto-imagem" src="placeholder-default.jpg" alt="Foto do objeto encontrado" loading="lazy">
+                    <img id="objeto-imagem" src="placeholder-default.jpg" alt="Foto do objeto encontrado" loading="lazy" aria-describedby="imagem-help">
+                    <small id="imagem-help" class="sr-only">Imagem do objeto. Se não carregar, use a descrição abaixo.</small>
                 </div>
 
                 <div class="object-details">
-                    <h2>... Título do Objeto (JS) ...</h2>
-                    
-                    <div class="key-info interactive">
-                        <p><strong>Categoria:</strong> (JS)</p>
-                        <p><strong>Local Encontrado:</strong> (JS)</p>
-                        <p><strong>Data do Registro:</strong> (JS)</p>
-                        <p><strong>Data de Expiração:</strong> (JS)</p>
+                    <h2 id="detalhes-objeto">Título do Objeto</h2>
+
+                    <div class="key-info interactive" role="region" aria-labelledby="info-chave">
+                        <h3 id="info-chave" class="sr-only">Informações principais do objeto</h3>
+                        <p id="categoria-info"><strong>Categoria:</strong> Carregando...</p>
+                        <p id="local-info"><strong>Local Encontrado:</strong> Carregando...</p>
+                        <p id="data-registro-info"><strong>Data do Registro:</strong> Carregando...</p>
+                        <p id="data-expiracao-info"><strong>Data de Expiração:</strong> Carregando...</p>
                     </div>
 
-                    <div class="description-section interactive">
-                        <h3>Descrição do Objeto</h3>
-                        <p>... Descrição Detalhada (JS) ...</p>
+                    <div class="description-section interactive" role="region" aria-labelledby="descricao-titulo">
+                        <h3 id="descricao-titulo">Descrição do Objeto</h3>
+                        <p id="descricao-info">Carregando descrição...</p>
                     </div>
-                    
-                    <div class="contact-action-box interactive">
-                        <h3>Acho que é meu! Como recuperar?</h3>
+
+                    <div class="contact-action-box interactive" role="region" aria-labelledby="contato-titulo">
+                        <h3 id="contato-titulo">Acho que é meu! Como recuperar?</h3>
                         <p>Entre em contato com a pessoa que encontrou seu objeto usando uma das opções abaixo:</p>
-                        
+
                         <div class="contact-options">
-                            <div id="whatsapp-option" class="contact-option interactive" style="display: none;">
-                                <a href="#" class="btn btn-primary contact-button" target="_blank" rel="noopener noreferrer">
+                            <div id="whatsapp-option" class="contact-option interactive" style="display: none;" role="region" aria-label="Opção de contato via WhatsApp">
+                                <a href="#" class="btn btn-primary contact-button" target="_blank" rel="noopener noreferrer" aria-label="Abrir WhatsApp para contato">
                                     📞 WhatsApp
                                 </a>
                                 <small>Contato direto via WhatsApp</small>
                             </div>
-                            
-                            <div id="instagram-option" class="contact-option interactive" style="display: none;">
-                                <a href="#" class="btn btn-primary contact-instagram" target="_blank" rel="noopener noreferrer">
+
+                            <div id="instagram-option" class="contact-option interactive" style="display: none;" role="region" aria-label="Opção de contato via Instagram">
+                                <a href="#" class="btn btn-primary contact-instagram" target="_blank" rel="noopener noreferrer" aria-label="Abrir Instagram para mensagem direta">
                                     📷 Instagram
                                 </a>
                                 <small>Enviar mensagem no Instagram</small>
                             </div>
                         </div>
-                        
+
                         <div class="contact-help">
                             <small>Escolha a opção de contato que preferir. Você será redirecionado para a plataforma escolhida.</small>
                         </div>
@@ -97,28 +90,28 @@
                 </div>
             </section>
 
-            <section class="exclusion-section interactive">
-                <h4>⚙️ Administração do Objeto</h4>
+            <section class="exclusion-section interactive" role="region" aria-labelledby="exclusao-titulo">
+                <h4 id="exclusao-titulo">⚙️ Administração do Objeto</h4>
                 <p>Se você registrou este item e ele já foi devolvido, use sua Palavra-Passe para removê-lo do sistema.</p>
-                <form>
-                    <input type="password" placeholder="Digite sua Palavra-Passe aqui">
-                    <button type="submit" class="btn btn-danger">🗑️ Excluir Objeto do Sistema</button>
+                <form id="exclusao-form" aria-label="Formulário de exclusão do objeto">
+                                        <input type="password" id="senha-exclusao" placeholder="Digite sua Palavra-Passe aqui" required aria-required="true" aria-describedby="senha-help">
+                    <button type="submit" class="btn btn-danger" aria-label="Excluir objeto do sistema">🗑️ Excluir Objeto do Sistema</button>
                 </form>
                 <div class="exclusion-help">
-                    <small>Esta ação é irreversível. Use apenas se o objeto já foi devolvido.</small>
+                    <small id="senha-help">Esta ação é irreversível. Use apenas se o objeto já foi devolvido. Digite a Palavra-Passe exata fornecida no registro.</small>
                 </div>
             </section>
         </main>
 
-        <footer class="site-footer">
+        <footer class="site-footer" role="contentinfo">
             <div class="footer-links">
-                <a href="buscar.html">Voltar para Busca</a>
-                <a href="index.html">Início</a>
+                <a href="buscar.html" aria-label="Voltar para página de busca">Voltar para Busca</a>
+                <a href="index.html" aria-label="Ir para página inicial">Início</a>
             </div>
             <p>&copy; 2025 Achados e Perdidos Local. Privacidade e Simplicidade.</p>
         </footer>
     </div>
 
-    <script src="script.js"></script>
+    <script defer src="script.js"></script>
 </body>
 </html>

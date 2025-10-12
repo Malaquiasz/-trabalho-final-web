@@ -4,177 +4,157 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Achados e Perdidos Local | Encontre ou Registre seu Objeto</title>
-    <link rel="stylesheet" href="/css/estilo.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilo.css">
 </head>
-
 <body>
-    <!-- Indicadores de Scroll -->
-    <div class="scroll-indicator scroll-down" onclick="scrollToContent()">
-        <span>↓</span>
-        <div class="tooltip">Clique aqui para rolar para baixo e ver mais conteúdo</div>
+    <div class="page-container">
+        <header class="site-header">
+            <div class="header-top">
+                <div class="logo-area">
+                    <div class="logo-box">
+                        <div class="search-icon" aria-hidden="true">🔍</div>
+                        <div class="pulse-ring" aria-hidden="true"></div>
+                    </div>
+                    <div class="title-container">
+                        <h1 class="main-title">Achados e Perdidos</h1>
+                        <p class="tagline">Conectando pessoas aos seus objetos perdidos</p>
+                    </div>
+                </div>
+                <div class="logo-3d-container">
+                    <img src="imgs/IF-logo.png" alt="Logo institucional do IFNMG Campus Salinas" class="if-logo-3d" loading="lazy">
+                </div>
+            </div>
+            <div class="header-bottom">
+                <nav role="navigation" aria-label="Menu principal">
+                    <ul>
+                        <li><a href="index.html" class="active" aria-current="page">Início</a></li>
+                        <li><a href="buscar.html">Perdi!</a></li>
+                        <li><a href="registrar.html">Encontrei!</a></li>
+                        <li><a href="sobre.html">Sobre</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <section class="instruction-note global-tip" role="alert" aria-live="polite">
+            <p>💡 <strong>Dica:</strong> Role a tela para baixo para ver mais opções ou use os botões de navegação acima.</p>
+        </section>
+
+        <main role="main">
+            <section class="how-it-works" aria-labelledby="como-usar">
+                <h2 id="como-usar">Como Usar Esta Plataforma</h2>
+                <p class="intro-text">Se você perdeu ou encontrou algo, siga estas instruções simples:</p>
+                <div class="steps-container">
+                    <article class="step interactive" role="article">
+                        <div class="step-number" aria-hidden="true">1</div>
+                        <h4>Escolha uma Ação</h4>
+                        <p>Clique em <strong>"Buscar Objeto Perdido"</strong> se você perdeu algo, ou em <strong>"Registrar Objeto Encontrado"</strong> se achou algo de outra pessoa.</p>
+                    </article>
+                    <article class="step interactive" role="article">
+                        <div class="step-number" aria-hidden="true">2</div>
+                        <h4>Preencha as Informações</h4>
+                        <p>Descreva o objeto com detalhes para facilitar a identificação.</p>
+                    </article>
+                                        <article class="step interactive" role="article">
+                        <div class="step-number" aria-hidden="true">3</div>
+                        <h4>Conecte-se</h4>
+                        <p>Nós mediamos o contato de forma segura para a devolução.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="main-actions" aria-labelledby="acoes-principais">
+                <h2 id="acoes-principais">O Que Você Deseja Fazer?</h2>
+                <div class="actions-container">
+                    <article class="action-card lost-item interactive" role="article">
+                        <div class="action-icon" aria-hidden="true">😟</div>
+                        <h3>Perdi um Objeto</h3>
+                        <p><strong>Ah não!</strong> Algo sumiu? Não se preocupe, vamos te ajudar a encontrar.</p>
+                        <div class="action-features">
+                            <p>✓ Busque em todos os locais</p>
+                            <p>✓ Filtre por categoria e lugar</p>
+                            <p>✓ Entre em contato facilmente</p>
+                        </div>
+                        <a href="buscar.html" class="btn btn-danger btn-large" aria-label="Ir para página de busca de objetos perdidos">🔍 Buscar Objeto Perdido</a>
+                        <div class="action-help">
+                            <small>Clique neste botão se você perdeu algo e quer encontrá-lo</small>
+                        </div>
+                    </article>
+
+                    <article class="action-card found-item interactive" role="article">
+                        <div class="action-icon" aria-hidden="true">😊</div>
+                        <h3>Encontrei um Objeto</h3>
+                        <p><strong>Ebaa!</strong> Achou algo? Ajude alguém a recuperar o que perdeu.</p>
+                        <div class="action-features">
+                            <p>✓ Registre em menos de 2 minutos</p>
+                            <p>✓ Adicione foto do objeto</p>
+                            <p>✓ Receba contato seguro</p>
+                        </div>
+                        <a href="registrar.html" class="btn btn-primary btn-large" aria-label="Ir para página de registro de objetos encontrados">📝 Registrar Objeto Encontrado</a>
+                        <div class="action-help">
+                            <small>Clique neste botão se encontrou um objeto e quer devolvê-lo</small>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="quick-categories" aria-labelledby="locais-comuns">
+                <h3 id="locais-comuns">Buscar em Locais Comuns</h3>
+                <p class="section-help">Clique em um local abaixo para buscar objetos perdidos específicos desse lugar:</p>
+                <div class="category-cards-container">
+                    <article class="card interactive" role="button" tabindex="0" onclick="searchByLocation('Biblioteca')" aria-label="Buscar objetos na Biblioteca">
+                        <div class="card-icon" aria-hidden="true">📚</div>
+                        <h4>Biblioteca</h4>
+                        <p>Livros, cadernos, materiais de estudo e outros itens encontrados na Biblioteca</p>
+                        <div class="card-link" aria-hidden="true">🔍 Buscar na Biblioteca</div>
+                    </article>
+                    <article class="card interactive" role="button" tabindex="0" onclick="searchByLocation('Salas de Aula')" aria-label="Buscar objetos nas Salas de Aula">
+                        <div class="card-icon" aria-hidden="true">🏫</div>
+                        <h4>Salas de Aula</h4>
+                        <p>Materiais, dispositivos e objetos pessoais deixados nas salas de aula</p>
+                        <div class="card-link" aria-hidden="true">🔍 Buscar nas Salas</div>
+                    </article>
+                    <article class="card interactive" role="button" tabindex="0" onclick="searchByLocation('Refeitório')" aria-label="Buscar objetos no Refeitório">
+                        <div class="card-icon" aria-hidden="true">🍽️</div>
+                        <h4>Refeitório</h4>
+                        <p>Garrafas, lancheiras, utensílios e outros itens do refeitório</p>
+                        <div class="card-link" aria-hidden="true">🔍 Buscar no Refeitório</div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="help-section" aria-labelledby="ajuda">
+                <div class="help-container">
+                    <h3 id="ajuda">Precisa de Ajuda?</h3>
+                    <div class="help-options">
+                        <article class="help-item interactive" role="article">
+                            <h4>📞 Dúvidas?</h4>
+                            <p>Entre em contato com a administração do local</p>
+                        </article>
+                        <article class="help-item interactive" role="article">
+                            <h4>🔒 Segurança</h4>
+                            <p>Seu contato é protegido e só será compartilhado quando necessário</p>
+                        </article>
+                        <article class="help-item interactive" role="article">
+                            <h4>⚡ Rápido</h4>
+                            <p>Registros são processados instantaneamente</p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer" role="contentinfo">
+            <div class="footer-links">
+                <a href="sobre.html" aria-label="Ir para página Sobre">Sobre</a>
+                <a href="buscar.html" aria-label="Ir para página Perdi!">Perdi!</a>
+                <a href="registrar.html" aria-label="Ir para página Encontrei!">Encontrei!</a>
+                <a href="admin.html" aria-label="Ir para página de Administração">Administração</a>
+            </div>
+            <p>&copy; 2025 Achados e Perdidos Local. Privacidade e Simplicidade.</p>
+        </footer>
     </div>
-    <div class="scroll-indicator scroll-up" onclick="scrollToTop()">
-        <span>↑</span>
-        <div class="tooltip">Clique aqui para voltar ao topo da página</div>
-    </div>
 
-    <header class="site-header">
-        <div class="header-top">
-            <div class="logo-area">
-                <div class="logo-box">
-                    <div class="search-icon">🔍</div>
-                    <div class="pulse-ring"></div>
-                </div>
-                <div class="title-container">
-                    <h1 class="main-title">Achados e Perdidos</h1>
-                    <p class="tagline">Conectando pessoas aos seus objetos perdidos</p>
-                </div>
-            </div>
-            <div class="logo-3d-container">
-                <img src="imgs/IF-logo.png" alt="Logo IF" class="if-logo-3d">
-                <div class="logo-reflection"></div>
-            </div>
-        </div>
-        <div class="header-bottom">
-            <nav role="navigation">
-                <ul>
-                    <li><a href="index.html" class="active">Início</a></li>
-                    <li><a href="buscar.html">Perdi!</a></li>
-                    <li><a href="registrar.html">Encontrei!</a></li>
-                    <li><a href="sobre.html">Sobre</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <main role="main">
-        <!-- Instruções de uso no topo -->
-        <section class="how-it-works">
-            <h2>Como Usar Esta Plataforma</h2>
-            <p class="intro-text">Se você perdeu ou encontrou algo, siga estas instruções simples:</p>
-            <div class="steps-container">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h4>Escolha uma Ação</h4>
-                    <p>Clique em <strong>"Buscar Objeto Perdido"</strong> se você perdeu algo, ou em <strong>"Registrar Objeto Encontrado"</strong> se achou algo de outra pessoa.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h4>Preencha as Informações</h4>
-                    <p>Descreva o objeto com detalhes para facilitar a identificação.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h4>Conecte-se</h4>
-                    <p>Nós mediamos o contato de forma segura para a devolução.</p>
-                </div>
-            </div>
-            <div class="instruction-note">
-                <p>💡 <strong>Dica:</strong> Role a tela para baixo para ver mais opções ou use os botões de navegação acima.</p>
-            </div>
-        </section>
-
-        <!-- Seção de ações principais dividida -->
-        <section class="main-actions">
-            <h2>O Que Você Deseja Fazer?</h2>
-            <div class="actions-container">
-                <div class="action-card lost-item">
-                    <div class="action-icon">😟</div>
-                    <h3>Perdi um Objeto</h3>
-                    <p><strong>Ah não!</strong> Algo sumiu? Não se preocupe, vamos te ajudar a encontrar.</p>
-                    <div class="action-features">
-                        <p>✓ Busque em todos os locais</p>
-                        <p>✓ Filtre por categoria e lugar</p>
-                        <p>✓ Entre em contato facilmente</p>
-                    </div>
-                    <a href="buscar.html" class="btn btn-danger btn-large">
-                        🔍 Buscar Objeto Perdido
-                    </a>
-                    <div class="action-help">
-                        <small>Clique neste botão se você perdeu algo e quer encontrá-lo</small>
-                    </div>
-                </div>
-
-                <div class="action-card found-item">
-                    <div class="action-icon">😊</div>
-                    <h3>Encontrei um Objeto</h3>
-                    <p><strong>Ebaa!</strong> Achou algo? Ajude alguém a recuperar o que perdeu.</p>
-                    <div class="action-features">
-                        <p>✓ Registre em menos de 2 minutos</p>
-                        <p>✓ Adicione foto do objeto</p>
-                        <p>✓ Receba contato seguro</p>
-                    </div>
-                    <a href="registrar.html" class="btn btn-primary btn-large">
-                        📝 Registrar Objeto Encontrado
-                    </a>
-                    <div class="action-help">
-                        <small>Clique neste botão se encontrou um objeto e quer devolvê-lo</small>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Seção de locais comuns com funcionalidade real -->
-        <section class="quick-categories">
-            <h3>Buscar em Locais Comuns</h3>
-            <p class="section-help">Clique em um local abaixo para buscar objetos perdidos específicos desse lugar:</p>
-            <div class="category-cards-container">
-                <div class="card" onclick="searchByLocation('Biblioteca')">
-                    <div class="card-icon">📚</div>
-                    <h4>Biblioteca</h4>
-                    <p>Livros, cadernos, materiais de estudo e outros itens encontrados na Biblioteca</p>
-                    <div class="card-link">🔍 Buscar na Biblioteca</div>
-                </div>
-                <div class="card" onclick="searchByLocation('Salas de Aula')">
-                    <div class="card-icon">🏫</div>
-                    <h4>Salas de Aula</h4>
-                    <p>Materiais, dispositivos e objetos pessoais deixados nas salas de aula</p>
-                    <div class="card-link">🔍 Buscar nas Salas</div>
-                </div>
-                <div class="card" onclick="searchByLocation('Refeitório')">
-                    <div class="card-icon">🍽️</div>
-                    <h4>Refeitório</h4>
-                    <p>Garrafas, lancheiras, utensílios e outros itens do refeitório</p>
-                    <div class="card-link">🔍 Buscar no Refeitório</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Nova seção de ajuda adicional -->
-        <section class="help-section">
-            <div class="help-container">
-                <h3>Precisa de Ajuda?</h3>
-                <div class="help-options">
-                    <div class="help-item">
-                        <h4>📞 Dúvidas?</h4>
-                        <p>Entre em contato com a administração do local</p>
-                    </div>
-                    <div class="help-item">
-                        <h4>🔒 Segurança</h4>
-                        <p>Seu contato é protegido e só será compartilhado quando necessário</p>
-                    </div>
-                    <div class="help-item">
-                        <h4>⚡ Rápido</h4>
-                        <p>Registros são processados instantaneamente</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="site-footer">
-        <div class="footer-links">
-            <a href="sobre.html">Sobre</a>
-            <a href="buscar.html">Perdi!</a>
-            <a href="registrar.html">Encontrei!</a>
-            <a href="admin.html">Administração</a>
-        </div>
-        <p>&copy; 2025 Achados e Perdidos Local. Privacidade e Simplicidade.</p>
-    </footer>
-
-    <script src="script.js"></script>
+    <script defer src="script.js"></script>
 </body>
 </html>
