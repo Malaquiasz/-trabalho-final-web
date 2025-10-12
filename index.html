@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/estilo.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -33,7 +33,10 @@
                     <p class="tagline">Conectando pessoas aos seus objetos perdidos</p>
                 </div>
             </div>
-            <img src="imgs/IF-logo.png" alt="Logo IF" class="if-logo rotating-logo">
+            <div class="logo-3d-container">
+                <img src="imgs/IF-logo.png" alt="Logo IF" class="if-logo-3d">
+                <div class="logo-reflection"></div>
+            </div>
         </div>
         <div class="header-bottom">
             <nav role="navigation">
@@ -49,21 +52,21 @@
 
     <main role="main">
         <!-- Instruções de uso no topo -->
-        <section class="how-it-works interactive">
+        <section class="how-it-works">
             <h2>Como Usar Esta Plataforma</h2>
             <p class="intro-text">Se você perdeu ou encontrou algo, siga estas instruções simples:</p>
             <div class="steps-container">
-                <div class="step interactive">
+                <div class="step">
                     <div class="step-number">1</div>
                     <h4>Escolha uma Ação</h4>
                     <p>Clique em <strong>"Buscar Objeto Perdido"</strong> se você perdeu algo, ou em <strong>"Registrar Objeto Encontrado"</strong> se achou algo de outra pessoa.</p>
                 </div>
-                <div class="step interactive">
+                <div class="step">
                     <div class="step-number">2</div>
                     <h4>Preencha as Informações</h4>
                     <p>Descreva o objeto com detalhes para facilitar a identificação.</p>
                 </div>
-                <div class="step interactive">
+                <div class="step">
                     <div class="step-number">3</div>
                     <h4>Conecte-se</h4>
                     <p>Nós mediamos o contato de forma segura para a devolução.</p>
@@ -78,7 +81,7 @@
         <section class="main-actions">
             <h2>O Que Você Deseja Fazer?</h2>
             <div class="actions-container">
-                <div class="action-card lost-item interactive">
+                <div class="action-card lost-item">
                     <div class="action-icon">😟</div>
                     <h3>Perdi um Objeto</h3>
                     <p><strong>Ah não!</strong> Algo sumiu? Não se preocupe, vamos te ajudar a encontrar.</p>
@@ -95,7 +98,7 @@
                     </div>
                 </div>
 
-                <div class="action-card found-item interactive">
+                <div class="action-card found-item">
                     <div class="action-icon">😊</div>
                     <h3>Encontrei um Objeto</h3>
                     <p><strong>Ebaa!</strong> Achou algo? Ajude alguém a recuperar o que perdeu.</p>
@@ -119,19 +122,19 @@
             <h3>Buscar em Locais Comuns</h3>
             <p class="section-help">Clique em um local abaixo para buscar objetos perdidos específicos desse lugar:</p>
             <div class="category-cards-container">
-                <div class="card interactive" onclick="searchByLocation('Biblioteca')">
+                <div class="card" onclick="searchByLocation('Biblioteca')">
                     <div class="card-icon">📚</div>
                     <h4>Biblioteca</h4>
                     <p>Livros, cadernos, materiais de estudo e outros itens encontrados na Biblioteca</p>
                     <div class="card-link">🔍 Buscar na Biblioteca</div>
                 </div>
-                <div class="card interactive" onclick="searchByLocation('Salas de Aula')">
+                <div class="card" onclick="searchByLocation('Salas de Aula')">
                     <div class="card-icon">🏫</div>
                     <h4>Salas de Aula</h4>
                     <p>Materiais, dispositivos e objetos pessoais deixados nas salas de aula</p>
                     <div class="card-link">🔍 Buscar nas Salas</div>
                 </div>
-                <div class="card interactive" onclick="searchByLocation('Refeitório')">
+                <div class="card" onclick="searchByLocation('Refeitório')">
                     <div class="card-icon">🍽️</div>
                     <h4>Refeitório</h4>
                     <p>Garrafas, lancheiras, utensílios e outros itens do refeitório</p>
@@ -141,19 +144,19 @@
         </section>
 
         <!-- Nova seção de ajuda adicional -->
-        <section class="help-section interactive">
+        <section class="help-section">
             <div class="help-container">
                 <h3>Precisa de Ajuda?</h3>
                 <div class="help-options">
-                    <div class="help-item interactive">
+                    <div class="help-item">
                         <h4>📞 Dúvidas?</h4>
                         <p>Entre em contato com a administração do local</p>
                     </div>
-                    <div class="help-item interactive">
+                    <div class="help-item">
                         <h4>🔒 Segurança</h4>
                         <p>Seu contato é protegido e só será compartilhado quando necessário</p>
                     </div>
-                    <div class="help-item interactive">
+                    <div class="help-item">
                         <h4>⚡ Rápido</h4>
                         <p>Registros são processados instantaneamente</p>
                     </div>

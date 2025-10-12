@@ -1,4 +1,4 @@
-/* estilo.css - Versão Completa Aprimorada com Animações e Detalhes em Azul */
+/* estilo.css - Versão Completa Aprimorada com Animações 3D Realistas */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Slab:wght@700&display=swap');
 
 :root {
@@ -102,9 +102,27 @@ body {
     50% { box-shadow: 0 0 20px var(--cor-primaria), 0 0 30px var(--cor-primaria-escura); }
 }
 
-@keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+@keyframes rotate-z-3d {
+    0% { 
+        transform: rotateZ(0deg) scale(1);
+        
+    }
+    25% { 
+        transform: rotateZ(90deg) scale(1.05);
+        
+    }
+    50% { 
+        transform: rotateZ(180deg) scale(1.1);
+        
+    }
+    75% { 
+        transform: rotateZ(270deg) scale(1.05);
+        
+    }
+    100% { 
+        transform: rotateZ(360deg) scale(1);
+        
+    }
 }
 
 @keyframes shake {
@@ -129,25 +147,124 @@ body {
     to { opacity: 1; transform: translateX(0); }
 }
 
-@keyframes typewriter {
-    from { width: 0; }
-    to { width: 100%; }
+/* ========== ANIMAÇÕES 3D REALISTAS ========== */
+@keyframes rotate-3d-realistic {
+    0% { 
+        transform: perspective(1000px) rotateY(0deg) rotateX(5deg) translateZ(0);
+        
+    }
+    25% { 
+        transform: perspective(1000px) rotateY(90deg) rotateX(10deg) translateZ(20px);
+        
+    }
+    50% { 
+        transform: perspective(1000px) rotateY(180deg) rotateX(5deg) translateZ(30px);
+        
+    }
+    75% { 
+        transform: perspective(1000px) rotateY(270deg) rotateX(10deg) translateZ(20px);
+        
+    }
+    100% { 
+        transform: perspective(1000px) rotateY(360deg) rotateX(5deg) translateZ(0);
+        
+    }
 }
 
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+@keyframes float-3d-depth {
+    0%, 100% { 
+        transform: perspective(1000px) rotateY(0deg) translateZ(0) translateY(0);
+    }
+    25% { 
+        transform: perspective(1000px) rotateY(15deg) translateZ(15px) translateY(-5px);
+    }
+    50% { 
+        transform: perspective(1000px) rotateY(0deg) translateZ(25px) translateY(-8px);
+    }
+    75% { 
+        transform: perspective(1000px) rotateY(-15deg) translateZ(15px) translateY(-5px);
+    }
 }
 
-/* ========== LOGO GIRATÓRIA ========== */
-.rotating-logo {
-    animation: rotate 20s linear infinite;
-    transition: var(--transicao-padrao);
+
+
+/* ========== LOGO COM ROTAÇÃO 3D REALISTA ========== */
+.logo-3d-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.rotating-logo:hover {
-    animation-duration: 5s;
-    filter: brightness(1.1) drop-shadow(0 0 10px var(--cor-azul-detalhe-claro));
+.if-logo-3d {
+    height: 70px;
+    width: auto;
+    border-radius: 16px;
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    animation: 
+        rotate-3d-realistic 12s ease-in-out infinite;
+    object-fit: contain;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    padding: 0.6rem;
+    border: 3px solid var(--cor-primaria);
+    transform-style: preserve-3d;
+    position: relative;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.if-logo-3d::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, var(--cor-primaria), var(--cor-azul-detalhe-claro), var(--cor-primaria));
+    border-radius: 18px;
+    z-index: -1;
+    opacity: 0.7;
+    animation: rotate-3d-realistic 12s ease-in-out infinite reverse;
+    filter: blur(5px);
+}
+
+.if-logo-3d::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    border-radius: 13px;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.if-logo-3d:hover {
+    animation: 
+        float-3d-depth 3s ease-in-out infinite;
+    transform: scale(1.15);
+    z-index: 1001;
+}
+
+.logo-reflection {
+    position: absolute;
+    width: 60%;
+    height: 30%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+    top: 10%;
+    left: 20%;
+    border-radius: 50%;
+    transform: rotateX(60deg) rotateZ(45deg);
+    z-index: 2;
+    pointer-events: none;
+    filter: blur(2px);
+    animation: float-3d-depth 3s ease-in-out infinite reverse;
 }
 
 /* ========== ELEMENTOS INTERATIVOS APRIMORADOS ========== */
@@ -286,7 +403,7 @@ body {
     position: relative;
     backdrop-filter: blur(10px);
     animation: slideInHeader 0.8s ease-out;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .site-header::before {
@@ -319,32 +436,15 @@ body {
     padding: 1.5rem 2rem;
     background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(236,240,241,0.9) 100%);
     position: relative;
-}
-
-/* Logo IF com animação */
-.if-logo {
-    height: 70px;
-    width: auto;
-    border-radius: 12px;
-    box-shadow: var(--sombra-card);
-    transition: var(--transicao-padrao);
-    animation: fadeIn 0.8s ease-out;
-    object-fit: contain;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 0.5rem;
-    border: 2px solid transparent;
-    animation: colorShift 3s infinite;
-}
-
-.if-logo:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(39, 174, 96, 0.3), 0 0 15px rgba(52, 152, 219, 0.3);
+    z-index: 999;
 }
 
 .logo-area {
     display: flex;
     align-items: center;
     gap: 1.5rem;
+    position: relative;
+    z-index: 998;
 }
 
 .logo-box {
@@ -430,6 +530,7 @@ body {
     backdrop-filter: blur(10px);
     border-top: 1px solid var(--cor-borda);
     position: relative;
+    z-index: 997;
 }
 
 .header-bottom nav ul {
@@ -2209,8 +2310,7 @@ main {
         gap: 1rem;
         text-align: center;
     }
-    .if-logo {
-        height: 60px;
+    .logo-3d-container {
         align-self: center;
     }
     
@@ -2478,9 +2578,14 @@ main {
         min-height: 45px;
     }
     
-    .if-logo {
-        height: 45px;
-        padding: 0.3rem;
+    .logo-3d-container {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .if-logo-3d {
+        height: 50px;
+        padding: 0.4rem;
     }
 }
 
