@@ -20,7 +20,6 @@ CREATE TABLE Objeto (
     dataExpiracao DATE NOT NULL,
     foto VARCHAR(255),  -- Assumindo URL como VARCHAR
     palavraPasse VARCHAR(255) NOT NULL,
-    status VARCHAR(20) NOT NULL DEFAULT 'pendente',
     contatoInstagram VARCHAR(50),
     contatoWhatsapp VARCHAR(20),
     fk_Denuncia_id INTEGER
