@@ -1,3 +1,6 @@
 {
-    "liveServer.settings.port": 5505
+    "liveServer.settings.port": 5505,
+    "dataworkspace.excludedProjects": [
+        "trabalho-final-web/trabalho-final-web.sqlproj"
+    ]
 }

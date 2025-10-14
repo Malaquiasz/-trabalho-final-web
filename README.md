@@ -18,3 +18,8 @@ Trabalho final da disciplina de WEB
 ### Link Wireframe
 * https://www.figma.com/proto/6jpEt5NvJts6l3r2JaWKDd/Wireframe?node-id=1-21&t=3wBiT1v1btjqXcqd-0&scaling=contain&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A21
 
+### Link Modelo Conceitual database
+/workspaces/-trabalho-final-web/db/Conceitual-trabalhofinal-web.png
+
+### Link Modelo Lógico datadabase
+/workspaces/-trabalho-final-web/db/logico-trabalhoFinal-web.png
