@@ -260,6 +260,21 @@ main { flex: 1; padding: clamp(2rem, 5vw, 3rem) clamp(1rem, 4vw, 2rem); max-widt
 .back-link { color: var(--cor-primaria); text-decoration: none; margin-bottom: 2rem; display: inline-flex; align-items: center; gap: 8px; font-weight: 600; transition: var(--transicao-padrao); padding: 0.8rem 1.5rem; border-radius: 50px; background: rgba(39,174,96,0.1); border: 1px solid var(--cor-azul-sutil); will-change: transform; display: block; max-width: fit-content; }
 /* Continuação da seção PÁGINA DE DETALHES */
 .back-link:hover { gap: 12px; background: rgba(39,174,96,0.2); transform: scale(1.02); border-color: var(--cor-azul-detalhe-claro); }
+
+/* ========== SEÇÃO DE DENÚNCIA ========== */
+.report-section { background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); padding: clamp(2rem, 5vw, 2.5rem); border-radius: 16px; border-left: 5px solid var(--cor-secundaria); box-shadow: var(--sombra-card); margin-top: 2rem; border: 1px solid var(--cor-azul-sutil); contain: layout; }
+.report-section h4 { color: var(--cor-secundaria); margin-bottom: 1.2rem; font-size: clamp(1.2rem, 3vw, 1.4rem); font-weight: 600; }
+.report-section p { color: var(--cor-texto-claro); margin-bottom: 1.8rem; line-height: 1.6; font-size: clamp(0.9rem, 2vw, 1rem); }
+.report-section form { display: flex; flex-direction: column; gap: 1rem; }
+.report-section .form-group { margin-bottom: 0; }
+.report-section .form-group label { color: var(--cor-secundaria); font-weight: 600; }
+.report-section .form-group select { border-color: var(--cor-secundaria); }
+.report-section .form-group select:focus { border-color: var(--cor-secundaria); box-shadow: 0 0 0 3px rgba(231,76,60,0.2); }
+.report-section .form-group textarea { border-color: var(--cor-secundaria); resize: vertical; min-height: 80px; }
+.report-section .form-group textarea:focus { border-color: var(--cor-secundaria); box-shadow: 0 0 0 3px rgba(231,76,60,0.2); }
+.report-section .btn-danger { align-self: flex-start; padding: 0.6rem 1.2rem; font-size: 0.9rem; }
+.report-help { margin-top: 1rem; text-align: center; }
+.report-help small { color: var(--cor-texto-claro); font-style: italic; font-size: clamp(0.75rem, 1.5vw, 0.8rem); }
 .object-presentation { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 3.5rem); margin-bottom: 3.5rem; }
 @media (max-width: 768px) { .object-presentation { grid-template-columns: 1fr; gap: 2rem; } }
 .object-media { border-radius: 16px; overflow: hidden; box-shadow: var(--sombra-card); position: relative; aspect-ratio: 1 / 1; min-height: 300px; max-height: 500px; ; background: var(--cor-fundo-header); border: 2px solid var(--cor-azul-sutil); contain: paint; }
@@ -355,25 +370,44 @@ main { flex: 1; padding: clamp(2rem, 5vw, 3rem) clamp(1rem, 4vw, 2rem); max-widt
 .site-footer p { color: var(--cor-texto-claro); font-size: clamp(0.8rem, 2vw, 0.9rem); }
 
 /* ========== DICAS GLOBAIS (Classe Unificada) ========== */
-.global-tip { 
-    background: rgba(241,196,15,0.1); 
-    padding: clamp(1rem, 3vw, 1.5rem); 
-    border-radius: 12px; 
-    border-left: 4px solid var(--cor-destaque); 
-    margin: clamp(1rem, 3vw, 2rem) clamp(1rem, 4vw, 2rem) clamp(1.5rem, 4vw, 2rem); 
-    text-align: center; 
-    border: 1px solid var(--cor-azul-sutil); 
-    contain: layout; 
-    ; 
-    max-width: 1200px; 
-    margin-left: auto; 
-    margin-right: auto; 
+.global-tip {
+    background: rgba(241,196,15,0.1);
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border-radius: 12px;
+    border-left: 4px solid var(--cor-destaque);
+    margin: clamp(1rem, 3vw, 2rem) clamp(1rem, 4vw, 2rem) clamp(1.5rem, 4vw, 2rem);
+    text-align: center;
+    border: 1px solid var(--cor-azul-sutil);
+    contain: layout;
+    ;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
-.global-tip p { 
-    color: var(--cor-texto-padrao); 
-    margin: 0; 
-    font-size: clamp(0.9rem, 2.5vw, 1rem); 
-    font-weight: 600; 
+.global-tip p {
+    color: var(--cor-texto-padrao);
+    margin: 0;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    font-weight: 600;
+}
+
+/* ========== BADGE PARA NOTIFICAÇÕES ========== */
+.badge {
+    background: #ff4444;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-left: 5px;
+    min-width: 18px;
+    text-align: center;
+    display: inline-block;
+    animation: pulse 2s infinite;
+}
+
+.pulse-animation {
+    animation: pulse 2s infinite;
 }
 
 /* ========== RESPONSIVIDADE (Mobile-First: Clamp() para Escala, Breakpoints Escaláveis) ========== */

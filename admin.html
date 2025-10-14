@@ -32,7 +32,7 @@
                         <li><a href="buscar.html">Perdi!</a></li>
                         <li><a href="registrar.html">Encontrei!</a></li>
                         <li><a href="sobre.html">Sobre</a></li>
-                        <li><a href="admin.html" class="active" aria-current="page">Administração</a></li>
+                        <li><a href="admin.html" class="active" aria-current="page">Administração <span id="denuncias-badge" class="badge" style="display: none;"></span></a></li>
                     </ul>
                 </nav>
             </div>
@@ -113,6 +113,25 @@
 
                     <div class="objects-list" id="objects-list" aria-live="polite" aria-label="Lista de objetos administrativos">
                         <!-- Lista de objetos carregada dinamicamente via JS -->
+                    </div>
+                </div>
+
+                <div class="reports-management" role="region" aria-labelledby="reports-titulo">
+                    <h3 id="reports-titulo">🚨 Gerenciamento de Denúncias</h3>
+                    <div class="search-controls">
+                        <input type="text" id="reports-search" placeholder="🔍 Buscar denúncias por título do objeto ou motivo..." class="search-input" aria-label="Campo de busca de denúncias" aria-describedby="search-reports-help">
+                        <select id="reports-filter-status" aria-label="Filtrar denúncias por status" aria-describedby="filter-reports-help">
+                            <option value="">Todos os status</option>
+                            <option value="pendente">Pendente</option>
+                            <option value="analisada">Analisada</option>
+                            <option value="resolvida">Resolvida</option>
+                        </select>
+                        <small id="search-reports-help">Digite para buscar denúncias em tempo real. Filtros aplicados automaticamente.</small>
+                        <small id="filter-reports-help">Selecione status para filtrar a lista de denúncias.</small>
+                    </div>
+
+                    <div class="reports-list" id="reports-list" aria-live="polite" aria-label="Lista de denúncias administrativas">
+                        <!-- Lista de denúncias carregada dinamicamente via JS -->
                     </div>
                 </div>
             </div>
