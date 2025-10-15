@@ -497,62 +497,44 @@ const configurarExclusao = (objeto) => {
 };
 
 const configurarDenuncia = (objeto) => {
-    const formDenuncia = getElement('#report-form');
-    if (!formDenuncia) return;
+    const btnDenunciar = getElement('#btn-denunciar');
+    const denunciaMensagem = getElement('#denuncia-mensagem');
 
-    const reportReasonSelect = getElement('#report-reason');
-    const otherReasonContainer = getElement('#other-reason-container');
+    if (!btnDenunciar || !denunciaMensagem) return;
 
-    if (reportReasonSelect && otherReasonContainer) {
-        reportReasonSelect.addEventListener('change', () => {
-            otherReasonContainer.style.display = reportReasonSelect.value === 'outro' ? 'block' : 'none';
-        });
+    // Verificar status atual da denúncia no objeto
+    if (objeto.denuncia && objeto.statusDenuncia) {
+        denunciaMensagem.textContent = 'Status: Denúncia aceita - Objeto removido';
+        btnDenunciar.style.display = 'none';
+    } else if (objeto.denuncia && !objeto.statusDenuncia) {
+        denunciaMensagem.textContent = 'Status: Denúncia rejeitada';
+        btnDenunciar.style.display = 'none';
+    } else if (objeto.denuncia) {
+        denunciaMensagem.textContent = 'Status: Denúncia pendente de análise';
+        btnDenunciar.style.display = 'none';
+    } else {
+        denunciaMensagem.textContent = 'Status: Não denunciado';
+        btnDenunciar.style.display = 'block';
     }
 
-    formDenuncia.addEventListener('submit', (e) => {
-        e.preventDefault();
+    btnDenunciar.addEventListener('click', () => {
+        if (confirm('Tem certeza que deseja denunciar este objeto? A administração analisará a denúncia.')) {
+            // Atualizar o objeto diretamente
+            objeto.denuncia = true;
+            objeto.statusDenuncia = false; // Pendente
 
-        const motivo = reportReasonSelect?.value;
-        const outroMotivo = getElement('#other-reason')?.value?.trim();
+            // Salvar no localStorage
+            const objetos = getListaObjetos();
+            const index = objetos.findIndex(o => o.id === objeto.id);
+            if (index !== -1) {
+                objetos[index] = objeto;
+                salvarListaObjetos(objetos);
+            }
 
-        if (!motivo) {
-            alert('❌ Selecione um motivo para a denúncia.');
-            return;
+            alert('✅ Denúncia enviada com sucesso! A administração analisará em breve.');
+            denunciaMensagem.textContent = 'Status: Denúncia pendente de análise';
+            btnDenunciar.style.display = 'none';
         }
-
-        if (motivo === 'outro' && !outroMotivo) {
-            alert('❌ Descreva o motivo da denúncia.');
-            return;
-        }
-
-        const motivoFinal = motivo === 'outro' ? outroMotivo : motivo;
-
-        // Verificar se já existe denúncia pendente para este objeto
-        const denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
-        const denunciasPendentes = denuncias.filter(d =>
-            d.objetoId === objeto.id && d.status === 'pendente'
-        );
-
-        if (denunciasPendentes.length > 0) {
-            alert(`⚠️ Já existe uma denúncia pendente para este objeto.\n\nMotivo da denúncia existente: ${denunciasPendentes[0].motivo}\n\nA administração analisará a denúncia em breve.`);
-            return;
-        }
-
-        // Salvar nova denúncia
-        denuncias.push({
-            id: Date.now(),
-            objetoId: objeto.id,
-            titulo: objeto.titulo,
-            motivo: motivoFinal,
-            dataDenuncia: new Date().toISOString(),
-            status: 'pendente'
-        });
-
-        localStorage.setItem('denuncias', JSON.stringify(denuncias));
-
-        alert(`✅ Denúncia enviada com sucesso!\n\nMotivo: ${motivoFinal}\n\nA administração analisará a denúncia em breve.`);
-        formDenuncia.reset();
-        otherReasonContainer.style.display = 'none';
     });
 };
 
@@ -604,7 +586,6 @@ const configurarPainelAdmin = () => {
     // Configurar botões de ação
     const botoesAcao = {
         '#clean-expired-btn': limparObjetosExpiradosAdmin,
-        '#export-data-btn': exportarDadosAdmin,
         '#refresh-data-btn': carregarDadosAdmin
     };
 
@@ -642,46 +623,15 @@ const configurarPainelAdmin = () => {
 
 const carregarDadosAdmin = () => {
     const objetos = getListaObjetos();
-    const denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
-    const hoje = new Date().toISOString().split('T')[0];
 
-    const estatisticas = objetos.reduce((acc, obj) => {
-        const status = getStatusObjeto(obj.dataExpiracao);
-        acc.total++;
-        if (status === 'ativo') acc.ativos++;
-        if (status === 'expirando') acc.expirando++;
-        if (status === 'expirado') acc.expirados++;
-        return acc;
-    }, { total: 0, ativos: 0, expirando: 0, expirados: 0 });
-
-    // Adicionar estatísticas de denúncias
-    estatisticas.denunciasPendente = denuncias.filter(d => d.status === 'pendente').length;
-    estatisticas.denunciasAnalisada = denuncias.filter(d => d.status === 'analisada').length;
-    estatisticas.denunciasResolvida = denuncias.filter(d => d.status === 'resolvida').length;
+    // Contar denúncias pendentes para o badge
+    const denunciasPendente = objetos.filter(obj => obj.denuncia && !obj.statusDenuncia).length;
 
     // Atualizar badge de denúncias no menu
-    atualizarBadgeDenuncias(estatisticas.denunciasPendente);
-
-    // Atualizar estatísticas
-    const elementosEstatisticas = {
-        '#total-objects-count': estatisticas.total,
-        '#active-objects-count': estatisticas.ativos,
-        '#expired-soon-count': estatisticas.expirando,
-        '#expired-count': estatisticas.expirados
-    };
-
-    Object.entries(elementosEstatisticas).forEach(([seletor, valor]) => {
-        const elemento = getElement(seletor);
-        if (elemento) {
-            elemento.textContent = valor;
-            // Animação de contagem
-            elemento.style.animation = 'pulse 0.5s ease';
-            setTimeout(() => elemento.style.animation = '', 500);
-        }
-    });
+    atualizarBadgeDenuncias(denunciasPendente);
 
     renderizarListaAdmin(objetos);
-    renderizarListaDenunciasAdmin(denuncias);
+    renderizarListaDenunciasAdmin(objetos);
 };
 
 const atualizarBadgeDenuncias = (quantidade) => {
@@ -785,34 +735,9 @@ const limparObjetosExpiradosAdmin = () => {
     }
 };
 
-const exportarDadosAdmin = () => {
-    try {
-        const objetos = getListaObjetos();
-        const denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
-        const data = {
-            objetos: objetos,
-            denuncias: denuncias,
-            dataExportacao: new Date().toISOString()
-        };
-        const dataStr = JSON.stringify(data, null, 2);
-        const blob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
 
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `backup-completo-${new Date().toISOString().split('T')[0]}.json`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
 
-        alert('📥 Backup completo exportado com sucesso!');
-    } catch (error) {
-        alert('❌ Erro ao exportar backup.');
-    }
-};
-
-const renderizarListaDenunciasAdmin = (denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]')) => {
+const renderizarListaDenunciasAdmin = (objetos = getListaObjetos()) => {
     const container = getElement('#reports-list');
     if (!container) return;
 
@@ -820,12 +745,19 @@ const renderizarListaDenunciasAdmin = (denuncias = JSON.parse(localStorage.getIt
     const searchTerm = getElement('#reports-search')?.value.toLowerCase() || '';
     const statusFilter = getElement('#reports-filter-status')?.value;
 
-    const denunciasFiltradas = denuncias.filter(denuncia => {
-        const matchSearch = !searchTerm ||
-            denuncia.titulo.toLowerCase().includes(searchTerm) ||
-            denuncia.motivo.toLowerCase().includes(searchTerm);
+    const denunciasFiltradas = objetos.filter(objeto => {
+        if (!objeto.denuncia) return false;
 
-        const matchStatus = !statusFilter || denuncia.status === statusFilter;
+        const matchSearch = !searchTerm ||
+            objeto.titulo.toLowerCase().includes(searchTerm) ||
+            objeto.categoria.toLowerCase().includes(searchTerm);
+
+        let matchStatus = true;
+        if (statusFilter) {
+            if (statusFilter === 'pendente' && !(objeto.denuncia && !objeto.statusDenuncia)) matchStatus = false;
+            if (statusFilter === 'analisada' && !(objeto.denuncia && objeto.statusDenuncia === false)) matchStatus = false;
+            if (statusFilter === 'resolvida' && !(objeto.denuncia && objeto.statusDenuncia === true)) matchStatus = false;
+        }
 
         return matchSearch && matchStatus;
     });
@@ -835,44 +767,31 @@ const renderizarListaDenunciasAdmin = (denuncias = JSON.parse(localStorage.getIt
         return;
     }
 
-    // Agrupar denúncias por objetoId para mostrar apenas uma por objeto
-    const denunciasAgrupadas = {};
-    denunciasFiltradas.forEach(denuncia => {
-        const key = denuncia.objetoId || `sem-id-${denuncia.id}`;
-        if (!denunciasAgrupadas[key]) {
-            denunciasAgrupadas[key] = [];
+    container.innerHTML = denunciasFiltradas.map(objeto => {
+        let statusClass = 'expirado'; // Pendente
+        let statusText = '⏳ Pendente';
+        if (objeto.denuncia && objeto.statusDenuncia === false) {
+            statusClass = 'expirando'; // Rejeitada
+            statusText = '🔍 pendente';
+        } else if (objeto.denuncia && objeto.statusDenuncia === true) {
+            statusClass = 'ativo'; // Aceita
+            statusText = '✅ Aceita';
         }
-        denunciasAgrupadas[key].push(denuncia);
-    });
-
-    // Para cada grupo, mostrar apenas a denúncia mais recente
-    const denunciasUnicas = Object.values(denunciasAgrupadas).map(grupo => {
-        return grupo.sort((a, b) => new Date(b.dataDenuncia) - new Date(a.dataDenuncia))[0];
-    });
-
-    container.innerHTML = denunciasUnicas.map(denuncia => {
-        const dataFormatada = new Date(denuncia.dataDenuncia).toLocaleDateString('pt-BR');
-        const statusClass = denuncia.status === 'pendente' ? 'expirado' : denuncia.status === 'analisada' ? 'expirando' : 'ativo';
-        const totalDenuncias = denunciasAgrupadas[denuncia.objetoId || `sem-id-${denuncia.id}`].length;
 
         return `
             <div class="object-admin-card ${statusClass} interactive">
                 <div class="object-admin-info">
-                    <h4>Denúncia sobre: ${denuncia.titulo}</h4>
-                    <p><strong>Motivo:</strong> ${denuncia.motivo}</p>
-                    <p><strong>Data da Denúncia:</strong> ${dataFormatada}</p>
-                    <p><strong>ID do Objeto:</strong> ${denuncia.objetoId || 'N/A'}</p>
-                    ${totalDenuncias > 1 ? `<p><strong>Total de Denúncias:</strong> ${totalDenuncias}</p>` : ''}
-                    <span class="status ${statusClass}">
-                        ${denuncia.status === 'pendente' ? '⏳ Pendente' :
-                          denuncia.status === 'analisada' ? '🔍 Analisada' : '✅ Resolvida'}
-                    </span>
+                    <h4>Denúncia sobre: ${objeto.titulo}</h4>
+                    <p><strong>Categoria:</strong> ${objeto.categoria || 'Não especificada'}</p>
+                    <p><strong>Local:</strong> ${objeto.local}</p>
+                    <p><strong>ID do Objeto:</strong> ${objeto.id}</p>
+                    <span class="status ${statusClass}">${statusText}</span>
                 </div>
                 <div class="object-admin-actions">
-                    <button onclick="processarDenunciaRapida(${denuncia.id}, 'aprovar')" class="btn btn-success btn-small">
+                    <button onclick="processarDenunciaRapida(${objeto.id}, 'aprovar')" class="btn btn-success btn-small">
                         ✅ Aprovar
                     </button>
-                    <button onclick="processarDenunciaRapida(${denuncia.id}, 'rejeitar')" class="btn btn-warning btn-small">
+                    <button onclick="processarDenunciaRapida(${objeto.id}, 'rejeitar')" class="btn btn-warning btn-small">
                         ❌ Rejeitar
                     </button>
                 </div>
@@ -882,48 +801,22 @@ const renderizarListaDenunciasAdmin = (denuncias = JSON.parse(localStorage.getIt
 };
 
 // Funções globais para admin de denúncias
-window.alterarStatusDenuncia = (id, novoStatus) => {
-    const denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
-    const denunciaIndex = denuncias.findIndex(d => d.id === id);
-
-    if (denunciaIndex !== -1) {
-        denuncias[denunciaIndex].status = novoStatus;
-        localStorage.setItem('denuncias', JSON.stringify(denuncias));
-
-        const mensagens = {
-            'analisada': '🔍 Denúncia marcada como analisada.',
-            'resolvida': '✅ Denúncia aprovada! O objeto será removido automaticamente.'
-        };
-
-        alert(mensagens[novoStatus] || `✅ Status alterado para "${novoStatus}".`);
-        carregarDadosAdmin();
-    } else {
-        alert('❌ Denúncia não encontrada.');
-    }
-};
-
-
-
 window.processarDenunciaRapida = (id, acao) => {
-    const denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
-    const denunciaIndex = denuncias.findIndex(d => d.id === id);
+    const objetos = getListaObjetos();
+    const objetoIndex = objetos.findIndex(obj => obj.id === id);
 
-    if (denunciaIndex === -1) {
-        alert('❌ Denúncia não encontrada.');
+    if (objetoIndex === -1) {
+        alert('❌ Objeto não encontrado.');
         return;
     }
 
-    const denuncia = denuncias[denunciaIndex];
+    const objeto = objetos[objetoIndex];
 
     if (acao === 'aprovar') {
         // Aprovar denúncia e remover objeto
-        if (confirm(`⚠️ APROVAR DENÚNCIA\n\nObjeto: ${denuncia.titulo}\nMotivo: ${denuncia.motivo}\n\nO objeto será removido permanentemente. Continuar?`)) {
-            denuncias[denunciaIndex].status = 'resolvida';
-            localStorage.setItem('denuncias', JSON.stringify(denuncias));
-
+        if (confirm(`⚠️ APROVAR DENÚNCIA\n\nObjeto: ${objeto.titulo}\n\nO objeto será removido permanentemente. Continuar?`)) {
             // Remover objeto denunciado
-            const objetos = getListaObjetos();
-            const objetosAtualizados = objetos.filter(obj => obj.id !== denuncia.objetoId);
+            const objetosAtualizados = objetos.filter(obj => obj.id !== id);
             salvarListaObjetos(objetosAtualizados);
 
             alert('✅ Denúncia aprovada! Objeto removido com sucesso.');
@@ -931,9 +824,9 @@ window.processarDenunciaRapida = (id, acao) => {
         }
     } else if (acao === 'rejeitar') {
         // Rejeitar denúncia
-        if (confirm(`❌ REJEITAR DENÚNCIA\n\nObjeto: ${denuncia.titulo}\nMotivo: ${denuncia.motivo}\n\nA denúncia será marcada como analisada e rejeitada. Continuar?`)) {
-            denuncias[denunciaIndex].status = 'analisada';
-            localStorage.setItem('denuncias', JSON.stringify(denuncias));
+        if (confirm(`❌ REJEITAR DENÚNCIA\n\nObjeto: ${objeto.titulo}\n\nA denúncia será rejeitada e o objeto mantido. Continuar?`)) {
+            objeto.statusDenuncia = false; // Rejeitada
+            salvarListaObjetos(objetos);
 
             alert('❌ Denúncia rejeitada. Objeto mantido no sistema.');
             carregarDadosAdmin();
@@ -1004,6 +897,15 @@ const initInteractiveElements = () => {
 };
 
 // =========================================================
+// BUSCA POR LOCAIS COMUNS (Do Index)
+// =========================================================
+
+function searchByLocation(local) {
+    localStorage.setItem('filtroLocal', local);
+    window.location.href = 'buscar.html';
+}
+
+// =========================================================
 // INICIALIZAÇÃO PRINCIPAL
 // =========================================================
 
@@ -1018,7 +920,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Roteamento de páginas
     const paginaAtual = window.location.pathname.split('/').pop();
-    
+
     const configuradores = {
         'registrar.html': configurarRegistro,
         'buscar.html': configurarBusca,

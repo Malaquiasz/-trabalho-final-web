@@ -105,29 +105,10 @@
             <section class="report-section interactive" role="region" aria-labelledby="denuncia-titulo">
                 <h4 id="denuncia-titulo">🚨 Denunciar Objeto</h4>
                 <p>Se este objeto viola os termos de uso ou política de privacidade, você pode denunciá-lo para análise.</p>
-                <form id="report-form" aria-label="Formulário de denúncia do objeto">
-                    <div class="form-group">
-                        <label for="report-reason">Motivo da Denúncia:</label>
-                        <select id="report-reason" required aria-required="true" aria-describedby="report-help">
-                            <option value="">Selecione um motivo</option>
-                            <option value="divulgacao-info-pessoal">Divulgação de informações pessoais de terceiros</option>
-                            <option value="conteudo-adulto">Conteúdo adulto (+18)</option>
-                            <option value="conteudo-violento">Conteúdo violento ou imagens violentas</option>
-                            <option value="comentarios-ofensivos">Comentários ofensivos, bullying ou discriminação</option>
-                            <option value="discurso-odio">Discurso de ódio</option>
-                            <option value="spam">Spam ou publicidade indesejada</option>
-                            <option value="informacao-falsa">Informação falsa</option>
-                            <option value="violacao-direitos">Violação de direitos autorais</option>
-                            <option value="outro">Outro</option>
-                        </select>
-                        <small id="report-help">Escolha o motivo que melhor descreve o problema.</small>
-                    </div>
-                    <div class="form-group" id="other-reason-container" style="display: none;">
-                        <label for="other-reason">Descreva o motivo:</label>
-                        <textarea id="other-reason" rows="3" placeholder="Explique brevemente o motivo da denúncia..." maxlength="300"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-danger" aria-label="Enviar denúncia">🚨 Denunciar Objeto</button>
-                </form>
+                <div id="denuncia-status">
+                    <p id="denuncia-mensagem">Status: Não denunciado</p>
+                    <button id="btn-denunciar" class="btn btn-danger" aria-label="Denunciar objeto">🚨 Denunciar Objeto</button>
+                </div>
                 <div class="report-help">
                     <small>As denúncias são analisadas pela administração. Denúncias falsas podem resultar em restrições.</small>
                 </div>
