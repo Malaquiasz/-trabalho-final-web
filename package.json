@@ -1,0 +1,14 @@
+{
+  "name": "back-end-api",
+  "version": "1.0.0",
+  "description": "API para Achados e Perdidos Local",
+  "main": "server.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "Equipe Centaurus",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
