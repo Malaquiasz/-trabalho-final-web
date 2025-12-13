@@ -1,50 +1,93 @@
+# Plano de Integração Front-End com Back-End - Achados e Perdidos
 
-# TODO: Remover Animações e Efeitos Exagerados
+## Objetivos
+- Remover localStorage e integrar com back-end
+- Implementar CRUD completo para objetos
+- Usar Uploadcare para imagens
+- Seguir atividades #20-26 adaptadas para Achados e Perdidos
 
-## Tarefa Principal
-- Remover todas as animações e efeitos exagerados do CSS, deixando apenas 1 efeito sutil por elemento para destacá-lo.
+## Estrutura de Arquivos a Criar
 
-## Passos Detalhados
-- [x] Analisar keyframes existentes e remover a maioria, mantendo apenas básicos se necessário
-- [x] Simplificar efeitos de hover para apenas uma transição sutil (ex: mudança de cor ou opacidade)
-- [x] Remover animações múltiplas por elemento (ex: logo com spin, hover, active)
-- [x] Remover efeitos exagerados como scale, rotate, glow, pulse, bounce
-- [x] Manter transições básicas mas simplificadas
-- [x] Testar o site após mudanças para garantir funcionalidade
+```
+js/
+├── main.js           # Página inicial (atividade #20)
+├── objetos.js        # Listar objetos (atividade #22)
+├── verObjeto.js      # Ver detalhes do objeto (atividade #23)
+├── inserirObjeto.js  # Inserir objeto (atividade #25)
+└── editarObjeto.js   # Editar objeto (atividade #26)
+```
 
-## Plano de Implementação Aprovado
-- [x] Remover o container 3D do logo e efeitos de spin, simplificando para um logo básico
-- [x] Remover a animação do pulse-ring
-- [x] Remover todos os transforms de hover (translateY, scale, etc.) e manter apenas um efeito sutil por elemento (ex: mudança de cor ou opacidade)
-- [x] Remover propriedades 'will-change: transform'
-- [x] Simplificar transições para básicas apenas para efeitos sutis
-- [x] Garantir apenas um efeito sutil por elemento (ex: mudança de border-color no hover)
-- [x] Testar o site após mudanças para garantir funcionalidade
+## Back-end Info
+- URL: https://back-end-tf-web-silk.vercel.app
+- Uploadcare Key: f9f207f0bc99dda36d16
 
-## Arquivos Editados
-- css/estilo.css: Principal arquivo de estilos com animações
+## Passos do Plano
 
-## Alterações Realizadas
-### Efeitos Removidos/Simplificados:
-- ✅ Removido `pulse-ring` (elemento sem animação)
-- ✅ Removido todas as propriedades `will-change: transform`
-- ✅ Simplificado `transicao-padrao` para apenas `border-color` e `box-shadow`
-- ✅ Removido `transform: translateX(-50%)` do título de categorias
-- ✅ Removido `transform: translateY(-2px)` dos elementos de contato
-- ✅ Removido `filter: drop-shadow()` do ícone de busca
-- ✅ Removido `text-shadow` do título principal
-- ✅ Removido `backdrop-filter: blur()` do header
-- ✅ Removido `background-image` com múltiplos radial-gradients do body
-- ✅ Removido `will-change` dos números de step e feature-cards
-- ✅ Removido `transform: scale(1.05)` dos links do footer
-- ✅ Removido seção vazia `.pulse-animation`
-- ✅ Simplificado sombras (ex: `box-shadow: 0 8px 30px` → `0 2px 10px`)
 
-### Efeitos Mantidos (Sutis):
-- ✅ Mudança de `border-color` no hover
-- ✅ Transições básicas de 0.3s ease
-- ✅ Sombras sutis em cards e botões
-- ✅ Gradientes simples para fundos e elementos decorativos
+### 1. Atividade #20 - Front-End para API
+- [x] Criar js/main.js com integração básica
+- [x] Atualizar index.html se necessário
+- [x] Atualizar script.js se necessário 
 
-## Status
-- ✅ **CONCLUÍDO** - Todos os efeitos exagerados foram removidos ou simplificados
+### 2. Atividade #22 - [GET] /objetos
+- [x] Criar js/objetos.js
+- [x] Buscar e listar objetos do back-end
+- [x] Implementar filtros de busca
+
+### 3. Atividade #23 - [GET] /objetos/:id
+- [x] Criar js/verObjeto.js
+- [x] Visualizar detalhes de um objeto específico (usando detalhe.html)
+- [x] Gerenciar contatos (WhatsApp/Instagram)
+
+
+### 4. Atividade #24 - [DELETE] /objetos/:id
+- [x] Implementar exclusão de objetos integrada nos outros arquivos
+- [x] Validar palavra-passe
+- [x] Remover arquivo excluirObjeto.js desnecessário
+
+### 5. Atividade #25 - [POST] /objetos
+- [x] Criar js/inserirObjeto.js
+- [x] Uploadcare para imagens (registrar.html já configurado)
+- [x] Formulário de registro de objetos
+
+### 6. Atividade #26 - [PUT] /objetos/:id
+- [x] Criar js/editarObjeto.js
+- [x] Editar objetos existentes
+- [x] Validar palavra-passe
+
+
+### 7. Páginas HTML Necessárias
+- [x] Remover ver-objeto.html (usar apenas detalhe.html)
+- [x] Criar editar-objeto.html (edição)
+- [x] Atualizar registrar.html para usar Uploadcare
+
+
+### 8. CSS e Estilo
+- [x] Manter estilo atual
+- [x] Adicionar estilos para Uploadcare
+- [x] Responsividade
+
+### 9. Testes e Validação
+- [x] Testar todas as funcionalidades CRUD
+- [x] Verificar integração com back-end
+- [x] Validar Uploadcare
+- [x] Testar responsividade
+
+## ✅ Sistema Completo Integrado
+
+**Status**: Todas as atividades #20-#26 implementadas com sucesso!
+- ✅ API Base: `https://back-end-tf-web-silk.vercel.app`
+- ✅ Uploadcare Key: `f9f207f0bc99dda36d16`
+- ✅ Front-end totalmente integrado com back-end
+- ✅ LocalStorage removido
+- ✅ CRUD completo implementado
+- ✅ Uploadcare configurado
+- ✅ Páginas HTML atualizadas
+
+## APIs do Back-end
+- GET /objetos - Listar todos os objetos
+- GET /objetos/:id - Obter detalhes de um objeto
+- POST /objetos - Criar novo objeto
+- PUT /objetos/:id - Atualizar objeto
+- DELETE /objetos/:id - Excluir objeto
+- POST /objetos/:id/validar - Validar palavra-passe

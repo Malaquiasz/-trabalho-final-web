@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administração | Achados e Perdidos Local</title>
     <link rel="stylesheet" href="css/estilo.css">
 </head>
+
 <body>
 
     <div class="page-container">
@@ -21,7 +23,8 @@
                     </div>
                 </div>
                 <div class="logo-container">
-                    <img src="imgs/IF-logo.png" alt="Logo institucional do IFNMG Campus Salinas" class="if-logo" loading="lazy">
+                    <img src="imgs/IF-logo.png" alt="Logo institucional do IFNMG Campus Salinas" class="if-logo"
+                        loading="lazy">
                 </div>
             </div>
             <div class="header-bottom">
@@ -31,13 +34,13 @@
                         <li><a href="buscar.html">Perdi!</a></li>
                         <li><a href="registrar.html">Encontrei!</a></li>
                         <li><a href="sobre.html">Sobre</a></li>
-                        <li><a href="admin.html" class="active" aria-current="page">Administração <span id="denuncias-badge" class="badge" style="display: none;"></span></a></li>
                     </ul>
                 </nav>
             </div>
         </header>
-<section class="instruction-note global-tip" role="alert" aria-live="polite">
-            <p>💡 <strong>Dica:</strong> Role a tela para baixo para ver mais opções ou use os botões de navegação acima.</p>
+        <section class="instruction-note global-tip" role="alert" aria-live="polite">
+            <p>💡 <strong>Dica:</strong> Role a tela para baixo para ver mais opções ou use os botões de navegação
+                acima.</p>
         </section>
         <main class="admin-page" role="main">
             <div class="admin-login interactive" id="login-section" role="region" aria-labelledby="login-titulo">
@@ -45,22 +48,26 @@
                 <form id="login-form" class="login-form" aria-label="Formulário de login administrativo">
                     <div class="form-group">
                         <label for="username">Usuário:</label>
-                        <input type="text" id="username" name="username" required aria-required="true" autofocus aria-describedby="user-help">
+                        <input type="text" id="username" name="username" required aria-required="true" autofocus
+                            aria-describedby="user-help">
                         <small id="user-help">Digite o nome de usuário administrativo.</small>
                     </div>
                     <div class="form-group">
                         <label for="password">Senha:</label>
-                        <input type="password" id="password" name="password" required aria-required="true" aria-describedby="pass-help">
+                        <input type="password" id="password" name="password" required aria-required="true"
+                            aria-describedby="pass-help">
                         <small id="pass-help">Digite a senha administrativa.</small>
                     </div>
-                    <button type="submit" class="btn btn-primary" aria-label="Entrar no painel administrativo">Entrar no Painel</button>
+                    <button type="submit" class="btn btn-primary" aria-label="Entrar no painel administrativo">Entrar no
+                        Painel</button>
                 </form>
             </div>
 
             <div class="admin-panel" id="admin-panel" style="display: none;" role="region" aria-live="polite">
                 <div class="admin-header">
                     <h2>📊 Painel de Controle</h2>
-                    <button id="logout-btn" class="btn btn-danger" aria-label="Sair do painel administrativo">🚪 Sair</button>
+                    <button id="logout-btn" class="btn btn-danger" aria-label="Sair do painel administrativo">🚪
+                        Sair</button>
                 </div>
 
 
@@ -68,26 +75,33 @@
                 <div class="admin-actions" role="region" aria-labelledby="acoes-titulo">
                     <h3 id="acoes-titulo">⚙️ Ações Rápidas</h3>
                     <div class="action-buttons">
-                        <button id="clean-expired-btn" class="btn btn-danger interactive" aria-label="Limpar objetos expirados do sistema">🗑️ Limpar Objetos Expirados</button>
-                        <button id="refresh-data-btn" class="btn btn-primary interactive" aria-label="Atualizar lista de objetos">🔄 Atualizar Dados</button>
+                        <button id="clean-expired-btn" class="btn btn-danger interactive"
+                            aria-label="Limpar objetos expirados do sistema">🗑️ Limpar Objetos Expirados</button>
+                        <button id="refresh-data-btn" class="btn btn-primary interactive"
+                            aria-label="Atualizar lista de objetos">🔄 Atualizar Dados</button>
                     </div>
                 </div>
 
                 <div class="objects-management" role="region" aria-labelledby="gerenciamento-titulo">
-                                        <h3 id="gerenciamento-titulo">📋 Gerenciamento de Objetos</h3>
+                    <h3 id="gerenciamento-titulo">📋 Gerenciamento de Objetos</h3>
                     <div class="search-controls">
-                        <input type="text" id="admin-search" placeholder="🔍 Buscar objetos por título, categoria ou local..." class="search-input" aria-label="Campo de busca administrativa" aria-describedby="search-admin-help">
-                        <select id="admin-filter-status" aria-label="Filtrar por status do objeto" aria-describedby="filter-status-help">
+                        <input type="text" id="admin-search"
+                            placeholder="🔍 Buscar objetos por título, categoria ou local..." class="search-input"
+                            aria-label="Campo de busca administrativa" aria-describedby="search-admin-help">
+                        <select id="admin-filter-status" aria-label="Filtrar por status do objeto"
+                            aria-describedby="filter-status-help">
                             <option value="">Todos os status</option>
                             <option value="active">Ativos</option>
                             <option value="expired">Expirados</option>
                             <option value="expiring">Expirando em breve</option>
                         </select>
-                        <small id="search-admin-help">Digite para buscar em tempo real. Filtros aplicados automaticamente.</small>
+                        <small id="search-admin-help">Digite para buscar em tempo real. Filtros aplicados
+                            automaticamente.</small>
                         <small id="filter-status-help">Selecione status para filtrar a lista de objetos.</small>
                     </div>
 
-                    <div class="objects-list" id="objects-list" aria-live="polite" aria-label="Lista de objetos administrativos">
+                    <div class="objects-list" id="objects-list" aria-live="polite"
+                        aria-label="Lista de objetos administrativos">
                         <!-- Lista de objetos carregada dinamicamente via JS -->
                     </div>
                 </div>
@@ -95,18 +109,23 @@
                 <div class="reports-management" role="region" aria-labelledby="reports-titulo">
                     <h3 id="reports-titulo">🚨 Gerenciamento de Denúncias</h3>
                     <div class="search-controls">
-                        <input type="text" id="reports-search" placeholder="🔍 Buscar denúncias por título do objeto ou motivo..." class="search-input" aria-label="Campo de busca de denúncias" aria-describedby="search-reports-help">
-                        <select id="reports-filter-status" aria-label="Filtrar denúncias por status" aria-describedby="filter-reports-help">
+                        <input type="text" id="reports-search"
+                            placeholder="🔍 Buscar denúncias por título do objeto ou motivo..." class="search-input"
+                            aria-label="Campo de busca de denúncias" aria-describedby="search-reports-help">
+                        <select id="reports-filter-status" aria-label="Filtrar denúncias por status"
+                            aria-describedby="filter-reports-help">
                             <option value="">Todos os status</option>
                             <option value="pendente">Pendente</option>
                             <option value="analisada">Analisada</option>
                             <option value="resolvida">Resolvida</option>
                         </select>
-                        <small id="search-reports-help">Digite para buscar denúncias em tempo real. Filtros aplicados automaticamente.</small>
+                        <small id="search-reports-help">Digite para buscar denúncias em tempo real. Filtros aplicados
+                            automaticamente.</small>
                         <small id="filter-reports-help">Selecione status para filtrar a lista de denúncias.</small>
                     </div>
 
-                    <div class="reports-list" id="reports-list" aria-live="polite" aria-label="Lista de denúncias administrativas">
+                    <div class="reports-list" id="reports-list" aria-live="polite"
+                        aria-label="Lista de denúncias administrativas">
                         <!-- Lista de denúncias carregada dinamicamente via JS -->
                     </div>
                 </div>
@@ -123,5 +142,7 @@
     </div>
 
     <script defer src="script.js"></script>
+    <script defer src="js/admin.js"></script>
 </body>
+
 </html>

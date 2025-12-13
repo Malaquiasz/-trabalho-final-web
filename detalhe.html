@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -34,7 +35,7 @@
                 </nav>
             </div>
         </header>
-<section class="instruction-note global-tip" role="alert" aria-live="polite">
+        <section class="instruction-note global-tip" role="alert" aria-live="polite">
             <p>💡 <strong>Dica:</strong> Role a tela para baixo para ver mais opções ou use os botões de navegação acima.</p>
         </section>
         <main class="object-detail-page" role="main">
@@ -42,7 +43,7 @@
 
             <section class="object-presentation interactive" aria-labelledby="detalhes-objeto">
                 <div class="object-media">
-                    <img id="objeto-imagem" src="placeholder-default.jpg" alt="Foto do objeto encontrado" loading="lazy" aria-describedby="imagem-help">
+                    <img id="imagem-preview" src="" alt="Foto do objeto encontrado" loading="lazy" onerror="this.src='https://placehold.co/400x300/cccccc/666666?text=Sem+Imagem'">
                     <small id="imagem-help" class="sr-only">Imagem do objeto. Se não carregar, use a descrição abaixo.</small>
                 </div>
 
@@ -51,15 +52,16 @@
 
                     <div class="key-info interactive" role="region" aria-labelledby="info-chave">
                         <h3 id="info-chave" class="sr-only">Informações principais do objeto</h3>
-                        <p id="categoria-info"><strong>Categoria:</strong> Carregando...</p>
-                        <p id="local-info"><strong>Local Encontrado:</strong> Carregando...</p>
-                        <p id="data-registro-info"><strong>Data do Registro:</strong> Carregando...</p>
-                        <p id="data-expiracao-info"><strong>Data de Expiração:</strong> Carregando...</p>
+
+                        <p id="categoria"><strong>Categoria:</strong> Carregando...</p>
+                        <p id="local"><strong>Local Encontrado:</strong> Carregando...</p>
+                        <p id="data-registro"><strong>Data do Registro:</strong> Carregando...</p>
+                        <p id="data-expiracao"><strong>Data de Expiração:</strong> Carregando...</p>
                     </div>
 
                     <div class="description-section interactive" role="region" aria-labelledby="descricao-titulo">
                         <h3 id="descricao-titulo">Descrição do Objeto</h3>
-                        <p id="descricao-info">Carregando descrição...</p>
+                        <p id="descricao">Carregando descrição...</p>
                     </div>
 
                     <div class="contact-action-box interactive" role="region" aria-labelledby="contato-titulo">
@@ -68,14 +70,14 @@
 
                         <div class="contact-options">
                             <div id="whatsapp-option" class="contact-option interactive" style="display: none;" role="region" aria-label="Opção de contato via WhatsApp">
-                                <a href="#" class="btn btn-primary contact-button" target="_blank" rel="noopener noreferrer" aria-label="Abrir WhatsApp para contato">
+                                <a id="whatsapp-link" href="#" class="btn btn-primary contact-button" target="_blank" rel="noopener noreferrer" aria-label="Abrir WhatsApp para contato">
                                     📞 WhatsApp
                                 </a>
                                 <small>Contato direto via WhatsApp</small>
                             </div>
 
                             <div id="instagram-option" class="contact-option interactive" style="display: none;" role="region" aria-label="Opção de contato via Instagram">
-                                <a href="#" class="btn btn-primary contact-instagram" target="_blank" rel="noopener noreferrer" aria-label="Abrir Instagram para mensagem direta">
+                                <a id="instagram-link" href="#" class="btn btn-primary contact-instagram" target="_blank" rel="noopener noreferrer" aria-label="Abrir Instagram para mensagem direta">
                                     📷 Instagram
                                 </a>
                                 <small>Enviar mensagem no Instagram</small>
@@ -88,28 +90,63 @@
                     </div>
                 </div>
             </section>
-
-            <section class="exclusion-section interactive" role="region" aria-labelledby="exclusao-titulo">
-                <h4 id="exclusao-titulo">⚙️ Administração do Objeto</h4>
+            <!-- Adicione esta seção ANTES da seção de admin-actions no detalhe.html -->
+<section class="report-section interactive" role="region" aria-labelledby="report-titulo">
+    <h4 id="report-titulo">⚠️ Denunciar Este Objeto</h4>
+    <p>Encontrou algo errado com este anúncio? Nos ajude a manter a plataforma segura.</p>
+    
+    <div class="report-options">
+        <button onclick="mostrarFormularioDenuncia()" class="btn btn-warning" aria-label="Denunciar objeto">
+            🚨 Denunciar Objeto
+        </button>
+    </div>
+    
+    <div id="form-denuncia" class="denuncia-form" style="display: none;">
+        <h5>Motivo da Denúncia</h5>
+        <div class="denuncia-options">
+            <label class="denuncia-option">
+                <input type="radio" name="motivo" value="conteudo_inapropriado" checked>
+                <span>Conteúdo inapropriado/ofensivo</span>
+            </label>
+            <label class="denuncia-option">
+                <input type="radio" name="motivo" value="informacao_falsa">
+                <span>Informações falsas/enganosas</span>
+            </label>
+            <label class="denuncia-option">
+                <input type="radio" name="motivo" value="objeto_roubado">
+                <span>Suspeita de objeto roubado</span>
+            </label>
+            <label class="denuncia-option">
+                <input type="radio" name="motivo" value="outro">
+                <span>Outro motivo</span>
+            </label>
+        </div>
+        
+        <div class="form-group" id="outro-motivo-container" style="display: none;">
+            <label for="outro-motivo">Especifique o motivo:</label>
+            <textarea id="outro-motivo" rows="2" placeholder="Descreva o motivo da denúncia..." maxlength="200"></textarea>
+        </div>
+        
+        <div class="denuncia-actions">
+            <button onclick="enviarDenuncia()" class="btn btn-danger">Enviar Denúncia</button>
+            <button onclick="cancelarDenuncia()" class="btn btn-secondary">Cancelar</button>
+        </div>
+        
+        <div class="denuncia-help">
+            <small>⚠️ A denúncia será analisada pela administração. Uso indevido pode resultar em suspensão.</small>
+        </div>
+    </div>
+</section>
+            <section class="admin-actions interactive" role="region" aria-labelledby="admin-titulo">
+                <h4 id="admin-titulo">⚙️ Administração do Objeto</h4>
                 <p>Se você registrou este item e ele já foi devolvido, use sua Palavra-Passe para removê-lo do sistema.</p>
-                <form id="exclusao-form" aria-label="Formulário de exclusão do objeto">
-                                        <input type="password" id="senha-exclusao" placeholder="Digite sua Palavra-Passe aqui" required aria-required="true" aria-describedby="senha-help">
-                    <button type="submit" class="btn btn-danger" aria-label="Excluir objeto do sistema">🗑️ Excluir Objeto do Sistema</button>
-                </form>
-                <div class="exclusion-help">
-                    <small id="senha-help">Esta ação é irreversível. Use apenas se o objeto já foi devolvido. Digite a Palavra-Passe exata fornecida no registro.</small>
+                
+                <div class="admin-buttons">
+                    <button onclick="excluirObjeto()" class="btn btn-danger" aria-label="Excluir objeto">🗑️ Excluir Objeto</button>
                 </div>
-            </section>
-
-            <section class="report-section interactive" role="region" aria-labelledby="denuncia-titulo">
-                <h4 id="denuncia-titulo">🚨 Denunciar Objeto</h4>
-                <p>Se este objeto viola os termos de uso ou política de privacidade, você pode denunciá-lo para análise.</p>
-                <div id="denuncia-status">
-                    <p id="denuncia-mensagem">Status: Não denunciado</p>
-                    <button id="btn-denunciar" class="btn btn-danger" aria-label="Denunciar objeto">🚨 Denunciar Objeto</button>
-                </div>
-                <div class="report-help">
-                    <small>As denúncias são analisadas pela administração. Denúncias falsas podem resultar em restrições.</small>
+                
+                <div class="admin-help">
+                    <small>Use a exclusão para remover permanentemente o objeto após devolução. Esta ação é irreversível.</small>
                 </div>
             </section>
         </main>
@@ -123,6 +160,6 @@
         </footer>
     </div>
 
-    <script defer src="script.js"></script>
+    <script type="module" src="js/verObjeto.js"></script>
 </body>
 </html>

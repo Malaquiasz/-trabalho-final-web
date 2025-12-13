@@ -1,15 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Objeto Encontrado | Achados e Perdidos Local</title>
+    <title>Editar Objeto | Achados e Perdidos Local</title>
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@uploadcare/file-uploader@1/web/uc-file-uploader-regular.min.css">
 </head>
 <body>
-
     <div class="page-container">
         <header class="site-header">
             <div class="header-top">
@@ -32,54 +30,49 @@
                     <ul>
                         <li><a href="index.html">Início</a></li>
                         <li><a href="buscar.html">Perdi!</a></li>
-                        <li><a href="registrar.html" class="active" aria-current="page">Encontrei!</a></li>
+                        <li><a href="registrar.html">Encontrei!</a></li>
                         <li><a href="sobre.html">Sobre</a></li>
                     </ul>
                 </nav>
             </div>
         </header>
-        
+
         <section class="instruction-note global-tip" role="alert" aria-live="polite">
-            <p>💡 <strong>Dica:</strong> Role a tela para baixo para ver mais opções ou use os botões de navegação acima.</p>
+            <p>💡 <strong>Dica:</strong> Use sua Palavra-Passe para salvar as alterações no objeto.</p>
         </section>
-        
+
         <main class="form-page" role="main">
-            <h2>📝 Registrar Objeto Encontrado</h2>
-            <p class="form-intro">Preencha o formulário abaixo para registrar um objeto que você encontrou. A Palavra-Passe serve para remover o item depois de devolvido.</p>
+            <a href="javascript:history.back()" class="back-link interactive" aria-label="Voltar para a página anterior">← Voltar</a>
 
-            <form id="form-registro" class="registration-form interactive" novalidate aria-labelledby="form-registro" aria-describedby="form-help">
+            <h2>✏️ Editar Objeto</h2>
+            <p class="form-intro">Atualize as informações do objeto. Use sua Palavra-Passe para salvar as alterações.</p>
 
+            <form id="form-edicao" class="registration-form interactive" novalidate aria-labelledby="form-edicao" aria-describedby="form-help">
+                
                 <div class="form-group interactive">
-                    <fieldset style="border: none; padding: 0; margin: 0;">
-                        <legend style="font-weight: bold; margin-bottom: 10px;">
-                            Foto do Objeto: <span id="selimg" style="font-weight: lighter"></span>
-                        </legend>
-                        
-                        <uc-config
-                            ctx-name="my-uploader"
-                            use-cloud-image-editor="false"
-                            source-list="local"
-                            files-view-mode="list"
-                            grid-show-file-names="true"
-                            pubkey="f9f207f0bc99dda36d16"
-                            multiple="false"
-                        ></uc-config>
+                    <label for="imagem">Foto do Objeto: <span id="selimg" style="font-weight: lighter"></span></label>
+                    
+                    <uc-config
+                        ctx-name="my-uploader"
+                        use-cloud-image-editor="false"
+                        source-list="local"
+                        files-view-mode="list"
+                        grid-show-file-names="true"
+                        pubkey="f9f207f0bc99dda36d16"
+                        multiple="false"
+                    ></uc-config>
 
-                        <uc-file-uploader-regular
-                            ctx-name="my-uploader"
-                            class="uc-light"
-                            aria-describedby="foto-help"
-                        ></uc-file-uploader-regular>
+                    <uc-file-uploader-regular
+                        ctx-name="my-uploader"
+                        class="uc-light"
+                    ></uc-file-uploader-regular>
 
-                        <uc-upload-ctx-provider
-                            ctx-name="my-uploader"
-                        ></uc-upload-ctx-provider>
-                        
-                        <img id="imagem-preview" src="" alt="Preview da imagem selecionada" style="max-width: 200px; max-height: 200px; margin-top: 10px; border: 1px solid #ddd; padding: 5px; display: none;" />
-                        <small id="foto-help" style="display: block; margin-top: 5px;">
-                            Escolha uma imagem clara do objeto usando o Uploadcare. A imagem será armazenada com segurança.
-                        </small>
-                    </fieldset>
+                    <uc-upload-ctx-provider
+                        ctx-name="my-uploader"
+                    ></uc-upload-ctx-provider>
+                    
+                    <img id="imagem-preview" src="" alt="Preview da imagem selecionada" style="max-width: 200px; max-height: 200px; margin-top: 10px; border: 1px solid #ddd; padding: 5px;" />
+                    <small id="foto-help">Selecione uma nova imagem se desejar alterar. Deixe em branco para manter a atual.</small>
                 </div>
 
                 <div class="form-group interactive">
@@ -142,21 +135,16 @@
                         <option value="Zootecnia">Zootecnia</option>
                         <option value="Outro">Outro Local</option>
                     </select>
-                    
-                    <div id="outro-local-container" class="outro-local-container" style="display: none; margin-top: 10px;">
-                        <label for="outro-local">Outro local:</label>
+                    <div id="outro-local-container" class="outro-local-container" style="display: none;">
                         <input type="text" id="outro-local" name="outro_local" placeholder="Digite o local exato onde encontrou o objeto" aria-describedby="outro-help">
                         <small id="outro-help">Especifique o local se não estiver na lista.</small>
                     </div>
-                    
-                    <small id="local-help" style="display: block; margin-top: 5px;">
-                        Selecione onde o objeto foi encontrado para ajudar na busca.
-                    </small>
+                    <small id="local-help">Selecione onde o objeto foi encontrado para ajudar na busca.</small>
                 </div>
 
                 <section class="contact-methods interactive" aria-labelledby="contato-titulo">
                     <h3 id="contato-titulo">Métodos de Contato</h3>
-                    <p class="contact-intro">Escolha pelo menos uma forma de contato para que o dono do objeto possa encontrá-lo:</p>
+                    <p class="contact-intro">Atualize os métodos de contato (pelo menos um deve estar preenchido):</p>
 
                     <div class="form-group interactive">
                         <label for="contato">WhatsApp:</label>
@@ -176,29 +164,32 @@
                 </section>
 
                 <div class="form-group interactive">
-                    <label for="palavra_passe">Palavra-Passe para Excluir o Objeto:</label>
-                    <input type="password" id="palavra_passe" name="palavra_passe" required aria-required="true" aria-describedby="passe-help" minlength="4" placeholder="Escolha uma senha fácil de lembrar">
-                    <small id="passe-help">Guarde esta senha para remover o objeto depois de devolvido (mín. 4 caracteres). Não compartilhe com ninguém.</small>
+                    <label for="palavra_passe">Palavra-Passe para Salvar Alterações:</label>
+                    <input type="password" id="palavra_passe" name="palavra_passe" required aria-required="true" aria-describedby="passe-help" placeholder="Digite sua Palavra-Passe atual">
+                    <small id="passe-help">Digite a Palavra-Passe original do objeto para salvar as alterações.</small>
                 </div>
 
                 <div class="form-submit-help" role="status" aria-live="polite">
-                    <p id="form-help">✅ <strong>Pronto para registrar?</strong> Verifique se todas as informações estão corretas e clique no botão abaixo.</p>
+                    <p id="form-help">✅ <strong>Pronto para salvar?</strong> Verifique se todas as informações estão corretas.</p>
                 </div>
 
-                <button type="submit" id="submit" class="btn btn-primary btn-large interactive" aria-label="Enviar formulário de registro">📝 Registrar Objeto Encontrado</button>
+                <div class="form-actions">
+                    <button type="submit" id="submit" class="btn btn-primary btn-large interactive" aria-label="Salvar alterações no objeto">💾 Salvar Alterações</button>
+                    <button type="button" onclick="history.back()" class="btn btn-secondary btn-large interactive" aria-label="Cancelar edição e voltar">❌ Cancelar</button>
+                </div>
             </form>
         </main>
 
         <footer class="site-footer" role="contentinfo">
             <div class="footer-links">
-                <a href="index.html" aria-label="Voltar à página inicial">Voltar à Início</a>
-                <a href="buscar.html" aria-label="Ir para página Perdi!">Perdi!</a>
-                <a href="admin.html" aria-label="Ir para página de Administração">Administração</a>
+                <a href="buscar.html" aria-label="Voltar para página de busca">Voltar para Busca</a>
+                <a href="index.html" aria-label="Ir para página inicial">Início</a>
             </div>
             <p>&copy; 2025 Achados e Perdidos Local. Privacidade e Simplicidade.</p>
         </footer>
     </div>
 
-    <script type="module" src="js/inserirObjeto.js"></script>
+    <script type="module" src="js/editarObjeto.js"></script>
 </body>
 </html>
+
