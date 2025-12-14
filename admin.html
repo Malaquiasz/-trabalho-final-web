@@ -39,10 +39,10 @@
             </div>
         </header>
         <section class="instruction-note global-tip" role="alert" aria-live="polite">
-            <p>💡 <strong>Dica:</strong> Role a tela para baixo para ver mais opções ou use os botões de navegação
-                acima.</p>
+            <p>💡 <strong>Dica:</strong> Use as abas abaixo para navegar entre as diferentes seções do painel administrativo.</p>
         </section>
         <main class="admin-page" role="main">
+            <!-- Seção de Login -->
             <div class="admin-login interactive" id="login-section" role="region" aria-labelledby="login-titulo">
                 <h2 id="login-titulo">🔐 Acesso Administrativo</h2>
                 <form id="login-form" class="login-form" aria-label="Formulário de login administrativo">
@@ -63,70 +63,165 @@
                 </form>
             </div>
 
+            <!-- Painel Administrativo Principal -->
             <div class="admin-panel" id="admin-panel" style="display: none;" role="region" aria-live="polite">
-                <div class="admin-header">
-                    <h2>📊 Painel de Controle</h2>
-                    <button id="logout-btn" class="btn btn-danger" aria-label="Sair do painel administrativo">🚪
-                        Sair</button>
-                </div>
-
-
-
-                <div class="admin-actions" role="region" aria-labelledby="acoes-titulo">
-                    <h3 id="acoes-titulo">⚙️ Ações Rápidas</h3>
-                    <div class="action-buttons">
-                        <button id="clean-expired-btn" class="btn btn-danger interactive"
-                            aria-label="Limpar objetos expirados do sistema">🗑️ Limpar Objetos Expirados</button>
-                        <button id="refresh-data-btn" class="btn btn-primary interactive"
-                            aria-label="Atualizar lista de objetos">🔄 Atualizar Dados</button>
+                
+                <!-- Header do Painel -->
+                <div class="admin-header-modern">
+                    <div class="admin-header-left">
+                        <h2>Painel de Controle Administrativo</h2>
+                        <p class="admin-subtitle">Gerencie objetos, denúncias e configurações do sistema</p>
+                    </div>
+                    <div class="admin-header-right">
+                        <span class="admin-user-info" id="admin-user-info">👤 Admin</span>
+                        <button id="logout-btn" class="btn btn-danger" aria-label="Sair do painel administrativo">🚪
+                            Sair</button>
                     </div>
                 </div>
 
-                <div class="objects-management" role="region" aria-labelledby="gerenciamento-titulo">
-                    <h3 id="gerenciamento-titulo">📋 Gerenciamento de Objetos</h3>
-                    <div class="search-controls">
-                        <input type="text" id="admin-search"
-                            placeholder="🔍 Buscar objetos por título, categoria ou local..." class="search-input"
-                            aria-label="Campo de busca administrativa" aria-describedby="search-admin-help">
-                        <select id="admin-filter-status" aria-label="Filtrar por status do objeto"
-                            aria-describedby="filter-status-help">
-                            <option value="">Todos os status</option>
-                            <option value="active">Ativos</option>
-                            <option value="expired">Expirados</option>
-                            <option value="expiring">Expirando em breve</option>
-                        </select>
-                        <small id="search-admin-help">Digite para buscar em tempo real. Filtros aplicados
-                            automaticamente.</small>
-                        <small id="filter-status-help">Selecione status para filtrar a lista de objetos.</small>
-                    </div>
+                <!-- Sistema de Navegação por Abas -->
+                <div class="admin-tabs-container">
+                    <nav class="admin-tabs" role="navigation" aria-label="Navegação do painel administrativo">
+                        <button class="tab-button active" data-tab="overview" aria-controls="tab-overview" aria-selected="true">
+                            📊 Visão Geral
+                        </button>
+                        <button class="tab-button" data-tab="objects" aria-controls="tab-objects" aria-selected="false">
+                            📦 Objetos
+                        </button>
+                        <button class="tab-button" data-tab="reports" aria-controls="tab-reports" aria-selected="false">
+                            🚨 Denúncias <span id="denuncias-badge" class="badge" style="display: none;">0</span>
+                        </button>
 
-                    <div class="objects-list" id="objects-list" aria-live="polite"
-                        aria-label="Lista de objetos administrativos">
-                        <!-- Lista de objetos carregada dinamicamente via JS -->
-                    </div>
-                </div>
 
-                <div class="reports-management" role="region" aria-labelledby="reports-titulo">
-                    <h3 id="reports-titulo">🚨 Gerenciamento de Denúncias</h3>
-                    <div class="search-controls">
-                        <input type="text" id="reports-search"
-                            placeholder="🔍 Buscar denúncias por título do objeto ou motivo..." class="search-input"
-                            aria-label="Campo de busca de denúncias" aria-describedby="search-reports-help">
-                        <select id="reports-filter-status" aria-label="Filtrar denúncias por status"
-                            aria-describedby="filter-reports-help">
-                            <option value="">Todos os status</option>
-                            <option value="pendente">Pendente</option>
-                            <option value="analisada">Analisada</option>
-                            <option value="resolvida">Resolvida</option>
-                        </select>
-                        <small id="search-reports-help">Digite para buscar denúncias em tempo real. Filtros aplicados
-                            automaticamente.</small>
-                        <small id="filter-reports-help">Selecione status para filtrar a lista de denúncias.</small>
-                    </div>
+                    </nav>
 
-                    <div class="reports-list" id="reports-list" aria-live="polite"
-                        aria-label="Lista de denúncias administrativas">
-                        <!-- Lista de denúncias carregada dinamicamente via JS -->
+                    <!-- Conteúdo das Abas -->
+                    <div class="tab-content">
+                        
+                        <!-- Aba Visão Geral -->
+                        <div id="tab-overview" class="tab-panel active" role="tabpanel">
+
+                            <div class="overview-grid">
+                                
+                                <!-- Estatísticas Rápidas -->
+                                <div class="stats-section">
+                                    <h3>📈 Estatísticas do Sistema</h3>
+                                    <div class="stats-grid">
+                                        <div class="stat-card">
+                                            <div class="stat-icon">📦</div>
+                                            <div class="stat-info">
+                                                <span class="stat-value" id="total-objetos">0</span>
+                                                <span class="stat-label">Total de Objetos</span>
+                                            </div>
+                                        </div>
+                                        <div class="stat-card">
+                                            <div class="stat-icon">🚨</div>
+                                            <div class="stat-info">
+                                                <span class="stat-value" id="total-denuncias">0</span>
+                                                <span class="stat-label">Denúncias Pendentes</span>
+                                            </div>
+                                        </div>
+                                        <div class="stat-card">
+                                            <div class="stat-icon">⚠️</div>
+                                            <div class="stat-info">
+                                                <span class="stat-value" id="objetos-expirando">0</span>
+                                                <span class="stat-label">Expirando em Breve</span>
+                                            </div>
+                                        </div>
+                                        <div class="stat-card">
+                                            <div class="stat-icon">✅</div>
+                                            <div class="stat-info">
+                                                <span class="stat-value" id="objetos-ativos">0</span>
+                                                <span class="stat-label">Objetos Ativos</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Objetos Recentes -->
+                                <div class="recent-objects-section">
+                                    <h3>📋 Objetos Recentes</h3>
+                                    <div class="recent-objects-list" id="recent-objects-list">
+                                        <div class="no-objects">
+                                            <p>📭 Carregando objetos recentes...</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Aba Gerenciar Objetos -->
+                        <div id="tab-objects" class="tab-panel" role="tabpanel" style="display: none;">
+                            <div class="objects-management-section">
+                                <div class="section-header">
+                                    <h3>📦 Gerenciamento de Objetos</h3>
+                                    <div class="section-actions">
+                                        <button id="refresh-objects-btn" class="btn btn-primary btn-small">🔄 Atualizar</button>
+                                    </div>
+                                </div>
+
+                                <div class="search-and-filters">
+                                    <div class="search-controls">
+                                        <input type="text" id="admin-search"
+                                            placeholder="🔍 Buscar objetos por título, categoria ou local..." class="search-input"
+                                            aria-label="Campo de busca administrativa">
+                                        <select id="admin-filter-status" aria-label="Filtrar por status do objeto">
+                                            <option value="">Todos os status</option>
+                                            <option value="active">Ativos</option>
+                                            <option value="expired">Expirados</option>
+                                            <option value="expiring">Expirando em breve</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="objects-list-container">
+                                    <div class="objects-list" id="objects-list" aria-live="polite">
+                                        <div class="no-objects">
+                                            <p>📦 Nenhum objeto encontrado.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Aba Denúncias -->
+                        <div id="tab-reports" class="tab-panel" role="tabpanel" style="display: none;">
+                            <div class="reports-management-section">
+                                <div class="section-header">
+                                    <h3>🚨 Gerenciamento de Denúncias</h3>
+                                    <div class="section-actions">
+                                        <button id="refresh-reports-btn" class="btn btn-primary btn-small">🔄 Atualizar</button>
+                                    </div>
+                                </div>
+
+                                <div class="search-and-filters">
+                                    <div class="search-controls">
+                                        <input type="text" id="reports-search"
+                                            placeholder="🔍 Buscar denúncias por título do objeto ou motivo..." class="search-input"
+                                            aria-label="Campo de busca de denúncias">
+                                        <select id="reports-filter-status" aria-label="Filtrar denúncias por status">
+                                            <option value="">Todos os status</option>
+                                            <option value="pendente">Pendente</option>
+                                            <option value="analisada">Analisada</option>
+                                            <option value="resolvida">Resolvida</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="reports-list-container">
+                                    <div class="reports-list" id="reports-list" aria-live="polite">
+                                        <div class="no-objects">
+                                            <p>✅ Nenhuma denúncia pendente.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
                     </div>
                 </div>
             </div>

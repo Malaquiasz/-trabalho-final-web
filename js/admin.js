@@ -377,50 +377,8 @@ window.rejeitarDenuncia = async (id) => {
     }
 };
 
-window.limparExpirados = async () => {
-    if (!confirm(`⚠️ Limpar todos os objetos expirados?\n\nEsta ação removerá permanentemente todos os objetos com status "expirado".`)) {
-        return;
-    }
-    
-    try {
-        // Como não temos um endpoint específico para limpar expirados,
-        // vamos carregar todos e excluir os expirados um por um
-        const response = await fetch(`${urlBase}/admin/objetos`);
-        if (!response.ok) {
-            throw new Error(`Erro ao carregar objetos: ${response.status}`);
-        }
-        
-        const objetos = await response.json();
-        const expirados = objetos.filter(obj => obj.status === 'expirado');
-        
-        if (expirados.length === 0) {
-            alert('✅ Nenhum objeto expirado para remover.');
-            return;
-        }
-        
-        let excluidos = 0;
-        for (const obj of expirados) {
-            try {
-                const deleteResponse = await fetch(`${urlBase}/admin/objetos/${obj.id}`, {
-                    method: 'DELETE'
-                });
-                
-                if (deleteResponse.ok) {
-                    excluidos++;
-                }
-            } catch (e) {
-                console.error(`Erro ao excluir objeto ${obj.id}:`, e);
-            }
-        }
-        
-        alert(`✅ ${excluidos} objetos expirados removidos com sucesso!`);
-        await carregarObjetosAdmin(); // Recarregar lista
-        
-    } catch (error) {
-        console.error('❌ Erro ao limpar expirados:', error);
-        alert(`❌ Erro ao limpar expirados: ${error.message}`);
-    }
-};
+
+
 
 window.atualizarDadosAdmin = async () => {
     try {
@@ -433,12 +391,180 @@ window.atualizarDadosAdmin = async () => {
     }
 };
 
+
+
+
+
+// Sistema de navegação por abas
+const initTabsSystem = () => {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const targetTab = button.getAttribute('data-tab');
+            
+            // Remove active class from all buttons and panels
+            tabButtons.forEach(btn => {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-selected', 'false');
+            });
+            
+            tabPanels.forEach(panel => {
+                panel.classList.remove('active');
+                panel.style.display = 'none';
+            });
+            
+            // Add active class to clicked button and corresponding panel
+            button.classList.add('active');
+            button.setAttribute('aria-selected', 'true');
+            
+            const targetPanel = document.getElementById(`tab-${targetTab}`);
+            if (targetPanel) {
+                targetPanel.classList.add('active');
+                targetPanel.style.display = 'block';
+            }
+            
+            // Trigger specific tab loading
+            if (targetTab === 'objects') {
+                carregarObjetosAdmin();
+            } else if (targetTab === 'reports') {
+                carregarDenuncias();
+            } else if (targetTab === 'overview') {
+                atualizarEstatisticas();
+                carregarObjetosRecentes();
+            }
+        });
+    });
+};
+
+// Atualizar estatísticas do dashboard
+const atualizarEstatisticas = async () => {
+    try {
+        // Carregar objetos para contar estatísticas
+        const response = await fetch(`${urlBase}/admin/objetos`);
+        if (!response.ok) return;
+        
+        const objetos = await response.json();
+        
+        // Calcular estatísticas
+        const totalObjetos = objetos.length;
+        const objetosAtivos = objetos.filter(obj => obj.status === 'ativo').length;
+        const objetosExpirando = objetos.filter(obj => obj.status === 'expirando').length;
+        
+        // Contar denúncias pendentes
+        const denunciasResponse = await fetch(`${urlBase}/admin/denuncias`);
+        let totalDenuncias = 0;
+        if (denunciasResponse.ok) {
+            const denuncias = await denunciasResponse.json();
+            totalDenuncias = denuncias.length;
+        }
+        
+
+        // Atualizar elementos no DOM
+        const totalObjetosEl = document.getElementById('total-objetos');
+        const objetosAtivosEl = document.getElementById('objetos-ativos');
+        const objetosExpirandoEl = document.getElementById('objetos-expirando');
+        const totalDenunciasEl = document.getElementById('total-denuncias');
+        
+        if (totalObjetosEl) totalObjetosEl.textContent = totalObjetos;
+        if (objetosAtivosEl) objetosAtivosEl.textContent = objetosAtivos;
+        if (objetosExpirandoEl) objetosExpirandoEl.textContent = objetosExpirando;
+        if (totalDenunciasEl) totalDenunciasEl.textContent = totalDenuncias;
+        
+        console.log('📊 Estatísticas atualizadas:', {
+            totalObjetos,
+            objetosAtivos,
+            objetosExpirando,
+            totalDenuncias
+        });
+        
+    } catch (error) {
+        console.error('❌ Erro ao atualizar estatísticas:', error);
+    }
+};
+
+// Carregar objetos recentes para o dashboard
+const carregarObjetosRecentes = async () => {
+    const recentObjectsList = document.getElementById('recent-objects-list');
+    if (!recentObjectsList) return;
+    
+    try {
+        const response = await fetch(`${urlBase}/admin/objetos`);
+        if (!response.ok) {
+            throw new Error(`Erro ao carregar objetos: ${response.status}`);
+        }
+        
+        const objetos = await response.json();
+        
+        // Pegar os 5 objetos mais recentes
+        const objetosRecentes = objetos
+            .sort((a, b) => new Date(b.dataregistro) - new Date(a.dataregistro))
+            .slice(0, 5);
+        
+        if (objetosRecentes.length === 0) {
+            recentObjectsList.innerHTML = `
+                <div class="no-objects">
+                    <p>📭 Nenhum objeto encontrado.</p>
+                </div>
+            `;
+            return;
+        }
+        
+        const html = objetosRecentes.map(objeto => {
+            const status = objeto.status || 'ativo';
+            const statusClass = status === 'expirado' ? 'expirado' : status === 'expirando' ? 'expirando' : 'ativo';
+            const statusText = status === 'expirado' ? '❌ Expirado' : status === 'expirando' ? '⚠️ Expirando' : '✅ Ativo';
+            
+            const dataRegistroFormatada = formatarDataBR(objeto.dataregistro);
+            
+            return `
+                <div class="recent-object-item ${statusClass}">
+                    <div class="recent-object-info">
+                        <h5>${objeto.titulo || 'Sem título'}</h5>
+                        <p><strong>ID:</strong> ${objeto.id} | <strong>Data:</strong> ${dataRegistroFormatada}</p>
+                        <span class="status ${statusClass}">${statusText}</span>
+                    </div>
+                    <div class="recent-object-actions">
+                        <button onclick="excluirObjetoAdmin(${objeto.id})" class="btn btn-danger btn-small">
+                            🗑️
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+        
+        recentObjectsList.innerHTML = html;
+        
+    } catch (error) {
+        console.error('❌ Erro ao carregar objetos recentes:', error);
+        recentObjectsList.innerHTML = `
+            <div class="no-objects">
+                <p>❌ Erro ao carregar objetos recentes.</p>
+            </div>
+        `;
+    }
+};
+
+
+// Atualizar informações do usuário logado
+const atualizarInfoUsuario = () => {
+    const userInfo = document.getElementById('admin-user-info');
+    
+    const username = localStorage.getItem('adminUser') || 'Admin';
+    
+    if (userInfo) userInfo.textContent = `👤 ${username}`;
+};
+
 // Configurar event listeners
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🔄 Inicializando sistema administrativo...');
     
     // Verificar se já está logado
     checkLoginStatus();
+    
+    // Configurar sistema de abas
+    initTabsSystem();
     
     // Configurar formulário de login
     if (loginForm) {
@@ -466,6 +592,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (loginSection) loginSection.style.display = 'none';
                 if (adminPanel) adminPanel.style.display = 'block';
                 
+                // Atualizar informações do usuário
+                atualizarInfoUsuario();
+                
                 // Carregar dados administrativos
                 await carregarDadosAdmin();
                 
@@ -491,16 +620,18 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutBtn.addEventListener('click', fazerLogout);
     }
     
+
+
     // Configurar botões de ação
-    const cleanExpiredBtn = document.getElementById('clean-expired-btn');
-    const refreshDataBtn = document.getElementById('refresh-data-btn');
+    const refreshObjectsBtn = document.getElementById('refresh-objects-btn');
+    const refreshReportsBtn = document.getElementById('refresh-reports-btn');
     
-    if (cleanExpiredBtn) {
-        cleanExpiredBtn.addEventListener('click', window.limparExpirados);
+    if (refreshObjectsBtn) {
+        refreshObjectsBtn.addEventListener('click', carregarObjetosAdmin);
     }
     
-    if (refreshDataBtn) {
-        refreshDataBtn.addEventListener('click', window.atualizarDadosAdmin);
+    if (refreshReportsBtn) {
+        refreshReportsBtn.addEventListener('click', carregarDenuncias);
     }
     
     // Configurar filtros de busca
@@ -596,39 +727,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (reportsFilterStatus) {
         reportsFilterStatus.addEventListener('change', filtrarDenuncias);
     }
-    // Função para criar denúncia de teste (apenas para desenvolvimento)
-window.criarDenunciaTeste = async () => {
-    try {
-        // Primeiro, buscar um objeto para denunciar
-        const response = await fetch(`${urlBase}/objetos`);
-        if (!response.ok) return;
-        
-        const objetos = await response.json();
-        if (objetos.length === 0) {
-            alert('❌ Nenhum objeto disponível para denúncia.');
-            return;
-        }
-        
-        // Pegar o primeiro objeto
-        const objeto = objetos[0];
-        
-        if (!confirm(`Criar denúncia de teste para: "${objeto.titulo}"?`)) {
-            return;
-        }
-        
-        const denunciaResponse = await fetch(`${urlBase}/admin/objetos/${objeto.id}/denunciar`, {
-            method: 'POST'
-        });
-        
-        if (denunciaResponse.ok) {
-            alert('✅ Denúncia de teste criada!');
-            // Recarregar denúncias
-            await carregarDenuncias();
-        }
-        
-    } catch (error) {
-        console.error('Erro ao criar denúncia de teste:', error);
-    }
-};
+    
     console.log('✅ Sistema administrativo inicializado');
 });

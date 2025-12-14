@@ -348,12 +348,14 @@ main {
     background: var(--cor-primaria-escura);
 }
 
-/* ========== PÁGINA DE ADMINISTRAÇÃO (Grids Responsivos) ========== */
+
+/* ========== PÁGINA DE ADMINISTRAÇÃO MODERNIZADA ========== */
 .admin-page {
     max-width: 1400px;
     margin: 0 auto;
 }
 
+/* Seção de Login */
 .admin-login {
     background: white;
     padding: clamp(2rem, 5vw, 3rem);
@@ -364,7 +366,6 @@ main {
     text-align: center;
     border: 2px solid var(--cor-azul-sutil);
     contain: layout;
-    ;
 }
 
 .admin-login h2 {
@@ -383,59 +384,149 @@ main {
     box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
 }
 
-.admin-header {
+/* Header Moderno do Painel */
+.admin-header-modern {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid var(--cor-borda);
+    padding: clamp(1.5rem, 4vw, 2rem);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(236, 240, 241, 0.95) 100%);
+    border-radius: 20px;
+    border: 2px solid var(--cor-azul-sutil);
+    box-shadow: var(--sombra-card);
     flex-wrap: wrap;
     gap: 1rem;
 }
 
-.admin-header h2 {
+.admin-header-left h2 {
     color: var(--cor-primaria);
-    font-size: clamp(1.8rem, 4vw, 2.2rem);
+    font-size: clamp(1.6rem, 4vw, 2rem);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
 }
 
-.admin-stats {
-    margin-bottom: 3rem;
+.admin-subtitle {
+    color: var(--cor-texto-claro);
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    margin: 0;
 }
 
-.stat-card {
+.admin-header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.admin-user-info {
+    background: var(--gradiente-cinza);
+    padding: 0.8rem 1.2rem;
+    border-radius: 50px;
+    color: var(--cor-texto-padrao);
+    font-weight: 600;
+    border: 1px solid var(--cor-azul-sutil);
+}
+
+/* Sistema de Navegação por Abas */
+.admin-tabs-container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: var(--sombra-card);
+    border: 2px solid var(--cor-azul-sutil);
+    overflow: hidden;
+}
+
+.admin-tabs {
+    display: flex;
+    background: var(--gradiente-cinza);
+    border-bottom: 2px solid var(--cor-borda);
+    overflow-x: auto;
+    flex-wrap: wrap;
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    padding: 1rem 1.5rem;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    font-weight: 600;
+    color: var(--cor-texto-claro);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    position: relative;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tab-button:hover {
+    background: rgba(39, 174, 96, 0.1);
+    color: var(--cor-primaria);
+}
+
+.tab-button.active {
+    background: white;
+    color: var(--cor-primaria);
+    border-bottom-color: var(--cor-primaria);
+}
+
+.tab-content {
+    padding: clamp(1.5rem, 4vw, 2rem);
+}
+
+.tab-panel {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Grid da Visão Geral */
+.overview-grid {
+    display: grid;
+    gap: 2rem;
+}
+
+.stats-section {
     background: white;
     padding: clamp(1.5rem, 4vw, 2rem);
     border-radius: 16px;
-    box-shadow: var(--sombra-card);
     border: 2px solid var(--cor-azul-sutil);
-    contain: layout;
+    box-shadow: var(--sombra-card);
 }
 
-.stat-card h3 {
+.stats-section h3 {
     color: var(--cor-primaria);
     margin-bottom: 1.5rem;
     font-size: clamp(1.2rem, 3vw, 1.5rem);
+    font-weight: 600;
 }
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: clamp(1rem, 3vw, 1.5rem);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
 }
 
-.stat-box {
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     background: var(--gradiente-cinza);
     padding: 1.5rem;
     border-radius: 12px;
-    text-align: center;
-    transition: box-shadow 0.3s ease;
+    border: 1px solid var(--cor-azul-sutil);
+    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    border: 1px solid var(--cor-azul-sutil);
 }
 
-.stat-box::before {
+.stat-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -445,12 +536,22 @@ main {
     background: var(--gradiente-verde);
 }
 
-.stat-box:hover {
+.stat-card:hover {
     border-color: var(--cor-azul-detalhe-claro);
+    transform: translateY(-2px);
+}
+
+.stat-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.stat-info {
+    flex: 1;
 }
 
 .stat-value {
-    font-size: clamp(2rem, 6vw, 2.5rem);
+    font-size: clamp(1.8rem, 5vw, 2.2rem);
     font-weight: 800;
     color: var(--cor-primaria);
     display: block;
@@ -461,64 +562,115 @@ main {
     font-size: clamp(0.8rem, 2vw, 0.9rem);
     color: var(--cor-texto-claro);
     font-weight: 600;
-    margin-top: 0.5rem;
+    margin-top: 0.3rem;
 }
 
-.admin-actions {
+/* Ações Rápidas */
+.quick-actions-section {
     background: white;
     padding: clamp(1.5rem, 4vw, 2rem);
     border-radius: 16px;
-    box-shadow: var(--sombra-card);
-    margin-bottom: 3rem;
     border: 2px solid var(--cor-azul-sutil);
-    contain: layout;
+    box-shadow: var(--sombra-card);
 }
 
-.admin-actions h3 {
+.quick-actions-section h3 {
     color: var(--cor-primaria);
     margin-bottom: 1.5rem;
     font-size: clamp(1.2rem, 3vw, 1.5rem);
+    font-weight: 600;
 }
 
-.action-buttons {
-    display: flex;
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
-    flex-wrap: wrap;
-    justify-content: center;
 }
 
-.objects-management {
+.quick-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.quick-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sombra-botao);
+}
+
+.action-icon {
+    font-size: 1.2rem;
+}
+
+/* Objetos Recentes */
+.recent-objects-section {
     background: white;
     padding: clamp(1.5rem, 4vw, 2rem);
     border-radius: 16px;
-    box-shadow: var(--sombra-card);
     border: 2px solid var(--cor-azul-sutil);
-    contain: layout;
+    box-shadow: var(--sombra-card);
 }
 
-.objects-management h3 {
+.recent-objects-section h3 {
     color: var(--cor-primaria);
     margin-bottom: 1.5rem;
     font-size: clamp(1.2rem, 3vw, 1.5rem);
+    font-weight: 600;
+}
+
+/* Seções de Gerenciamento */
+.objects-management-section,
+.reports-management-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.section-header h3 {
+    color: var(--cor-primaria);
+    font-size: clamp(1.3rem, 3.5vw, 1.6rem);
+    font-weight: 600;
+    margin: 0;
+}
+
+.search-and-filters {
+    background: var(--cor-fundo);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--cor-azul-sutil);
 }
 
 .search-controls {
     display: flex;
     gap: 1rem;
-    margin-bottom: 2rem;
     flex-wrap: wrap;
+    align-items: center;
     justify-content: center;
 }
 
 .search-input {
     flex: 1;
     min-width: 300px;
-    padding: 1rem 1.5rem;
+    max-width: 400px;
+    padding: 0.8rem 1.2rem;
     border: 1px solid var(--cor-borda);
-    border-radius: 50px;
-    font-size: 1rem;
+    border-radius: 25px;
+    font-size: 0.95rem;
     transition: var(--transicao-padrao);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     font-family: 'Poppins', sans-serif;
     border: 1px solid var(--cor-azul-sutil);
 }
@@ -529,15 +681,21 @@ main {
     box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
 }
 
+.objects-list-container,
+.reports-list-container {
+    min-height: 300px;
+}
+
+/* Lista de Objetos */
 .objects-list {
     display: flex;
     flex-direction: column;
-    gap: clamp(1rem, 3vw, 1.5rem);
+    gap: 1rem;
 }
 
 .object-admin-card {
     display: grid;
-    grid-template-columns: 100px 1fr auto;
+    grid-template-columns: 80px 1fr auto;
     gap: 1.5rem;
     padding: 1.5rem;
     background: var(--cor-fundo);
@@ -570,8 +728,8 @@ main {
 }
 
 .object-admin-image {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     border-radius: 8px;
     overflow: hidden;
     aspect-ratio: 1/1;
@@ -600,6 +758,13 @@ main {
     font-size: clamp(0.8rem, 2vw, 0.9rem);
 }
 
+.object-admin-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Status */
 .status {
     font-weight: 600;
     padding: 0.3rem 0.8rem;
@@ -623,12 +788,16 @@ main {
     color: var(--cor-secundaria);
 }
 
-.object-admin-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+.status.online {
+    background: rgba(39, 174, 96, 0.1);
+    color: var(--cor-primaria);
 }
 
+
+
+
+
+/* Estados vazios */
 .no-objects {
     text-align: center;
     color: var(--cor-texto-claro);
@@ -637,6 +806,167 @@ main {
     background: var(--cor-fundo);
     border-radius: 12px;
     border: 2px dashed var(--cor-borda);
+}
+
+.recent-objects-list .no-objects {
+    margin: 0;
+}
+
+/* Objetos Recentes */
+.recent-objects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.recent-object-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: var(--cor-fundo);
+    border-radius: 12px;
+    border: 1px solid var(--cor-borda);
+    border: 2px solid var(--cor-azul-sutil);
+    transition: all 0.3s ease;
+}
+
+.recent-object-item:hover {
+    border-color: var(--cor-azul-detalhe-claro);
+    box-shadow: var(--sombra-card);
+}
+
+.recent-object-item.expirado {
+    border-left: 4px solid var(--cor-secundaria);
+    background: linear-gradient(135deg, #fff5f5 0%, #ffeaea 100%);
+}
+
+.recent-object-item.expirando {
+    border-left: 4px solid var(--cor-destaque);
+    background: linear-gradient(135deg, #fffbf0 0%, #fff5e6 100%);
+}
+
+.recent-object-item.ativo {
+    border-left: 4px solid var(--cor-primaria);
+    background: linear-gradient(135deg, #f0fff4 0%, #e6ffed 100%);
+}
+
+.recent-object-info {
+    flex: 1;
+}
+
+.recent-object-info h5 {
+    color: var(--cor-primaria);
+    margin-bottom: 0.5rem;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    font-weight: 600;
+}
+
+.recent-object-info p {
+    color: var(--cor-texto-claro);
+    margin: 0;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+}
+
+.recent-object-actions {
+    flex-shrink: 0;
+}
+
+/* Badge para notificações */
+.badge {
+    background: var(--cor-secundaria);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    min-width: 20px;
+    text-align: center;
+    line-height: 1.2;
+    position: relative;
+    top: -2px;
+}
+
+.badge:empty {
+    display: none;
+}
+
+/* Estilo específico para badge de denúncias */
+.tab-button .badge {
+    background: var(--cor-destaque);
+    font-size: 0.7rem;
+    padding: 0.15rem 0.4rem;
+}
+
+/* Botões pequenos */
+.btn-small {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    min-height: auto;
+    font-weight: 600;
+}
+
+.recent-object-actions .btn-small {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+}
+
+/* Responsividade para Admin */
+@media (max-width: 768px) {
+    .admin-header-modern {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+    
+    .admin-header-right {
+        justify-content: center;
+    }
+    
+    .admin-tabs {
+        justify-content: flex-start;
+    }
+    
+    .tab-button {
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+    }
+    
+    .quick-actions-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .object-admin-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .object-admin-actions {
+        flex-direction: row;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .search-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-input {
+        min-width: auto;
+        width: 100%;
+    }
+    
+    .settings-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ========== SEÇÃO AÇÕES PRINCIPAIS ========== */
@@ -2600,4 +2930,5 @@ main {
     50% { transform: scale(1.1); }
     100% { transform: scale(1); }
 }
+
 /* Fim do CSS Otimizado - Tamanho Final: ~9.8KB (compactado ~25%). Pronto para produção. */
