@@ -22,21 +22,22 @@ Estudantes e profissionais que precisam gerenciar múltiplas tarefas e projetos 
 
 # Proposta 02
 
-## Aplicativo de Exercícios Físicos
+## Site de Achados e Perdidos Institucional
 
 ### Descrição
-Um aplicativo que oferece sugestões de exercícios físicos para praticar em casa.
+Plataforma especializada na recuperação de objetos perdidos em um campus escolar
 
 ### Problema a ser solucionado
-Muitas pessoas têm dificuldade em encontrar tempo ou motivação para se exercitar, especialmente em casa.
+A recuperação de itens perdidos, principalmente em um campus maior, é ineficiente devido à falta de uma plataforma dedicada
 
 ### Público alvo
-Pessoas que desejam se manter ativas, mas têm dificuldade em ir a academias.
+Toda a comunidade acadêmica (discentes, docentes e corpo técnico-administrativo).
 
 ### Funcionalidades
-1. Sugestões de exercícios diários
-2. Vídeos demonstrativos de cada exercício
-3. Registro de progresso e metas de fitness
+1. Cadastrar itens encontrados
+2. Buscar por itens perdidos, com opções de filtragem
+3. Gestão segura de meios de contato
+4. Controle administrativo
 
 ---
 
