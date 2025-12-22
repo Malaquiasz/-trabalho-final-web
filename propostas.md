@@ -39,6 +39,8 @@ Toda a comunidade acadêmica (discentes, docentes e corpo técnico-administrativ
 3. Gestão segura de meios de contato
 4. Controle administrativo
 
+### Proposta escolhida
+
 ---
 
 # Proposta 03
